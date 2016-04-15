@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv='Content-Type' content='text/html;charset=UTF-8' />
+<meta name="description" content="SAP PI Monitoring Tool">
+<meta name="author" content="IBM TAC">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="shortcut icon" href="images/favicon1.png">
+<link rel="stylesheet" href="css/loading.css">
+<link rel="stylesheet" href="css/styles.css">
+
+<!--[if IE]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+<!-- 
+<script src="https://sapui5.netweaver.ondemand.com/resources/sap-ui-core.js" id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.ui.commons, 
+	sap.ui.ux3, sap.m, 
+	sap.makit, 
+	sap.viz,
+	sap.ui.core, 
+	sap.ui.layout, 
+	sap.ui.table" 
+	data-sap-ui-theme="sap_goldreflection">
+	
+</script>
+-->
+
+<script src="resources/sap-ui-core.js" id="sap-ui-bootstrap"
+	data-sap-ui-libs="sap.ui.commons, 
+	sap.ui.ux3, sap.m, 
+	sap.makit, 
+	sap.viz,
+	sap.ui.core, 
+	sap.ui.layout, 
+	sap.ui.table, sap.suite.ui.commons" 
+	data-sap-ui-theme="sap_goldreflection">
+</script>
+
+<script src="sap_pi_monitoring_tool/utility.js"></script>
+
+<script>
+	sap.ui.localResources("sap_pi_monitoring_tool");
+		
+	console.log("Views initiation");	
+	loadingview = sap.ui.view({
+		id : "idloading",
+		viewName : "sap_pi_monitoring_tool.loadinghtml",
+		type : sap.ui.core.mvc.ViewType.HTML
+	});
+
+	loginview = sap.ui.view({
+		id : "idlogin",
+		viewName : "sap_pi_monitoring_tool.login",
+		type : sap.ui.core.mvc.ViewType.JS
+		
+	});
+
+	
+	
+	loadingview.placeAt("content");
+	
+	setTimeout(function(){
+		
+		if(!isLoggedin()){
+			openLoginDialog();
+		}else{
+			homeview = sap.ui.view({
+				id : "idhome",
+				viewName : "sap_pi_monitoring_tool.home",
+				type : sap.ui.core.mvc.ViewType.JS
+				
+			});
+			homeview.placeAt("content");
+			
+			notificationbarview = sap.ui.view({
+				id : "idnotification",
+				viewName : "sap_pi_monitoring_tool.notification",
+				type : sap.ui.core.mvc.ViewType.JS
+				
+			});
+			notificationbarview.placeAt("notificationbar");
+		}
+		loadingview.destroy();
+	}, 1000);
+
+	
+	
+
+	
+	
+	
+
+
+	
+	
+
+    
+
+</script>
+</head>
+<body class="sapUiBody" role="application">
+	<div id="content">
+	</div>
+	<div id="notificationbar"></div>
+</body>
+</html>

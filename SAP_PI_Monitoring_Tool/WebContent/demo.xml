@@ -1,0 +1,90 @@
+<SOAP-ENV:Envelope xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <SOAP-ENV:Body>
+      <ns2:AlertRuleQueryResponse xmlns:ns2="http://sap.com/xi/BASIS">
+         <AlertRule>
+            <AlertRuleID>ALERT_NOTIFICATION_FOR_VISHWAKIRAN_TEST_INTERFACES</AlertRuleID>
+            <AlertRuleTechnicalID>2dfcccf670bf36c6abe0dc3b6e30d150</AlertRuleTechnicalID>
+            <Description languageCode=""/>
+            <AdministrativeData>
+               <ResponsibleUserAccountID>vishwakiran</ResponsibleUserAccountID>
+               <LastChangeUserAccountID>vishwakiran</LastChangeUserAccountID>
+               <LastChangeDateTime>2015-06-11T09:08:27.895-01:00</LastChangeDateTime>
+            </AdministrativeData>
+            <Severity>HIGH</Severity>
+            <State>ENABLED</State>
+            <PayloadInAlert>DISABLED</PayloadInAlert>
+            <AlertConsumers>ALERT_NOT_VK_1230000</AlertConsumers>
+         </AlertRule>
+         <AlertRule>
+            <AlertRuleID>Alert_TEST</AlertRuleID>
+            <AlertRuleTechnicalID>d97e2f7332483cc4bf49b4f89b9b6696</AlertRuleTechnicalID>
+            <Description languageCode=""/>
+            <AdministrativeData>
+               <ResponsibleUserAccountID>mgattani</ResponsibleUserAccountID>
+               <LastChangeUserAccountID>mgattani</LastChangeUserAccountID>
+               <LastChangeDateTime>2015-08-19T08:14:17.649-01:00</LastChangeDateTime>
+            </AdministrativeData>
+            <Severity>MEDIUM</Severity>
+            <State>ENABLED</State>
+            <PayloadInAlert>DISABLED</PayloadInAlert>
+            <AlertConsumers>ALERT-TO-MAIL</AlertConsumers>
+         </AlertRule>
+         <AlertRule>
+            <AlertRuleID>Alert_SBM</AlertRuleID>
+            <AlertRuleTechnicalID>d0beae01c1bc3c79ac3d25018a6c2398</AlertRuleTechnicalID>
+            <Description languageCode="EN">Alert_SBM</Description>
+            <AdministrativeData>
+               <ResponsibleUserAccountID>smajumder</ResponsibleUserAccountID>
+               <LastChangeUserAccountID>smajumder</LastChangeUserAccountID>
+               <LastChangeDateTime>2016-03-07T18:08:56.938-01:00</LastChangeDateTime>
+            </AdministrativeData>
+            <Severity>VERYHIGH</Severity>
+            <State>ENABLED</State>
+            <PayloadInAlert>ENABLED</PayloadInAlert>
+            <AlertConsumers>ALERT-TO-SBM</AlertConsumers>
+         </AlertRule>
+         <AlertRule>
+            <AlertRuleID>Demo</AlertRuleID>
+            <AlertRuleTechnicalID>75c17fe6272d333f81b11df9cba85c61</AlertRuleTechnicalID>
+            <Description languageCode="EN">sample alerts by bandaru</Description>
+            <AdministrativeData>
+               <ResponsibleUserAccountID>bnraa</ResponsibleUserAccountID>
+               <LastChangeUserAccountID>bnraa</LastChangeUserAccountID>
+               <LastChangeDateTime>2015-02-26T06:30:05.696-01:00</LastChangeDateTime>
+            </AdministrativeData>
+            <Severity>LOW</Severity>
+            <State>ENABLED</State>
+            <PayloadInAlert>ENABLED</PayloadInAlert>
+            <AlertConsumers>ALERT-TO-MAIL</AlertConsumers>
+         </AlertRule>
+         <AlertRule>
+            <AlertRuleID>Test</AlertRuleID>
+            <AlertRuleTechnicalID>661ef70a9d1a38a0b6d3836f4ab0b20a</AlertRuleTechnicalID>
+            <Description languageCode="EN"/>
+            <AdministrativeData>
+               <ResponsibleUserAccountID>ramesh</ResponsibleUserAccountID>
+               <LastChangeUserAccountID>ramesh</LastChangeUserAccountID>
+               <LastChangeDateTime>2015-02-25T02:34:03.289-01:00</LastChangeDateTime>
+            </AdministrativeData>
+            <Severity>VERYHIGH</Severity>
+            <State>ENABLED</State>
+            <PayloadInAlert>ENABLED</PayloadInAlert>
+            <AlertConsumers>TestAlert</AlertConsumers>
+         </AlertRule>
+         <AlertRule>
+            <AlertRuleID>AR_FileToFileMulti</AlertRuleID>
+            <AlertRuleTechnicalID>f262f39bc7ae35d3a326061723d96499</AlertRuleTechnicalID>
+            <Description languageCode=""/>
+            <AdministrativeData>
+               <ResponsibleUserAccountID>skumar5</ResponsibleUserAccountID>
+               <LastChangeUserAccountID>skumar5</LastChangeUserAccountID>
+               <LastChangeDateTime>2015-08-23T18:57:54.029-01:00</LastChangeDateTime>
+            </AdministrativeData>
+            <Severity>VERYHIGH</Severity>
+            <State>ENABLED</State>
+            <PayloadInAlert>DISABLED</PayloadInAlert>
+            <AlertConsumers>AR_FileToFileMulti</AlertConsumers>
+         </AlertRule>
+      </ns2:AlertRuleQueryResponse>
+   </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

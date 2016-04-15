@@ -1,0 +1,240 @@
+<SOAP-ENV:Envelope xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+   <SOAP-ENV:Body>
+      <ns3:RetrieveSingleAlertsResponse xmlns:ns2="http://sap.com/xi/BASIS/Global" xmlns:ns3="http://sap.com/xi/BASIS/alerting">
+         <Alert>
+            <AlertPayload>{
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "HOUSEKEEPING_ERROR_CATEGORY",
+"ErrCode": "HOUSEKEEPING_ERROR_CODE",
+"ErrLabel": "1033",
+"ErrText": "71 alerts were deleted for component af.po7.inmbzr0096 and rule ID f262f39bc7ae35d3a326061723d96499 and scenario ID dir://ICO/ce9af1b9390d3886982787de5f973f74",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"ScenarioId": "dir://ICO/ce9af1b9390d3886982787de5f973f74",
+"Timestamp": "2016-04-11T10:41:27Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID>dir://ICO/ce9af1b9390d3886982787de5f973f74</IntegrationFlowID>
+            <AlertsDeleted>71</AlertsDeleted>
+            <ErrorLabelID>1033</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:38:04Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:41:32Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:42:31Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:44:04Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:46:04Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:48:04Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:50:07Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:52:32Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <Alert>
+            <AlertPayload>{
+"AdapterNamespace": "http://sap.com/xi/XI/System",
+"AdapterType": "File",
+"Channel": "FileSendChannel_WorkingEarlier",
+"ChannelParty": "GBS_Saurav",
+"ChannelService": "BC_Saurav",
+"Component": "af.po7.inmbzr0096",
+"ErrCat": "",
+"ErrCode": "",
+"ErrLabel": "9999",
+"ErrText": "No suitable sender agreement found",
+"FromParty": "GBS_Saurav",
+"FromService": "BC_Saurav",
+"RuleId": "f262f39bc7ae35d3a326061723d96499",
+"Severity": "VERYHIGH",
+"Timestamp": "2016-04-11T10:54:07Z"
+}</AlertPayload>
+            <AlertRuleID>f262f39bc7ae35d3a326061723d96499</AlertRuleID>
+            <ComponentID>af.po7.inmbzr0096</ComponentID>
+            <IntegrationFlowID/>
+            <AlertsDeleted>0</AlertsDeleted>
+            <ErrorLabelID>9999</ErrorLabelID>
+         </Alert>
+         <StatusDetails/>
+      </ns3:RetrieveSingleAlertsResponse>
+   </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

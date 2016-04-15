@@ -1,0 +1,10 @@
+.rowTemplateNoViews {
+                     width: 100%;
+                     box-sizing: border-box;
+                     -moz-box-sizing: border-box;
+                     border: 1px #cccccc solid;
+                     background-color: #eceaea;
+                 }
+                 .rowTemplateNoViewsTextSection {
+                     margin: 1px 7px 1px 7px;
+                 }
