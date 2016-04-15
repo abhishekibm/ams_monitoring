@@ -55,7 +55,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 				var oShell = oEvent.oSource;
 				switch (sId) {
 				case "WI_home":
-					
+					//This will open alert dashboard
 					if(!isLoggedin())
 						openLoginDialog();
 					else{
