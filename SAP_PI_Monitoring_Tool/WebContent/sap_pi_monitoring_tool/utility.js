@@ -1,15 +1,31 @@
 mode = 'test';// prod
+cors = true;
+
 jQuery.sap.require("jquery.sap.storage");
 oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
 
 //Here all service APIs will be mentioned
 serviceAPIs  = {
 		alertAPI_all_alert_consumers: function(){
-			return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean');
+			if(!cors)
+				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean');
+			else
+				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean');
 		},
 		
 		alertAPI_single_alert: function(){
-			return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean');
+			if(!cors)
+				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean');
+			else
+				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean');
+		},
+		
+		messageAPI: function(){
+			if(!cors)
+				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AdapterMessageMonitoring/basic?style=document');
+			else
+				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AdapterMessageMonitoring/basic?style=document');
+			
 		}
 		
 }
@@ -38,13 +54,6 @@ function login(sessionObject){
 	oStorage.put('sessionObject', sessionObject);
 	
 	console.log(localStore('sessionObject'));
-	if(mode == 'test'){
-		alertAPI1= 'proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean';
-		//if(localStore('sessionObject').protocol == 'http')
-		alertAPI_all_alert_consumers = 'proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean';
-	}else{
-		alertAPI1= localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean';	
-	}
 	location.reload();
 }
 	

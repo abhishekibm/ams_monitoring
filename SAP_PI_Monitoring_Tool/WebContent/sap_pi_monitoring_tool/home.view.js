@@ -33,10 +33,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 			showInspectorTool: false,
 			showFeederTool: false,
 			worksetItems: [new sap.ui.ux3.NavigationItem("WI_home",{key:"wi_home",text:"Alert Monitoring"}),
-			               new sap.ui.ux3.NavigationItem("WI_1",{key:"wi_1",text:"Message Monitoring", subItems:[
-			                  new sap.ui.ux3.NavigationItem("WI_1_1",{key:"wi_1_1",text:"Text"}),
-			                  new sap.ui.ux3.NavigationItem("WI_1_2",{key:"wi_1_2",text:"Button"}),
-			                  new sap.ui.ux3.NavigationItem("WI_1_3",{key:"wi_1_3",text:"Image"})]}),
+			               new sap.ui.ux3.NavigationItem("WI_MSG",{key:"wi_msg",text:"Message Monitoring"}),
 			               new sap.ui.ux3.NavigationItem("WI_API",{key:"wi_api",text:"Channnel Monitoring"})],
 			paneBarItems: [ new sap.ui.core.Item("PI_Date",{key:"pi_date",text:"date"}),
 			                new sap.ui.core.Item("PI_Browser",{key:"pi_browser",text:"browser"})],
@@ -46,8 +43,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 			              new sap.ui.commons.TextView({text:(isLoggedin()? localStore('sessionObject').host +':'+localStore('sessionObject').port : "Not defined"),tooltip:"Host:Port"}),
 			              new sap.ui.commons.Button({text:"Personalize",tooltip:"Personalize",press:function(oEvent){alert("Here could open an personalize dialog");}}),
 										new sap.ui.commons.MenuButton({
-											text: "Help",
-											tooltip: "Help Menu",
+											text: "Settings",
+											tooltip: "Settings",
 											menu: new sap.ui.commons.Menu("menu1",{items:[
 												new sap.ui.commons.MenuItem("menuitem1",{text:"Help"}),
 												new sap.ui.commons.MenuItem("menuitem2",{text:"Report Incident"}),
@@ -68,8 +65,15 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 					}
 					
 					break;
-				case "WI_1_1":
-					oShell.setContent("Second");
+				case "WI_MSG":
+					var messageMonitroringView = new sap.ui.view({
+						id : "msgView",
+						viewName : "sap_pi_monitoring_tool.messageMonitoring",
+						type : sap.ui.core.mvc.ViewType.JS
+						
+					});
+					
+					oShell.setContent(messageMonitroringView);
 					break;
 				case "WI_1_2":
 					oShell.setContent("third");

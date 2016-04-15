@@ -145,9 +145,9 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                 // Our error logic here
 		            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
 		                 var msg = '';
-		                 if (jqXHR.status === 0) {
-		                     msg = 'Not connect.\n Verify Network.';
-		                     openLoginDialog();
+		                 if (jqXHR.status == 0) {
+		                     msg = 'Not connect. Verify Network.';
+		                     //openLoginDialog();
 		                 } else if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
 		                 } else if (jqXHR.status == 500) {
@@ -160,7 +160,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                     msg = 'Ajax request aborted.';
 		                 } else {
 		                     msg = 'Uncaught Error.\n' + jqXHR.responseText;
-		                     openLoginDialog();
+		                     //openLoginDialog();
 		                 }
 		                 
 		                 console.log(msg);
