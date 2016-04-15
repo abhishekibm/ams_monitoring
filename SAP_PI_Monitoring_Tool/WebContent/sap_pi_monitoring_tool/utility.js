@@ -1,10 +1,8 @@
-console.log("inside utility.js");
 mode = 'test';// prod
 jQuery.sap.require("jquery.sap.storage");
 oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
 
-alertAPI1 ='';
-alertAPI_all_alert_consumers = '';
+//Here all service APIs will be mentioned
 serviceAPIs  = {
 		alertAPI_all_alert_consumers: function(){
 			return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean');
@@ -16,6 +14,10 @@ serviceAPIs  = {
 		
 }
 
+/**
+ * Function to check any host and user information has been entered or not
+ * @returns {Boolean}
+ */
 function isLoggedin(){
 	if(localStore('sessionObject') == null || localStore('sessionObject').username == 'undefined' || localStore('sessionObject').password == 'undefined'){
 		console.log("Not logged in");
@@ -26,6 +28,11 @@ function isLoggedin(){
 	}
 }
 
+
+/**
+ * Function to store host and user information into session variable
+ * @param sessionObject
+ */
 function login(sessionObject){
 	sessionObject.isLoggedin = true;
 	oStorage.put('sessionObject', sessionObject);
@@ -41,6 +48,9 @@ function login(sessionObject){
 	location.reload();
 }
 	
+/**
+ * Funtion to delete host and user credential information form session variable
+ */
 function logoff(){
 	oStorage.clear();
 	location.reload();
