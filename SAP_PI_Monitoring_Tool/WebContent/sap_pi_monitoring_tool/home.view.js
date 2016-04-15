@@ -1,4 +1,7 @@
-
+/**
+ * View for Home after login Which will contain Alert dashboard, Message Monitoring, channel Monitoring views
+ * @author Abhishek Saha
+ */
 sap.ui.jsview("sap_pi_monitoring_tool.home", {
 
 	/** Specifies the Controller belonging to this View. 

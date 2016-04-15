@@ -1,3 +1,7 @@
+/**
+ * View for Login
+ * @author Abhishek Saha
+ */
 sap.ui.jsview("sap_pi_monitoring_tool.login", {
 
 	/** Specifies the Controller belonging to this View. 

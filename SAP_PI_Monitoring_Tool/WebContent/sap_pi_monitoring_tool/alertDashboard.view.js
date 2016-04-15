@@ -1,3 +1,7 @@
+/**
+ * View for Alerts
+ * @author Abhishek Saha
+ */
 sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
 		{
 
