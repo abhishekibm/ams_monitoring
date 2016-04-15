@@ -26,7 +26,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.login", {
 					content:[
 							//new sap.ui.core.Title({text:"Login"}),
 							new sap.ui.commons.Label({icon: "sap-icon://it-host",text:"Host"}),
-							new sap.ui.commons.TextField({id:"host", value:"", required: true, 
+							new sap.ui.commons.TextField({id:"host", value:"inmbzr0096.in.dst.ibm.com", required: true, 
 								liveChange: function (oControlEvent){
 									console.log(oControlEvent.getParameters().liveValue);
 									if(oControlEvent.getParameters().liveValue.trim() == ""){
@@ -41,7 +41,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.login", {
 								}
 							}),
 							new sap.ui.commons.Label({icon: "sap-icon://number-sign",text:"Port"}),
-							new sap.ui.commons.TextField({id: "port", value:"", maxLength: 5, required: true}),
+							new sap.ui.commons.TextField({id: "port", value:"50000", maxLength: 5, required: true}),
 							
 							new sap.ui.commons.RadioButtonGroup({id: "protocol",
 								
@@ -60,6 +60,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.login", {
 								icon : "sap-icon://log",
 								text : "Enter",
 								tooltip : "Click here to login",
+								enabled : true,
 								press : function() {
 									console.log(sap.ui.getCore().getElementById('protocol').getSelectedItem().getText());
 									
