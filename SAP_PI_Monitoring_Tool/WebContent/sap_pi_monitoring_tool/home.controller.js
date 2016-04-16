@@ -5,9 +5,9 @@ sap.ui.controller("sap_pi_monitoring_tool.home", {
 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 * @memberOf sap_pi_monitoring_tool.home
 */
-//	onInit: function() {
-//
-//	},
+	onInit: function() {
+		console.log('home init');
+	},
 
 /**
 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
@@ -15,7 +15,7 @@ sap.ui.controller("sap_pi_monitoring_tool.home", {
 * @memberOf sap_pi_monitoring_tool.home
 */
   	onBeforeRendering: function() {
-  		
+  		console.log('home before rendering');
 	},
 
 /**
@@ -23,16 +23,16 @@ sap.ui.controller("sap_pi_monitoring_tool.home", {
 * This hook is the same one that SAPUI5 controls get after being rendered.
 * @memberOf sap_pi_monitoring_tool.home
 */
-//	onAfterRendering: function() {
-//
-//	},
+	onAfterRendering: function() {
+		console.log('home after rendering');
+	},
 
 /**
 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
 * @memberOf sap_pi_monitoring_tool.home
 */
-//	onExit: function() {
-//
-//	}
+	onExit: function() {
+		console.log('home exit');
+	}
 
 });

@@ -89,7 +89,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
             			text :  'Fetching alerts...'
             			
             		});
-			    	oMessageNotifier.addMessage(oMessage)
+			    	oMessageNotifier.addMessage(oMessage);
 			    	
 			    	oMessageNotifier.attachMessageSelected(clickListener);
 
@@ -102,8 +102,6 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			    	oNotiBar3.addNotifier(oNotifier2);
 			    	oNotiBar3.setMessageNotifier(oMessageNotifier);
 			    	return oNotiBar3;
-			
-	
 	}
 
 });

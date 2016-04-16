@@ -31,7 +31,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
           
 				var textArea = new sap.ui.commons.TextArea({  
                     id : "textArea1"  
-});
+				});
+				
+				
 				//return myChart;
 				  
 			    var request = 
@@ -207,8 +209,34 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
 				            
 				            //
 				            //////// End of CONTROL SECTION ////////////////////////////////////////////////////////////
+				            
 				            oPanel.addContent(oViewRepeater_NoViews);
+				            
+				            var eventBus = sap.ui.getCore().getEventBus();
+				   		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
+				   		 eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
 					      return oPanel;
-          }
-
+          },
+          
+          onDataReceived : function(channel, event, data) {
+     		 console.log(JSON.stringify(data));
+     		 console.log("Inside ondatareceived -> view");
+     		 console.log(this);
+     		 // do something with the data (bind to model)
+     		 var oTextView = new sap.ui.commons.TextView({
+     				text : JSON.stringify(data),
+     				tooltip : 'This is a Tooltip',
+     				wrapping : true,
+     				width : '100px',
+     				semanticColor: sap.ui.commons.TextViewColor.Positive,
+     				design: sap.ui.commons.TextViewDesign.H3
+     				});  
+     		 
+     		 console.log(this.byId('inputtext'));
+     		 this.byId('inputtext').setValue("hi");
+     		 
+     		 
+     		 
+     	}
+			
 		});

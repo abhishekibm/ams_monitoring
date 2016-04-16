@@ -11,15 +11,19 @@ sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
 	 */
 	 onInit: function() {
 		 oCon = this;
-		 
+		 oCon.byId('inputtext').setValue("init");
+		 console.log(oCon);
 		 var eventBus = sap.ui.getCore().getEventBus();
-		    // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
+		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
 		 eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
 		 
 	 },
 	 
 	 onDataReceived : function(channel, event, data) {
-		   // do something with the data (bind to model)
+		 console.log(JSON.stringify(data));
+		 console.log("Inside ondatareceived ->");
+		 console.log(oCon);
+		 // do something with the data (bind to model)
 		 var oTextView = new sap.ui.commons.TextView({
 				text : JSON.stringify(data),
 				tooltip : 'This is a Tooltip',
@@ -29,9 +33,10 @@ sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
 				design: sap.ui.commons.TextViewDesign.H3
 				});  
 		 
-		 this.getView().addContent(oTextView);
-		 this.getView().rerender();
-		 console.log(JSON.stringify(data));
+		 console.log(oCon.byId('inputtext'));
+		 oCon.byId('inputtext').setValue("hi");
+		 
+		 
 		 
 	},
 	/**
@@ -52,7 +57,7 @@ sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
 	 * @memberOf sap_pi_monitoring_tool.alertDashboard
 	 */
 	onAfterRendering: function() {
-		
+		 
 	},
 	/**
 	 * Called when the Controller is destroyed. Use this one to free resources

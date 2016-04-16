@@ -33,8 +33,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
 					    }
-		             })
-		             .done(function(data) {  
+		             }).done(function(data) {  
 		                   response = data; 
 		                   console.log(data);
 		                   parser=new DOMParser();  
@@ -75,19 +74,16 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                					    	'Access-Control-Allow-Origin': '*',
 		                					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
 		                					    }
-		                		             })
-		                		             .done(function(data) {  
-		                		                    
+		                		             }).done(function(data) {  		                		                    
 		                		                   console.log(data);
 		                		                   parser=new DOMParser();  
-		                		                    xmlDoc=parser.parseFromString(data,"text/xml");  
-		                		                    alerts = xmlDoc.getElementsByTagNameNS("*","Alert");  
-		                		                    console.log(alerts);
+		                		                   xmlDoc=parser.parseFromString(data,"text/xml");  
+		                		                   alerts = xmlDoc.getElementsByTagNameNS("*","Alert");  
+		                		                   console.log(alerts);
 		                		                    
 		                		                    for(i=0; i< alerts.length; i++)  {
 		                		                    
 		                		                		var now = (new Date()).toUTCString();
-		                		                		console.log("hihi");
 		                		                		var oMessage = new sap.ui.core.Message({
 		                		                			text :  alerts[i].textContent,
 		                		                			timestamp : now
@@ -98,9 +94,8 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { alert : alerts[i].textContent });
 		                		                    }
 		                		                    
-		                		                    if(false/*alerts.length == 0*/){
+		                		                    if(alerts.length == 0){
 		                		                    	var now = (new Date()).toUTCString();
-		                		                		console.log("hihi");
 		                		                		var oMessage = new sap.ui.core.Message({
 		                		                			text :  "No alert yet",
 		                		                			timestamp : now
@@ -110,8 +105,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                		                		oCon.byId("alert_noti").addMessage(oMessage);
 		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { foo : "bar" });
 		                		                    }
-		                		             })  
-		                		             .fail(function (jqXHR, exception) {
+		                		             }).fail(function (jqXHR, exception) {
 		                		                 // Our error logic here
 		                		            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
 		                		                 var msg = '';

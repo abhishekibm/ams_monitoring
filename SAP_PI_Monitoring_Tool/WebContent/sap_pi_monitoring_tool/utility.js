@@ -1,5 +1,5 @@
 mode = 'test';// prod
-cors = true;
+proxy = true;
 
 jQuery.sap.require("jquery.sap.storage");
 oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
@@ -7,21 +7,21 @@ oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
 //Here all service APIs will be mentioned
 serviceAPIs  = {
 		alertAPI_all_alert_consumers: function(){
-			if(!cors)
+			if(proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean');
 		},
 		
 		alertAPI_single_alert: function(){
-			if(!cors)
+			if(proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean');
 		},
 		
 		messageAPI: function(){
-			if(!cors)
+			if(proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AdapterMessageMonitoring/basic?style=document');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AdapterMessageMonitoring/basic?style=document');

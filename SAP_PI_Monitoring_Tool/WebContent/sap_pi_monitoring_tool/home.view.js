@@ -17,7 +17,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 	* @memberOf sap_pi_monitoring_tool.home
 	*/ 
 	createContent : function(oController) {
-		
+		console.log('home view');
 		var dashboardView = sap.ui.view({
 			id : "iddashboardView1",
 			viewName : "sap_pi_monitoring_tool.alertDashboard",
