@@ -81,17 +81,17 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                		                   alerts = xmlDoc.getElementsByTagNameNS("*","Alert");  
 		                		                   console.log(alerts);
 		                		                    
-		                		                    for(i=0; i< alerts.length; i++)  {
+		                		                    for(j=0; j< alerts.length; j++)  {
 		                		                    
 		                		                		var now = (new Date()).toUTCString();
 		                		                		var oMessage = new sap.ui.core.Message({
-		                		                			text :  alerts[i].textContent,
+		                		                			text :  alerts[j].textContent,
 		                		                			timestamp : now
 		                		                		});
 		                		                		var snd = new Audio("media/notification.mp3"); // buffers automatically when created
 		                		                		snd.play();
 		                		                		oCon.byId("alert_noti").addMessage(oMessage);
-		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { alert : alerts[i].textContent });
+		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { alert : j + '-> '+ alerts[j].textContent });
 		                		                    }
 		                		                    
 		                		                    if(alerts.length == 0){
@@ -103,7 +103,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                		                		var snd = new Audio("media/notification.mp3"); // buffers automatically when created
 		                		                		snd.play();
 		                		                		oCon.byId("alert_noti").addMessage(oMessage);
-		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { foo : "bar" });
+		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { foo : i + ' '+ j });
 		                		                    }
 		                		             }).fail(function (jqXHR, exception) {
 		                		                 // Our error logic here

@@ -3,7 +3,7 @@
  * @author Abhishek Saha
  */
 sap.ui.jsview("sap_pi_monitoring_tool.home", {
-
+	
 	/** Specifies the Controller belonging to this View. 
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
 	* @memberOf sap_pi_monitoring_tool.home
@@ -17,10 +17,24 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 	* @memberOf sap_pi_monitoring_tool.home
 	*/ 
 	createContent : function(oController) {
+		
 		console.log('home view');
 		var dashboardView = sap.ui.view({
 			id : "iddashboardView1",
 			viewName : "sap_pi_monitoring_tool.alertDashboard",
+			type : sap.ui.core.mvc.ViewType.JS
+			
+		});
+		var messageMonitroringView = new sap.ui.view({
+			id : 'msgView',
+			viewName : "sap_pi_monitoring_tool.messageMonitoring",
+			type : sap.ui.core.mvc.ViewType.JS
+			
+		});
+		
+		var channelMonitroringView = new sap.ui.view({
+			id : 'chaView',
+			viewName : "sap_pi_monitoring_tool.ChannelMonitor",
 			type : sap.ui.core.mvc.ViewType.JS
 			
 		});
@@ -34,10 +48,10 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 			showFeederTool: false,
 			worksetItems: [new sap.ui.ux3.NavigationItem("WI_home",{key:"wi_home",text:"Alert Monitoring"}),
 			               new sap.ui.ux3.NavigationItem("WI_MSG",{key:"wi_msg",text:"Message Monitoring"}),
-			               new sap.ui.ux3.NavigationItem("WI_API",{key:"wi_api",text:"Channnel Monitoring"})],
+			               new sap.ui.ux3.NavigationItem("WI_CHANNEL",{key:"wi_channel",text:"Channnel Monitoring"})],
 			paneBarItems: [ new sap.ui.core.Item("PI_Date",{key:"pi_date",text:"date"}),
 			                new sap.ui.core.Item("PI_Browser",{key:"pi_browser",text:"browser"})],
-			content: dashboardView,
+			content: "",
 			
 			headerItems: [new sap.ui.commons.TextView({text:(isLoggedin()? localStore('sessionObject').username : "User Name"),tooltip:"Username"}),
 			              new sap.ui.commons.TextView({text:(isLoggedin()? localStore('sessionObject').host +':'+localStore('sessionObject').port : "Not defined"),tooltip:"Host:Port"}),
@@ -56,33 +70,13 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 				switch (sId) {
 				case "WI_home":
 					//This will open alert dashboard
-					if(!isLoggedin())
-						openLoginDialog();
-					else{
-						console.log(localStore('sessionObject'));
-						
-						oShell.setContent(dashboardView);
-					}
-					
+					isLoggedin()?oShell.setContent(dashboardView):"";
 					break;
 				case "WI_MSG":
-					var messageMonitroringView = new sap.ui.view({
-						id : "msgView",
-						viewName : "sap_pi_monitoring_tool.messageMonitoring",
-						type : sap.ui.core.mvc.ViewType.JS
-						
-					});
-					
-					oShell.setContent(messageMonitroringView);
+					isLoggedin()?oShell.setContent(messageMonitroringView):"";	
 					break;
-				case "WI_1_2":
-					oShell.setContent("third");
-					break;
-				case "WI_1_3":
-					oShell.setContent("fourth");
-					break;
-				case "WI_API":
-					oShell.setContent("fifith");
+				case "WI_CHANNEL":
+					isLoggedin()?oShell.setContent(channelMonitroringView):"";
 					break;
 				default:
 					break;
@@ -116,6 +110,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 		 	    alert("Pane has been closed: " + oEvent.getParameter("id"));
 		 	}
 		});
+		
+		oShell.setSelectedWorksetItem("WI_home");
+		oShell.fireWorksetItemSelected({id : "WI_home"});
 		return oShell;
 		
 	}

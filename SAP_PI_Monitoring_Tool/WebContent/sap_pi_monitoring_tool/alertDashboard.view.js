@@ -221,7 +221,6 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
           onDataReceived : function(channel, event, data) {
      		 console.log(JSON.stringify(data));
      		 console.log("Inside ondatareceived -> view");
-     		 console.log(this);
      		 // do something with the data (bind to model)
      		 var oTextView = new sap.ui.commons.TextView({
      				text : JSON.stringify(data),
@@ -232,11 +231,10 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
      				design: sap.ui.commons.TextViewDesign.H3
      				});  
      		 
-     		 console.log(this.byId('inputtext'));
-     		 this.byId('inputtext').setValue("hi");
-     		 
-     		 
-     		 
+     		 console.log(this.byId('oPanel'));
+     		this.byId('inputtext').setValue(JSON.stringify(data));
+     		this.byId('oPanel').setText(JSON.stringify(data));
+	 
      	}
 			
 		});

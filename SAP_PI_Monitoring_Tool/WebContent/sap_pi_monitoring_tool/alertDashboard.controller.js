@@ -13,9 +13,9 @@ sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
 		 oCon = this;
 		 oCon.byId('inputtext').setValue("init");
 		 console.log(oCon);
-		 var eventBus = sap.ui.getCore().getEventBus();
+		 //var eventBus = sap.ui.getCore().getEventBus();
 		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
-		 eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
+		 //eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
 		 
 	 },
 	 
