@@ -20,6 +20,11 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 		
 		console.log('home view');
 		var dashboardView = sap.ui.view({
+			id : "iddashboardView",
+			viewName: 'sap_pi_monitoring_tool.Dashboard',
+			type : sap.ui.core.mvc.ViewType.JS
+		});
+		var alertView = sap.ui.view({
 			id : "iddashboardView1",
 			viewName : "sap_pi_monitoring_tool.alertDashboard",
 			type : sap.ui.core.mvc.ViewType.JS
@@ -70,10 +75,11 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 				var oShell = oEvent.oSource;
 				switch (sId) {
 				case "WI_dashboard":
+					isLoggedin()?oShell.setContent(dashboardView):"";
 					break;
 				case "WI_home":
 					//This will open alert dashboard
-					isLoggedin()?oShell.setContent(dashboardView):"";
+					isLoggedin()?oShell.setContent(alertView):"";
 					break;
 				case "WI_MSG":
 					isLoggedin()?oShell.setContent(messageMonitroringView):"";	

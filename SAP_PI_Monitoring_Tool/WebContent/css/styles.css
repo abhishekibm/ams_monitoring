@@ -10,4 +10,24 @@
                  }
 .green {  background-color: rgba(115, 197, 64, 0.81);  }  
 .red {  background-color: rgba(204, 0, 0, 0.78); }  
-.yellow {  background-color: #FFFF66; }  
+.yellow {  background-color: #FFFF66; } 
+
+.alert_ticker {
+	border-bottom: 0 none;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.46);
+}
+
+.alertCount {
+	background-color: #cc1919;
+	width : 30px;
+	height : 30px;
+	border-radius : 20px;
+	font-size: 25px; !important
+    font-weight: bold;
+    line-height: 25px;
+    color: #ffffff;
+    vertical-align: middle;
+    border: 2px solid #ffffff;
+    padding: 3px 3px;
+    left : 5px
+}

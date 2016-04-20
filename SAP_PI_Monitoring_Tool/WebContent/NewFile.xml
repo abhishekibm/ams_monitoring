@@ -1,0 +1,1432 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:urn="urn:com:sap:netweaver:pi:monitoring">
+	<soapenv:Header />
+	<soapenv:Body>
+		<urn:getChannelAutomationStatus>
+			<channels name="File_Receiver_EmployeeDetails" service="BC_AA_TargetFile"
+				party="">
+			</channels>
+			<channels name="SOAP_Sender_EmployeeDetails" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="CC_SoapSender" service="BC_SaidaSender"
+				party="">
+			</channels>
+			<channels name="TestiFlow_EmployeeDetails_File_EmployeeInfo_Sender"
+				service="BC_PO7_PI" party="">
+			</channels>
+			<channels name="cc3_693" service="bc3_693" party="">
+			</channels>
+			<channels name="CC_EMPLOYEE_SENDER" service="BC_FILEDEMO"
+				party="">
+			</channels>
+			<channels name="cc2_693" service="bc2_693" party="">
+			</channels>
+			<channels name="TestiFlow_EmployeeDetails_File_EmpDetails_Receiver"
+				service="BC_PO7_PI" party="">
+			</channels>
+			<channels name="cc1_693" service="bc1_693" party="">
+			</channels>
+			<channels name="CC_file1" service="BC_BPMDEMO" party="">
+			</channels>
+			<channels name="Sender_HTTP_Arghya" service="BC_Sender_Arghya"
+				party="">
+			</channels>
+			<channels name="File_Receiver_psv" service="BC_File_psv"
+				party="">
+			</channels>
+			<channels name="CC_IDOC_SENDER" service="BS_RSD" party="">
+			</channels>
+			<channels name="CC_R_SOAP_LOOKUP" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="CC_File_PG_Sender" service="BC_PG_COMMON"
+				party="">
+			</channels>
+			<channels name="CC_File_Receiver" service="BC_Receiver"
+				party="">
+			</channels>
+			<channels name="CC_File_PG_Receiver" service="BC_PG_COMMON"
+				party="">
+			</channels>
+			<channels name="SOAP_LookUp_Receiver_psv" service="BC_LookUp_PSV"
+				party="">
+			</channels>
+			<channels name="Project_ABC_Sample_iFlow_CC_Receiver_ABC_Sample"
+				service="BC_ABC_Target" party="">
+			</channels>
+			<channels name="AAiFlow_Source_To_BPM_SOAP_Sender_CreatePO"
+				service="BC_BPM_Sender_AA" party="">
+			</channels>
+			<channels name="AAiFlow_Source_To_BPM_SOAP_Receiver_CreatePO"
+				service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="AAiFlow_BPM_To_Target_SOAP_Sender_CreatePOList"
+				service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="AAiFlow_BPM_To_Target_File_Rcv_CreatePOList"
+				service="BC_BPM_Receiver_AA" party="">
+			</channels>
+			<channels name="CC_SOAPUI_Sender" service="BC_TestSOAP_PSV"
+				party="">
+			</channels>
+			<channels name="CC_BPM_Sender_PSV" service="TestBPM_PSV"
+				party="">
+			</channels>
+			<channels name="CC_SND_File_S1" service="BC_S1" party="">
+			</channels>
+			<channels name="CC_RCV_SOAP_BPM" service="BC_BPM" party="">
+			</channels>
+			<channels name="IflowTest_CC_File_Sender1" service="BC_PO7_PI"
+				party="">
+			</channels>
+			<channels name="IflowTest_CC_Receiver" service="BC_PO7_PI"
+				party="">
+			</channels>
+			<channels name="CC_profession1" service="BC_BPMDEMO" party="">
+			</channels>
+			<channels name="CC_details1" service="BC_BPMDEMO" party="">
+			</channels>
+			<channels name="CC_out" service="BC_BPMDEMO" party="">
+			</channels>
+			<channels name="EmployeeIflow_Emp_File_Receiver" service="BC_PO7_PI"
+				party="">
+			</channels>
+			<channels name="EmployeeIflow_Emp_File_Sender" service="BC_PO7_PI"
+				party="">
+			</channels>
+			<channels name="DoConversionPIFile_R_PI_FILE_FTP" service="BC_PO7_PI"
+				party="">
+			</channels>
+			<channels name="DoConversionPIFile_S_BPM_SOAP" service="BC_PO7_BPM"
+				party="">
+			</channels>
+			<channels name="CurrencyConvertTriggerBPM_S_PI_SOAP"
+				service="BC_PO7_PI" party="">
+			</channels>
+			<channels name="CurrencyConvertTriggerBPM_R_BPM_SOAP"
+				service="BC_PO7_BPM" party="">
+			</channels>
+			<channels name="IDOC_AAE_Default" service="INTEGRATION_ENGINE_JAVA_PO7"
+				party="">
+			</channels>
+			<channels name="Receiver_File_AAE" service="BC_FILE_SALESORDER_AAE"
+				party="">
+			</channels>
+			<channels name="Salesorder_IDOC_AAE_ECC" service="INTEGRATION_ENGINE_JAVA_PO7"
+				party="">
+			</channels>
+			<channels name="Commuchanneltrial1" service="BStrial12"
+				party="">
+			</channels>
+			<channels name="Commureceiverchanneltrial1" service="BStrial12"
+				party="">
+			</channels>
+			<channels name="HTTP_AAE_MockHTTPServiceTest_Sender"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="SOAP_LookUp_Receiver_psv_temp" service="BC_LookUp_PSV"
+				party="">
+			</channels>
+			<channels name="HTTP_AAE_MockHTTPServiceTest_Receiver"
+				service="BC_AA_TargetFile" party="">
+			</channels>
+			<channels name="Sender_Test_AA22Marc20152nd" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="Sender_Test_AA22Marc20153rd" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="File_receiver" service="BC_AA_TargetFile"
+				party="">
+			</channels>
+			<channels name="Target_REST_ZipCodeContent" service="BC_AA_TargetFile"
+				party="">
+			</channels>
+			<channels name="CC_Send" service="BC_Send" party="">
+			</channels>
+			<channels name="Passthroug_Sample1_SOAP_Out_Passthrough"
+				service="BC_04183_Sender" party="">
+			</channels>
+			<channels name="CC_U_SRC" service="BC_U_SRC" party="">
+			</channels>
+			<channels name="CC_U_TARGET" service="BC_U_TARGET" party="">
+			</channels>
+			<channels name="File_Receiver" service="BC_INP" party="">
+			</channels>
+			<channels name="MeasurementReadinCreationJob_R_File"
+				service="BC_PO7_PI" party="">
+			</channels>
+			<channels name="MeasurementReadinCreationJob_S_XIProxy"
+				service="BC_PO7_PI" party="">
+			</channels>
+			<channels name="I27" service="IDD236BSYSTRIAL1" party="I27">
+			</channels>
+			<channels name="Sender_Test_AA02April2015" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="ZArticle_GeneratedReceiverChannel_File"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="CC_EMPLOYEE_RECEIVER" service="BC_FILEDEMO"
+				party="">
+			</channels>
+			<channels name="GetXchangeRateExtWS_S_BPM_SOAP_XI" service="BC_PO7_BPM"
+				party="">
+			</channels>
+			<channels name="GetXchangeRateExtWS_R_WS_SOAP" service="BC_Ext_WS"
+				party="">
+			</channels>
+			<channels name="CC_FILE_R_ZERO_BYTE" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="ZArticle_GeneratedReceiverChannel_File1"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="CC_Soap_LookUP" service="BC_Practice_Receiver"
+				party="">
+			</channels>
+			<channels name="ZArticle_GeneratedReceiverChannel_File2"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="ZArticle_GeneratedReceiverChannel_File3"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="ZArticle_GeneratedReceiverChannel_File4"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="ZArticle_GeneratedReceiverChannel_File5"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="File_Sender_Test1" service="BC_00247_Sender"
+				party="">
+			</channels>
+			<channels name="CC_Sender_test" service="BC_Test1" party="">
+			</channels>
+			<channels name="CC_Receiver_File" service="BC_Receiver_File"
+				party="">
+			</channels>
+			<channels name="GOGO_FILE_RECEIVER" service="BC_GOGO" party="">
+			</channels>
+			<channels name="PO2BPM_MappingTest_PO2BPM_SOAP_Receiver"
+				service="BC_BPM" party="">
+			</channels>
+			<channels name="GOGO_FILE_SENDER" service="BC_GOGO" party="">
+			</channels>
+			<channels name="SourceFile_VariableLineFeed" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="SourceFile_AM" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="BPM2PO_MappingTest_BPM2PO_SOAP_Sender"
+				service="BC_BPM" party="">
+			</channels>
+			<channels name="CC_S_JAVA_MAP" service="BC_VK_SENDER" party="">
+			</channels>
+			<channels name="CC_IDOC_SENDER" service="BS_RS6" party="">
+			</channels>
+			<channels name="BPM2PO_Aggregator_SoapSender_Aggregator"
+				service="BC_BPM" party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_PSV" service="BC_SOAP_psv"
+				party="">
+			</channels>
+			<channels name="PO2BPM_Aggregator_SoapReceiverBPM" service="BC_BPM"
+				party="">
+			</channels>
+			<channels name="FileReceiverChannel" service="BC_Saurav"
+				party="GBS_Saurav">
+			</channels>
+			<channels name="CC_SOAP_S_GENERIC" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="CC_IDOC_RECEIVER" service="BS_RSD" party="">
+			</channels>
+			<channels name="CC_Receiver_MulFiles" service="BC_Receiver_File"
+				party="">
+			</channels>
+			<channels name="CC_Sender_File_Kiran" service="BC_Sender_File"
+				party="">
+			</channels>
+			<channels name="PO2BPM_SoapReceiver_split" service="BC_BPM"
+				party="">
+			</channels>
+			<channels name="SOAP_Sender_EmployeeDetails_Split" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="BPM2PO_SoapSender_split" service="BC_BPM"
+				party="">
+			</channels>
+			<channels name="SOAP_Sender_Department_Employee" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="BPM2PO_SoapSender" service="BC_BPM" party="">
+			</channels>
+			<channels name="CC_Receiver_File_multiIntf" service="BC_Receiver_File"
+				party="">
+			</channels>
+			<channels name="CC_Shopping_Card_bbn_receiver" service="BS_Shopping_Card_bbn"
+				party="">
+			</channels>
+			<channels name="CC_Shopping_Card_bbn_sender" service="BS_Shopping_Card_bbn"
+				party="">
+			</channels>
+			<channels name="AA_TargetFile_Plain2XmlConversionB2BCockpit"
+				service="BC_AA_TargetFile" party="">
+			</channels>
+			<channels name="File2_Sender_BPM" service="BPTEST" party="">
+			</channels>
+			<channels name="File1_Sender_BPM" service="BPTEST" party="">
+			</channels>
+			<channels name="File_Receiver_BPM" service="BPTEST" party="">
+			</channels>
+			<channels name="File3_Sender_BPM" service="BPTEST" party="">
+			</channels>
+			<channels name="Receiver_Mail_Arghya" service="BC_Receiver_Arghya"
+				party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpit"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="CC_file_receiver" service="BS_RS6" party="">
+			</channels>
+			<channels name="CC_file_sender" service="BS_RS6" party="">
+			</channels>
+			<channels name="File1_To_BPM" service="BPM_TEST" party="">
+			</channels>
+			<channels name="SOAP_Sender" service="BPM_TEST" party="">
+			</channels>
+			<channels name="Alert_File_In" service="BC_AlertTest" party="">
+			</channels>
+			<channels name="CC_FILE_R_CSV" service="BC_VK_LEGACY" party="">
+			</channels>
+			<channels name="CC_FILE_R_CSV" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="CC_S_SOAP_timestamp" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="FileSender_CSVFile" service="BC_Saurav"
+				party="">
+			</channels>
+			<channels name="Passthroug_Sample1_File_In_Passthrough"
+				service="BC_04183_Receiver" party="">
+			</channels>
+			<channels name="CC_File_Receive" service="BC_Receive" party="">
+			</channels>
+			<channels name="CC_R_SOAP_TServer" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="CC_sender_FTP" service="BC_Sender_GOT"
+				party="">
+			</channels>
+			<channels name="CC_FILE_R_GENERIC" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="CC_SFTP_R_GENERIC" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="CC_R_JAVA_MAP" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="Employee_Details_CC" service="Employee_Test_BPM"
+				party="">
+			</channels>
+			<channels name="Company_Details_CC" service="Employee_Test_BPM"
+				party="">
+			</channels>
+			<channels name="Employeer_Details_CC" service="Employee_Test_BPM"
+				party="">
+			</channels>
+			<channels name="CC_FILE_S_CSV" service="BC_VK_SENDER" party="">
+			</channels>
+			<channels name="CC_Receiver_File_split" service="BC_Receiver_File"
+				party="">
+			</channels>
+			<channels name="CC_FILE_S_XML" service="BC_VK_SENDER" party="">
+			</channels>
+			<channels name="CC_FILE_S_CSV" service="BC_VK_LEGACY" party="">
+			</channels>
+			<channels name="CC_Sender_File_Test" service="BC_PO_Sender"
+				party="">
+			</channels>
+			<channels name="CC_Sender_File_Test" service="BC_Sender_File"
+				party="">
+			</channels>
+			<channels name="CC_Rec_File_Test" service="BC_Sender_File"
+				party="">
+			</channels>
+			<channels name="EmpDetails_Sender_CC" service="File2File_BC"
+				party="">
+			</channels>
+			<channels name="PerDetails_Receiver_CC" service="File2File_BC"
+				party="">
+			</channels>
+			<channels name="iFlow_System_to_BPM_apat_SOAP_PO_Snd"
+				service="BC_BPMPo_apat" party="">
+			</channels>
+			<channels name="iFlow_System_to_BPM_apat_SOAP_PO_Rcv"
+				service="BC_BPMRcv_apat" party="">
+			</channels>
+			<channels name="CC_SOAP_RCV_SessionCreate_AA" service="BC_SOAPLookUp_AA"
+				party="">
+			</channels>
+			<channels name="Iflow_BPM_to_System_apat_SOAP_POList_Sender"
+				service="BC_BPMRcv_apat" party="">
+			</channels>
+			<channels name="Iflow_BPM_to_System_apat_File_POList_apat"
+				service="BC_BPMtoTarget" party="">
+			</channels>
+			<channels name="CC_Sender_JMS_2" service="BC_JMS" party="">
+			</channels>
+			<channels name="SAP_FILECONV" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="FILE_OUT" service="BC_INP" party="">
+			</channels>
+			<channels name="CC_FileSender" service="BC_SaidaSender"
+				party="">
+			</channels>
+			<channels name="CC_FileReceiver" service="BC_SaidaReceiver"
+				party="">
+			</channels>
+			<channels name="BC_FileConv_Sender" service="BC_OUT" party="">
+			</channels>
+			<channels name="CC_Sender_File" service="BC_Sender_File"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_BRM_SalaryDetails" service="BC_AA_BRM"
+				party="">
+			</channels>
+			<channels name="BC_FileConv_Receiver" service="BC_INP"
+				party="">
+			</channels>
+			<channels name="SoapReceiverBPM" service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="SOAPSender_SimpleBPM" service="BC_BPM_AA"
+				party="">
+			</channels>
+			<channels name="CC_Shopping_Card_bbn_receiver_new" service="BS_Shopping_Card_bbn_New"
+				party="">
+			</channels>
+			<channels name="CC_Shopping_Card_bbn_sender_new" service="BS_Shopping_Card_bbn_New"
+				party="">
+			</channels>
+			<channels name="CC_RFC_Receiver" service="BC_INP" party="">
+			</channels>
+			<channels name="CC_FILERFC" service="BC_OUT" party="">
+			</channels>
+			<channels name="CC_FILE_R_CSV_LEGACY" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="CC_BPM_Receiver_PSV" service="TestBPM_PSV"
+				party="">
+			</channels>
+			<channels name="FILE_RCV_1" service="BC_SOAP" party="">
+			</channels>
+			<channels name="SOAP_RCV" service="BC_SOAP" party="">
+			</channels>
+			<channels name="CC_FILEWsdl" service="BC_OUT" party="">
+			</channels>
+			<channels name="CC_Sender_JMS_1" service="BC_JMS" party="">
+			</channels>
+			<channels name="CC_Sender_MulFiles" service="BC_Sender_File"
+				party="">
+			</channels>
+			<channels name="SOAP_Receiver" service="BC_INP" party="">
+			</channels>
+			<channels name="EmployeeInfo_File_In_EmployeeInfo" service="BC_04183_Receiver"
+				party="">
+			</channels>
+			<channels name="EmployeeInfo_SOAP_Out_EmployeeData" service="BC_04183_Sender"
+				party="">
+			</channels>
+			<channels name="IFLW_TEST_VK_CC_S_SOAP_Test" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="CC_S_FILE2_BPM" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="CC_NWBPM_SOAP_Trigger" service="BC_NWBPM_PO7"
+				party="">
+			</channels>
+			<channels name="CC_S_FILE1_BPM" service="BC_VK_LEGACY"
+				party="">
+			</channels>
+			<channels name="CC_XMLFileSenderChannel" service="BC_Saurav"
+				party="GBS_Saurav">
+			</channels>
+			<channels name="CC_NWBPM_XI_BPM" service="BC_NWBPM" party="">
+			</channels>
+			<channels name="LeaveStatus_BPM_LeaveStatus_Targ_File_LeaveStatus"
+				service="BC_BPMtoTarget" party="">
+			</channels>
+			<channels name="CC_NWBPM_XI_BPM_Syn_GetExchangeRtae"
+				service="BC_NWBPM" party="">
+			</channels>
+			<channels name="LeaveStatus_BPM_LeaveStatus_Targ_SOAP_Sndr_LeaveStatus"
+				service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="CC_NWBPM_SOAP_WS_Syn_GetExchangeRtae"
+				service="BC_NWBPM_WS" party="">
+			</channels>
+			<channels name="receiver_cc" service="Fixed_length_file_to_CSV_fle"
+				party="">
+			</channels>
+			<channels name="CC_R_FILE_BPM_FINAL" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="IFLW_TEST_VK_CC_R_FILE_TEST" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="BPM2PO_Aggregator_FileReceiverAggregator"
+				service="BC_PO" party="">
+			</channels>
+			<channels name="PO2BPM_MappingTest_PO2BPM_File_Sender"
+				service="BC_PO" party="">
+			</channels>
+			<channels name="CC_R_FILE_BPM" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="CC_S_FILE_OUT_BPM" service="BC_VK_BPM"
+				party="">
+			</channels>
+			<channels name="CC_Sender_FCC" service="BC_Test1" party="">
+			</channels>
+			<channels name="sender_cc" service="Fixed_length_file_to_CSV_fle"
+				party="">
+			</channels>
+			<channels name="CreateLeaveRequest_SrcSys_Create_SOAP_Sndr_CrLvReq"
+				service="BC_AA_SourceSOAP" party="">
+			</channels>
+			<channels name="PO2BPM_Aggregator_FileSenderAggregator"
+				service="BC_PO" party="">
+			</channels>
+			<channels name="BPM2PO_MappingTest_BPM2PO_File_Receiver"
+				service="BC_PO" party="">
+			</channels>
+			<channels name="iFLOW_Sys_PO_BPM_LoanUser_06_SOAP_Snd_LoanUser_06"
+				service="BC_AA_SourceSOAP" party="">
+			</channels>
+			<channels name="iFLOW_Sys_PO_BPM_LoanUser_06_SOAP_Rcv_LoanUser_BPM_06"
+				service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="Alert_File_Out" service="BC_AlertTest"
+				party="">
+			</channels>
+			<channels name="CC_filetofile" service="BS_ERP" party="">
+			</channels>
+			<channels name="iFLOW_BPM_PO_Target_ROI_06_File_BPMtoTarget_ROI_06"
+				service="BC_BPMtoTarget" party="">
+			</channels>
+			<channels name="iFLOW_BPM_PO_Target_ROI_06_SOAP_Snd_BPM_ROI_06"
+				service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="CC_Sender_CustomerFile" service="BC_Sender_File"
+				party="">
+			</channels>
+			<channels name="CC_SFTP_S_GENERIC_1" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="CC_Mail_R_PI_To_Email" service="BC_MAIL"
+				party="">
+			</channels>
+			<channels name="SalesOrder_List_File_Receiver" service="BC_APP_TP"
+				party="">
+			</channels>
+			<channels name="SalesOrder_List_SOAP_BPM_Sender" service="BC_BPM_SO"
+				party="">
+			</channels>
+			<channels name="INT_Global_SRM_PurchaseOrders_IDOC_AAE_RCV_ORDERS_ORDER"
+				service="INT_ExRate_Source" party="">
+			</channels>
+			<channels name="INT_Global_SRM_PurchaseOrders_File_SND_SRM_POR_001"
+				service="INT_Quote_System" party="">
+			</channels>
+			<channels name="CC_SFTP_S_GENERIC" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="File_Rec" service="BC_APP_TP" party="">
+			</channels>
+			<channels name="CreateLeaveRequest_SrcSys_Create_SOAP_Rcvr_CrLvReq"
+				service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="CC_SFTP_FRESH" service="BC_VK_SENDER" party="">
+			</channels>
+			<channels name="CC_SoapReceiver" service="BC_SaidaReceiver"
+				party="">
+			</channels>
+			<channels name="SalesOrder_SOAP_APP_Sender1" service="BC_APP_TP"
+				party="">
+			</channels>
+			<channels name="AA_SourceFile_XML2PlainConversionB2BCockpitModel"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_TargetFile_XML2PlainConversionB2BCockpitDemo"
+				service="BC_AA_TargetFile" party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MaterialDetails" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_MaterialDetails" service="BC_BPM_AA"
+				party="">
+			</channels>
+			<channels name="CC_filetofile_receiver" service="BS_ERP"
+				party="">
+			</channels>
+			<channels name="CC_filetofile" service="BC_filetofile"
+				party="">
+			</channels>
+			<channels name="CC_Flat_File_Send" service="BC_Flat_File_Snd"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_Material" service="BC_BPM_AA"
+				party="">
+			</channels>
+			<channels name="GOGO_SOAP_SENDER" service="BS_GOGO" party="">
+			</channels>
+			<channels name="CC_S_PICKUP" service="BC_VK_SENDER" party="">
+			</channels>
+			<channels name="CC_R_DROP" service="BC_VK_RECEIVER" party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_SOAPUI" service="BC_SOAPUI"
+				party="">
+			</channels>
+			<channels name="CC_File_Receiver_Materials" service="BC_BPMtoTarget"
+				party="">
+			</channels>
+			<channels name="CC_FILE_S_PICK_XML" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_TargetFile_Plain2XmlConversionB2BCockpitDemo"
+				service="BC_AA_TargetFile" party="">
+			</channels>
+			<channels name="BPM_Sender_psv" service="TestBPM_PSV" party="">
+			</channels>
+			<channels name="CC_Receiver_Unzip_File" service="BC_ABC_TestZip"
+				party="">
+			</channels>
+			<channels name="CC_Sender_Zip_File" service="BC_ABC_TestZip"
+				party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel103"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel104"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel105"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="IF_ReadersParadiseCurrencyServic_CC_ReadersParadiseSend"
+				service="BC_SS_Sender" party="">
+			</channels>
+			<channels name="CC_reciever_FTP" service="BS_Receiver"
+				party="">
+			</channels>
+			<channels name="CC_sender_FTP" service="BS_Sender" party="">
+			</channels>
+			<channels name="FileSendChannel" service="BC_Saurav" party="GBS_Saurav">
+			</channels>
+			<channels name="IF_CalculatorOperations_CC_Receiver"
+				service="BC_SS_Receiver" party="">
+			</channels>
+			<channels name="IF_CalculatorOperations_CC_Sender" service="BC_SS_Sender"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_EmpDetails" service="BC_BPM_AA"
+				party="">
+			</channels>
+			<channels name="CC_FILE_S_GENERIC" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_EmpDetails" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_EmpDetailsList" service="BC_BPM_AA"
+				party="">
+			</channels>
+			<channels name="SourceFile_AM_Linefeed" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="TargetFile_AM" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="SourceFile_AM_Test" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="sender_cc" service="payroll_test1" party="">
+			</channels>
+			<channels name="receiver_cc" service="payroll_test1" party="">
+			</channels>
+			<channels name="CC_anspro_sender" service="BC_anspro_sender"
+				party="">
+			</channels>
+			<channels name="CC_anspro_receiver" service="BC_anspro_receiver"
+				party="">
+			</channels>
+			<channels name="IF_ReadersParadiseCurrencyServic_CC_WebservicexReceiver"
+				service="BC_SS_Receiver" party="">
+			</channels>
+			<channels name="CC_FILE_S_ZERO_BYTE" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="CC_Sender_Employee_HRData" service="BC_HRData_Sender_339"
+				party="">
+			</channels>
+			<channels name="CC_Receiver_Employee_HRData" service="BC_HRData_Receiver_339"
+				party="">
+			</channels>
+			<channels name="CC_HTTP_Test" service="BC_Send" party="">
+			</channels>
+			<channels name="Test2" service="BC_00247_Receiver" party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_Emp_File2" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_Emp_File1" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_Emp_MrgFile1and2Multi2"
+				service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="CC_MAIL_S_GENERIC" service="BC_VK_SENDER"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_Emp_MrgFile1and2Multi1"
+				service="BC_BPM_AA" party="">
+			</channels>
+			<channels name="CC_SFTP_R_GENERIC_FILES" service="BC_VK_RECEIVER"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_Emp_MrgFile1and2" service="BC_BPM_AA"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG6" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG9" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_Emp_MrgFile1and2" service="BC_BPM_AA"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG2" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="FileSendChannel_WorkingEarlier" service="BC_Saurav"
+				party="GBS_Saurav">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG5" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="sender_cc" service="Mapping_Functions"
+				party="">
+			</channels>
+			<channels name="GOGO_DUMMY" service="BS_GOGO" party="">
+			</channels>
+			<channels name="BPM_Receiver" service="BPM_Sys" party="">
+			</channels>
+			<channels name="ESB_Sender" service="ESB_BC" party="">
+			</channels>
+			<channels name="PO2BPM_SoapReceiver" service="BC_BPM" party="">
+			</channels>
+			<channels name="receiver_cc" service="Mapping_Functions"
+				party="">
+			</channels>
+			<channels name="CC_fileSender_vik" service="BC_FileSender_vik"
+				party="">
+			</channels>
+			<channels name="FileSender_Collector" service="BC_PO" party="">
+			</channels>
+			<channels name="FileReceiverCollector" service="BC_PO"
+				party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel102"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="FileReceiverCollector1" service="BC_PO_Sender"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG1" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="CC_Rest_Receiver" service="BC_FileSender_vik"
+				party="">
+			</channels>
+			<channels name="FileSenderEmployee" service="BC_employee"
+				party="">
+			</channels>
+			<channels name="SalesOrder_SOAP_BPM_Rec1" service="BC_BPM_SO"
+				party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel101"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG8" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG3" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG4" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_MIcG7" service="BC_ARAT_MIcG"
+				party="">
+			</channels>
+			<channels name="CC_IDOC_RECEIVER" service="BS_RS6" party="">
+			</channels>
+			<channels name="IFlow_BCMtoSwift_CC_SWIFT_Receiver_pay"
+				service="BC_System2" party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_CallBack_ServiceNow"
+				service="BC_Callback_ServiceNow" party="">
+			</channels>
+			<channels name="IFlow_BCMtoSwift_CC_SWIFT_Sender" service="BC_System_Swift"
+				party="">
+			</channels>
+			<channels name="IFlow_BCMtoSwift_CC_Swift_Receiver_par"
+				service="BC_System2" party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_InsertData_ServiceNow"
+				service="BC_Insert_ServiceNow" party="">
+			</channels>
+			<channels name="CC_SOAP_Receiver_UpdateData_ServiceNow"
+				service="BC_Update_ServiceNow" party="">
+			</channels>
+			<channels name="FileSender_SeqSplit" service="BC_PO" party="">
+			</channels>
+			<channels name="CC_SOAP_Sender_SOAPUI" service="BC_SOAPUI"
+				party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel67"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel39"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel76"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel34"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel8"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel20"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel64"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel82"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel84"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel49"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel52"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel7"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel12"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel43"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel69"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel18"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel87"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel31"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel40"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel25"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel57"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel3"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel92"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel93"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel60"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel88"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel38"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel32"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel29"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel78"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel80"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel27"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel21"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel2"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel85"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel66"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel26"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel15"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel72"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel79"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel35"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel42"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel36"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel19"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel68"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel17"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel94"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel100"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel16"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel23"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel63"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel10"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel6"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel44"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel71"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel86"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel56"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel51"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel46"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel22"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel11"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel30"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel65"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel97"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel61"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel70"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel55"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel96"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel77"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel45"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel98"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel53"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel95"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel75"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel91"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel54"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel37"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel13"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel9"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel41"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel14"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel81"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel5"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel62"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel47"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel4"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel89"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel58"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel28"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel33"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel24"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel73"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel59"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel83"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel1"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel74"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel99"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel90"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel48"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="AA_SourceFile_Plain2XmlConversionB2BCockpitModel50"
+				service="BC_AA_SourceFile" party="">
+			</channels>
+			<channels name="FileReceiverSeqSplit" service="BC_PO" party="">
+			</channels>
+			<channels name="FileReceiverChannel_FileToFileMulti"
+				service="BC_Saurav" party="GBS_Saurav">
+			</channels>
+			<channels name="SOAP_Sender_ZipCode" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="CC_Sender_SOAP_Synchronous" service="BC_Sender_File"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_SENDER_TEST" service="BC_Test"
+				party="">
+			</channels>
+			<channels name="CC_Receiver_SOAP_Synchronous" service="BC_Receiver_File"
+				party="">
+			</channels>
+			<channels name="SendFile" service="BC_TEST_FLE" party="">
+			</channels>
+			<channels name="CC_File_Dummy_Sender" service="BC_Test_Target"
+				party="">
+			</channels>
+			<channels name="File_Sender_FTPKI" service="BC_OUT" party="">
+			</channels>
+			<channels name="CC_File_Target" service="BC_SENDER_TEST1"
+				party="">
+			</channels>
+			<channels name="CC_RXD_RST_Receiver" service="BC_RECEIVER_TEST1"
+				party="">
+			</channels>
+			<channels name="CC_File_Source" service="BC_SENDER_TEST1"
+				party="">
+			</channels>
+			<channels name="FileSenderChannel_FileToFileMulti" service="BC_Saurav"
+				party="GBS_Saurav">
+			</channels>
+			<channels name="CC_RXD_RST_Receiver" service="BC_Test_Target"
+				party="">
+			</channels>
+			<channels name="CC_File_Target" service="BC_Test_Source"
+				party="">
+			</channels>
+			<channels name="SOAP_SND" service="BC_SOAP" party="">
+			</channels>
+			<channels name="CC_SND_AXIS" service="BC_File" party="">
+			</channels>
+			<channels name="Project_ABC_Sample_iFlow_CC_ABC_Sample_Sender"
+				service="BC_ABC_Sender" party="">
+			</channels>
+			<channels name="SOAP_Sender_CurrencyCode" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="CC_File_Source" service="BC_Test_Source"
+				party="">
+			</channels>
+			<channels name="SOAP_Receiver_ExchangeRate" service="BC_AA_SourceSOAP"
+				party="">
+			</channels>
+			<channels name="CC_SOAP_SND_ConstructCustomHeader" service="BC_File"
+				party="">
+			</channels>
+			<channels name="ReceiveFile" service="BC_TEST_FLE" party="">
+			</channels>
+			<channels name="CC_RECEIVER" service="CC_Student" party="">
+			</channels>
+			<channels name="CC_Sender" service="CC_Student" party="">
+			</channels>
+			<channels name="CC_reciever_FTP" service="BC_reciever_GOT"
+				party="">
+			</channels>
+			<channels name="GetRest" service="BC_TEST_RST" party="">
+			</channels>
+			<channels name="FileReceiverEmployee" service="BC_erp"
+				party="">
+			</channels>
+			<channels name="Rest_Test_Receiver" service="BC_ABC_Target"
+				party="">
+			</channels>
+			<channels name="Soap_Sender_Test" service="BC_ABC_Sender"
+				party="">
+			</channels>
+			<channels name="TEST" service="BC_00247_Receiver" party="">
+			</channels>
+			<channels name="CC_WSSender" service="BC_SaidaSender" party="">
+			</channels>
+			<channels name="CC_SOAP_2" service="BC_System2" party="">
+			</channels>
+			<channels name="CC_SOAP" service="BC_System1" party="">
+			</channels>
+			<channels name="CC_filetofile_receiver" service="BC_filetofile"
+				party="">
+			</channels>
+			<channels name="SalesOrder_SP_SOAP_SP_Receiver1" service="BS_Receiver_SP"
+				party="">
+			</channels>
+			<channels name="SalesOrder_SP_SOAP_SP_Sender1" service="BS_Sender_SP"
+				party="">
+			</channels>
+			<channels name="CC_WSReceiver" service="BC_SaidaReceiver"
+				party="">
+			</channels>
+			<channels name="FirstSampleIflow_Soap_snd_IFlow" service="BS_Sender"
+				party="">
+			</channels>
+			<channels name="FirstSampleIflow_IDoc_Sndr_Iflow" service="BS_Receiver"
+				party="">
+			</channels>
+			<channels name="SOAPReceiverToWSCurrConv" service="BC_System2"
+				party="">
+			</channels>
+			<channels name="CC_RCV_Mail" service="BC_Mail" party="">
+			</channels>
+			<channels name="CC_Sender_File" service="BC_File" party="">
+			</channels>
+			<channels name="FileSenderChannel" service="BC_Saurav"
+				party="GBS_Saurav">
+			</channels>
+			<channels name="CC_RCV_File_Sequence" service="BC_File"
+				party="">
+			</channels>
+			<channels name="CC_RCV_File" service="BC_File" party="">
+			</channels>
+			<channels name="CC_FileSender" service="BC_IDOCFlatFile"
+				party="">
+			</channels>
+			<channels name="CC_FileReceiver" service="BC_IDOCFlatFile"
+				party="">
+			</channels>
+			<channels name="AA_SourceFile" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="cc_Postjournal_Sender" service="BC_Sender_GOT"
+				party="">
+			</channels>
+			<channels name="cc_Fiddcc2_reciever" service="BC_reciever_GOT"
+				party="">
+			</channels>
+			<channels name="AA_TargetFile" service="BC_AA_TargetFile"
+				party="">
+			</channels>
+			<channels name="CC_DIRDEB_SENDER" service="BC_Sender_GOT"
+				party="">
+			</channels>
+			<channels name="CC_reciever_Matmas" service="BC_reciever_GOT"
+				party="">
+			</channels>
+			<channels name="CC_SyncItem_sender" service="BC_Sender_GOT"
+				party="">
+			</channels>
+			<channels name="CC_nettingINVOICE" service="BC_reciever_GOT"
+				party="">
+			</channels>
+			<channels name="SOAP_Receiver" service="BC_CAS" party="">
+			</channels>
+			<channels name="SOAP_Sender" service="BC_PI" party="">
+			</channels>
+			<channels name="CC_RECEIVER_File" service="BC_File_srs"
+				party="">
+			</channels>
+			<channels name="CC_SENDER_File" service="BC_File_srs" party="">
+			</channels>
+			<channels name="AA_SourceExcelFile" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="CC_empRec" service="BC_reciever_GOT" party="">
+			</channels>
+			<channels name="CC_Sender_FlatToXML_Kiran" service="BC_Sender_File"
+				party="">
+			</channels>
+			<channels name="CC_Receiver_File_Kiran" service="BC_Receiver_File"
+				party="">
+			</channels>
+			<channels name="CC_empSender" service="BC_Sender_GOT" party="">
+			</channels>
+			<channels name="AA_SourceExcelFile_Atanu" service="BC_AA_SourceFile"
+				party="">
+			</channels>
+			<channels name="HTTP_Sender" service="BC_HttpToFile" party="">
+			</channels>
+			<channels name="CC_Receiver" service="BC_Test1" party="">
+			</channels>
+			<channels name="CC_javamapingfile_sender" service="BC_Test1"
+				party="">
+			</channels>
+			<channels name="CC_Test" service="BC_FILEDEMO" party="">
+			</channels>
+			<channels name="File_Receiver_Tst" service="BC_00247_Receiver"
+				party="">
+			</channels>
+			<channels name="CC_HTTP_SENDER" service="BC_Test" party="">
+			</channels>
+			<channels name="CC_Test1" service="BC_FILEDEMO" party="">
+			</channels>
+			<channels name="CC_Test4" service="BC_FILEDEMO" party="">
+			</channels>
+			<channels name="CC_Test2" service="BC_FILEDEMO" party="">
+			</channels>
+			<channels name="CC_Test3" service="BC_FILEDEMO" party="">
+			</channels>
+			<channels name="CC_SOAP_Sender" service="BC_Test" party="">
+			</channels>
+			<channels name="CC_SEND" service="BS_PROD1" party="">
+			</channels>
+			<channels name="iFlow_Test_Soap_to_Mail_CC_SND_SOAP_Message"
+				service="BC_SND_SOAPMessage" party="">
+			</channels>
+			<channels name="iFlow_Test_Soap_to_Mail_CC_RCV_Mail_Message"
+				service="BC_RCV_MailMessage" party="">
+			</channels>
+			<channels name="CC_SEND" service="BS_Sender" party="">
+			</channels>
+			<channels name="CC_Receiver_File" service="BC_File" party="">
+			</channels>
+			<channels name="CC_HTTP_RECEIVER" service="BC_Test" party="">
+			</channels>
+			<channels name="CC_RECV" service="BS_Sender" party="">
+			</channels>
+			<channels name="CC_RECV_acc" service="BC_00247_Receiver"
+				party="">
+			</channels>
+			<channels name="CC_Sender_Acc" service="BC_00247_Sender"
+				party="">
+			</channels>
+			<channels name="FileSenderChannel" service="HostNameService"
+				party="">
+			</channels>
+			<channels name="FileReceiverChannel" service="HostNameService"
+				party="">
+			</channels>
+			<channels name="CC_Rest_Receiver" service="BC_Test" party="">
+			</channels>
+			<channels name="CC_SOAP_RECEIVER_TEST" service="BC_Test"
+				party="">
+			</channels>
+			<channels name="SOAPSenderChannel" service="HostNameService"
+				party="">
+			</channels>
+			<channels name="CC_RECV" service="BS_PROD1" party="">
+			</channels>
+			<channels name="CC_XML_File_Recv" service="BC_Samsung"
+				party="">
+			</channels>
+			<channels name="CC_SND_File" service="BC_File" party="">
+			</channels>
+			<channels name="CC_Flat_File_Send" service="BC_Samsung"
+				party="">
+			</channels>
+			<channels name="CC_SF_Sender" service="SFSF" party="">
+			</channels>
+			<channels name="File_Sender_Test1" service="BS_F2F_Sender"
+				party="">
+			</channels>
+			<channels name="CC_FILE_S_GL_Master1" service="BC_File_Cont_conv"
+				party="">
+			</channels>
+			<channels name="CC_Sender" service="BC_File_Cont_conv"
+				party="">
+			</channels>
+			<channels name="CC_Flat_File_Snd" service="BC_Flat_File_Snd"
+				party="">
+			</channels>
+			<channels name="CC_Http_Sender" service="BC_Samsung" party="">
+			</channels>
+			<channels name="CC_Receiver" service="BC_Samsung" party="">
+			</channels>
+			<channels name="HTTP_Sender" service="BS_Sender" party="">
+			</channels>
+			<channels name="CC_FileAdapter" service="BC_Flat_File_Snd"
+				party="">
+			</channels>
+			<channels name="Test12_S" service="BC_S" party="">
+			</channels>
+			<channels name="Test12_R" service="BC_R" party="">
+			</channels>
+			<channels name="TEST12345_CC_FILE_RCVR" service="BC_Receiver"
+				party="">
+			</channels>
+			<channels name="File_Receiver" service="BS_Receiver" party="">
+			</channels>
+			<channels name="TEST12345_CC_FILE_SEND" service="BC_Sender"
+				party="">
+			</channels>
+			<channels name="PGP_Encryption_Receiver" service="BS_Receiver"
+				party="">
+			</channels>
+			<channels name="CC_FILE_Snd" service="BC_Flat_File_Snd"
+				party="">
+			</channels>
+			<channels name="SOAP_Sender" service="BC_Samsung" party="">
+			</channels>
+			<channels name="CC_Flat_File_Rcv" service="BC_Flat_File_Rcv"
+				party="">
+			</channels>
+			<channels name="CC_File_Rcv" service="BC_Flat_File_Rcv"
+				party="">
+			</channels>
+			<channels name="DemoIFlowICL_FILE_R" service="BC_RCVR"
+				party="">
+			</channels>
+			<channels name="DemoIFlowICL_File_S" service="BC_SND" party="">
+			</channels>
+			<channels name="CC_HTTP_Snd" service="BC_Flat_File_Snd"
+				party="">
+			</channels>
+			<channels name="Rest_Receiver" service="BS_PROD1" party="">
+			</channels>
+			<channels name="CC_RCV_File" service="ZBC_File_bbn" party="">
+			</channels>
+			<channels name="CC_Receiver" service="BS_PROD1" party="">
+			</channels>
+			<channels name="CC_Http_Receiver" service="BC_Samsung"
+				party="">
+			</channels>
+			<channels name="CC_SND_MAIL" service="ZBC_Mail_bbn" party="">
+			</channels>
+			<channels name="SOAP_TST" service="BC_Flat_File_Rcv" party="">
+			</channels>
+			<channels name="CC_FILE_S_GL_Master" service="BC_File_Cont_conv"
+				party="">
+			</channels>
+			<channels name="CC_FILE_Sender" service="BC_File_Cont_conv"
+				party="">
+			</channels>
+		</urn:getChannelAutomationStatus>
+	</soapenv:Body>
+</soapenv:Envelope>

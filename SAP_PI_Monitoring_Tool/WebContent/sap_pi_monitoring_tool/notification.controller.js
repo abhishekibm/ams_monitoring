@@ -20,7 +20,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		    var oModel = new sap.ui.model.xml.XMLModel();  
 		    var response = "";
             var returnVal = "";
-               
+            oCon.byId("alert_noti").setIcon('images/loading.gif'); 
 		             $.ajax({  
 		             url : serviceAPIs.alertAPI_all_alert_consumers(),  
 		             type : "POST",  
@@ -82,16 +82,18 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                		                    
 		                		                    for(j=0; j< alerts.length; j++)  {
 		                		                    console.log(JSON.parse(alerts[j].childNodes[0].textContent));
-		                		                    
+		                		                    var obj = JSON.parse(alerts[j].childNodes[0].textContent);
 		                		                		var now = (new Date()).toUTCString();
 		                		                		var oMessage = new sap.ui.core.Message({
-		                		                			text :  alerts[j].childNodes[0].textContent,
-		                		                			timestamp : now
+		                		                			text :  obj.ErrText,
+		                		                			level : sap.ui.core.MessageType.Error,
+		                		                			timestamp : obj.Timestamp
 		                		                		});
 		                		                		var snd = new Audio("media/notification.mp3"); // buffers automatically when created
 		                		                		snd.play();
 		                		                		oCon.byId("alert_noti").addMessage(oMessage);
 		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", JSON.parse(alerts[j].childNodes[0].textContent));
+		                		                		eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", 1);
 		                		                    }
 		                		                    
 		                		                    if(false/*alerts.length == 0*/){
@@ -129,6 +131,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                		             })
 		                		             .always(function () {
 		                		            	 console.log("complete");
+		                		            	 oCon.byId("alert_noti").setIcon('');
 		                		             });
 		                		             
 		                    	//////////////////////

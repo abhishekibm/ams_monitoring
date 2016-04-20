@@ -140,23 +140,21 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
           },
           
           onAlertConsumersReceived : function(channel, event, data){
-        	  var oModel = new sap.ui.model.xml.XMLModel();
-        	  oModel.setXML(data);
+        	  //var oModel = new sap.ui.model.xml.XMLModel();
+        	  //oModel.setXML(data);
         	  
           },
           onDataReceived : function(channel, event, data) {
-     		 alert(data[ErrText]);
+     		 alert(data.ErrText);
      		 console.log("Inside ondatareceived -> view");
      		 // do something with the data (bind to model)
      		 var oTextView = new sap.ui.commons.TextView({
-     				text : 'Test',
+     				text : data.ErrText,
      				tooltip : JSON.stringify(data),
      				wrapping : true,
-     				width : '200px',
-     				semanticColor: sap.ui.commons.TextViewColor.Positive,
-     				design: sap.ui.commons.TextViewDesign.H3
+     				width : '200px'
      				});  
-     		 
+     		 oTextView.addStyleClass('alert_ticker');
      		 console.log(this.byId('oPanel'));
      		
      		this.byId('oPanel').addContent(oTextView);
