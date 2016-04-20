@@ -110,8 +110,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
 					             oModel.setXML(new XMLSerializer().serializeToString(returnVal));  
 					             }  
 					
-					
-							var oTable = new sap.ui.table.Table({  
+                  				
+                  				
+						var oTable = new sap.ui.table.Table({  
 							             id: "table1"  
 							}); 
 					
@@ -128,112 +129,38 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
 					      oTable.setModel(oModel);     
 					      oTable.bindRows({path: "/AlertRule"});  
 					      oPanel.addContent(oTable);
-					      var oInput1 = new sap.ui.commons.TextField(this.createId("inputtext"));
-					      oPanel.addContent(oInput1);
 					      
 					      
-					//////// TEMPLATE SECTION //////////////////////////////////////////////////////////////////
-				            //
-				            // create the template to be used for ViewRepeater items
-				            var oRowTemplate_NoViews = new sap.ui.commons.layout.HorizontalLayout("rowTemplateNoViews");
-				            oRowTemplate_NoViews.addStyleClass("rowTemplateNoViews");
-
-				            var  control;
-				            //image
-				            control = new sap.ui.commons.Image();
-				            control.setHeight("60px");
-				            control.setWidth("50px");
-				            control.bindProperty("src","src");
-				            oRowTemplate_NoViews.addContent(control);
-
-				            //text fields
-				            var oTextSectionLayout = new sap.ui.commons.layout.VerticalLayout("textSection");
-				            oTextSectionLayout.addStyleClass("rowTemplateNoViewsTextSection");
-				            oRowTemplate_NoViews.addContent(oTextSectionLayout);
-
-				            //name field
-				            control = new sap.ui.commons.TextView();
-				            control.bindProperty("text", {
-				                parts: [
-				                    {path: "name", type: new sap.ui.model.type.String()},
-				                    {path: "lastName", type: new sap.ui.model.type.String()}
-				                ],
-				                formatter: function(name, lastName){ // all parameters are strings
-				                    name = name || "";
-				                    lastName = lastName || "";
-				                    return name + " " + lastName;
-				                }
-				            });
-				            oTextSectionLayout.addContent(control);
-
-				            //country field
-				            control = new sap.ui.commons.TextView();
-				            control.bindProperty("text","country");
-				            oTextSectionLayout.addContent(control);
-
-				            //link field
-				            control = new sap.ui.commons.Link();
-				            control.bindProperty("text","href");
-				            oTextSectionLayout.addContent(control);
-				            //
-				            //////// End of TEMPLATE SECTION ///////////////////////////////////////////////////////////
-
-
-				            //////// CONTROL SECTION ///////////////////////////////////////////////////////////////////
-				            //
-				            //create view repeater title (optional)
-				            var oTitle_NoViews = new sap.ui.commons.Title({
-				                text:"REPEATER with default view",
-				                level: sap.ui.commons.TitleLevel.H1
-				            });
-
-				            // create the row repeater control
-				            var oViewRepeater_NoViews = new sap.suite.ui.commons.ViewRepeater("vr_noViews", {
-				                title: oTitle_NoViews,
-				                noData: new sap.ui.commons.TextView({text: "Sorry, no data available!"}),
-
-				                showViews: false, // disable view selector
-				                showSearchField: false,
-				                showMoreSteps: 10, // you can use 'Show More' feature instead of paging
-
-				                //set view properties directly to the repeater
-				                responsive: true,
-				                itemMinWidth: 210,
-				                numberOfRows: 12, // view property NumberOfTiles has legacy name here
-				                rows: {
-				                    path: "/data",
-				                    template: oRowTemplate_NoViews
-				                }
-				            });
-				            oViewRepeater_NoViews.addStyleClass("vrNoViews");
-				            
-				            //
-				            //////// End of CONTROL SECTION ////////////////////////////////////////////////////////////
-				            
-				            oPanel.addContent(oViewRepeater_NoViews);
-				            
-				            var eventBus = sap.ui.getCore().getEventBus();
+					      
+				         var eventBus = sap.ui.getCore().getEventBus();
 				   		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
 				   		 eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
-					      return oPanel;
+				   		 eventBus.subscribe("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", this.onAlertConsumersReceived, this);
+					     return oPanel;
           },
           
+          onAlertConsumersReceived : function(channel, event, data){
+        	  var oModel = new sap.ui.model.xml.XMLModel();
+        	  oModel.setXML(data);
+        	  
+          },
           onDataReceived : function(channel, event, data) {
-     		 console.log(JSON.stringify(data));
+     		 alert(data[ErrText]);
      		 console.log("Inside ondatareceived -> view");
      		 // do something with the data (bind to model)
      		 var oTextView = new sap.ui.commons.TextView({
-     				text : JSON.stringify(data),
-     				tooltip : 'This is a Tooltip',
+     				text : 'Test',
+     				tooltip : JSON.stringify(data),
      				wrapping : true,
-     				width : '100px',
+     				width : '200px',
      				semanticColor: sap.ui.commons.TextViewColor.Positive,
      				design: sap.ui.commons.TextViewDesign.H3
      				});  
      		 
      		 console.log(this.byId('oPanel'));
-     		this.byId('inputtext').setValue(JSON.stringify(data));
-     		this.byId('oPanel').setText(JSON.stringify(data));
+     		
+     		this.byId('oPanel').addContent(oTextView);
+     		//this.byId('oPanel').rerender();
 	 
      	}
 			

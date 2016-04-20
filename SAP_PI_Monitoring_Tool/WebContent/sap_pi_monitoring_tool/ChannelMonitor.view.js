@@ -13,12 +13,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.ChannelMonitor", {
 	* @memberOf sap_pi_monitoring_tool.ChannelMonitor
 	*/ 
 	createContent : function(oController) {
- 		return new sap.m.Page({
-			title: "Title",
-			content: [
-			          
-			]
-		});
+		var oPanel = new sap.ui.commons.Panel(this.createId("oChannelListPanel"));
+		return oPanel;
 	}
 
 });

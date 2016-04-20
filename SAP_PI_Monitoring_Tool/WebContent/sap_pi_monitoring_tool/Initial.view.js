@@ -1,27 +1,26 @@
-/**
- * View for Login
- * @author Abhishek Saha
- */
-sap.ui.jsview("sap_pi_monitoring_tool.login", {
+sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 
 	/** Specifies the Controller belonging to this View. 
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
-	* @memberOf sap_pi_monitoring_tool.login
+	* @memberOf sap_pi_monitoring_tool.Initial
 	*/ 
 	getControllerName : function() {
-		return "sap_pi_monitoring_tool.login";
+		return "sap_pi_monitoring_tool.Initial";
 	},
 
 	/** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
 	* Since the Controller is given to this method, its event handlers can be attached right away. 
-	* @memberOf sap_pi_monitoring_tool.login
+	* @memberOf sap_pi_monitoring_tool.Initial
 	*/ 
 	createContent : function(oController) {
-		
-		var oSimpleForm = new sap.ui.layout.form.SimpleForm(
+		var oGrid1 = new sap.ui.layout.Grid({
+			hSpacing: 1,
+			vSpacing: 1,
+			content: [
+				new sap.ui.layout.form.SimpleForm(
 				"sf1",
 				{
-					maxContainerCols: 2,
+					maxContainerCols: 1,
 					editable: true,
 					content:[
 							//new sap.ui.core.Title({text:"Login"}),
@@ -73,9 +72,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.login", {
 									           "isLoggedin" : false
 									};
 									
-									
+									$("#content").html("");
 									login(oParameters);
-									/*
+									
 									var view = sap.ui.view({
 										id : "home1",
 										viewName : "sap_pi_monitoring_tool.home",
@@ -92,15 +91,24 @@ sap.ui.jsview("sap_pi_monitoring_tool.login", {
 									});
 									notificationbarview.placeAt("notificationbar");
 									console.log(alertAPI1);
-									*/
+									
 								}
 							})
-					         ]
-				});
+					         ],
+					        layoutData : new sap.ui.layout.GridData({
+									span : "L6 M6 S12"
+							})
+				}),
+				new sap.ui.commons.TextView({
+					text : 'About this tool. Features: 1. 2. 3. Credits. @IBM',
+					layoutData : new sap.ui.layout.GridData({
+						span : "L6 M6 S12"
+					})
+				})
+			]
+		});
 		
-		
-		
-		return oSimpleForm;
+		return oGrid1;
 	}
 
 });

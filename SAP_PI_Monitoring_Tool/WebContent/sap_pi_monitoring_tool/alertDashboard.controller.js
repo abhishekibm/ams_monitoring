@@ -11,7 +11,7 @@ sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
 	 */
 	 onInit: function() {
 		 oCon = this;
-		 oCon.byId('inputtext').setValue("init");
+		 
 		 console.log(oCon);
 		 //var eventBus = sap.ui.getCore().getEventBus();
 		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener

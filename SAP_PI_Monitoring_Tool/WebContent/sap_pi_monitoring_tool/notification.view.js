@@ -97,6 +97,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			    	oChannelNotifier.setTitle("Channel Errors");
 			    	oChannelNotifier.attachMessageSelected(clickListener);
 			    	
+			    	///////
+			    	
 			    	var oNotiBar3 = new sap.ui.ux3.NotificationBar({
 			    		display : displayListener,
 			    		visibleStatus : "Default"

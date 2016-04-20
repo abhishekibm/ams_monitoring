@@ -19,8 +19,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		    </soapenv:Envelope>';
 		    var oModel = new sap.ui.model.xml.XMLModel();  
 		    var response = "";
-              var returnVal = "";
-              console.log(serviceAPIs.alertAPI_all_alert_consumers());
+            var returnVal = "";
                
 		             $.ajax({  
 		             url : serviceAPIs.alertAPI_all_alert_consumers(),  
@@ -39,7 +38,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                   parser=new DOMParser();  
 		                    xmlDoc=parser.parseFromString(response,"text/xml");  
 		                    nodeList = xmlDoc.getElementsByTagNameNS("*","AlertConsumers");  
-		                    
+	                		eventBus.publish("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", nodeList);
 		                    oStorage.put("alertConsumers", nodeList);
 		                    
 		                    setInterval(function(){
@@ -82,19 +81,20 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                		                   console.log(alerts);
 		                		                    
 		                		                    for(j=0; j< alerts.length; j++)  {
+		                		                    console.log(JSON.parse(alerts[j].childNodes[0].textContent));
 		                		                    
 		                		                		var now = (new Date()).toUTCString();
 		                		                		var oMessage = new sap.ui.core.Message({
-		                		                			text :  alerts[j].textContent,
+		                		                			text :  alerts[j].childNodes[0].textContent,
 		                		                			timestamp : now
 		                		                		});
 		                		                		var snd = new Audio("media/notification.mp3"); // buffers automatically when created
 		                		                		snd.play();
 		                		                		oCon.byId("alert_noti").addMessage(oMessage);
-		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { alert : j + '-> '+ alerts[j].textContent });
+		                		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", JSON.parse(alerts[j].childNodes[0].textContent));
 		                		                    }
 		                		                    
-		                		                    if(alerts.length == 0){
+		                		                    if(false/*alerts.length == 0*/){
 		                		                    	var now = (new Date()).toUTCString();
 		                		                		var oMessage = new sap.ui.core.Message({
 		                		                			text :  "No alert yet",
@@ -154,10 +154,11 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                     msg = 'Ajax request aborted.';
 		                 } else {
 		                     msg = 'Uncaught Error.\n' + jqXHR.responseText;
-		                     //openLoginDialog();
+		                     
 		                 }
 		                 
 		                 console.log(msg);
+		                 eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { err : jqXHR.responseText });
 		             })
 		             .always(function () {
 		            	 console.log("complete");
@@ -191,11 +192,6 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 	onAfterRendering: function() {
 		
 			
-	},
-	
-	pollSingleAlert: function(alertConsumer) {
-		console.log('inside pollSigngleAlert');
-		
 	}
 /**
 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.

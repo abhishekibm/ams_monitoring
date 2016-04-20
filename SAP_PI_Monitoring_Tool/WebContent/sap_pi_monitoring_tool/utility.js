@@ -1,8 +1,12 @@
-mode = 'test';// prod
+mode = 'debug';// prod, debug
 proxy = true;
 
 jQuery.sap.require("jquery.sap.storage");
 oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
+
+if(mode.toLowerCase() != 'debug'){
+	console.log = function() {}
+}
 
 //Here all service APIs will be mentioned
 serviceAPIs  = {
@@ -33,6 +37,13 @@ serviceAPIs  = {
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/CommunicationChannelInService/CommunicationChannelInImplBean');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/CommunicationChannelInService/CommunicationChannelInImplBean');
+		},
+		
+		channelStatusAPI: function(){
+			if(proxy)
+				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/ChannelAdminService/ChannelAdmin');
+			else
+				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/ChannelAdminService/ChannelAdmin');
 		}
 }
 

@@ -8,3 +8,6 @@
                  .rowTemplateNoViewsTextSection {
                      margin: 1px 7px 1px 7px;
                  }
+.green {  background-color: rgba(115, 197, 64, 0.81);  }  
+.red {  background-color: rgba(204, 0, 0, 0.78); }  
+.yellow {  background-color: #FFFF66; }  

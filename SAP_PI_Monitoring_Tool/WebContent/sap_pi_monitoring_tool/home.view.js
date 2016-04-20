@@ -46,7 +46,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 			showSearchTool: false,
 			showInspectorTool: false,
 			showFeederTool: false,
-			worksetItems: [new sap.ui.ux3.NavigationItem("WI_home",{key:"wi_home",text:"Alert Monitoring"}),
+			worksetItems: [new sap.ui.ux3.NavigationItem("WI_dashboard",{key:"wi_dashboard",text:"Dashboard"}),
+			               new sap.ui.ux3.NavigationItem("WI_home",{key:"wi_home",text:"Alert Monitoring"}),
 			               new sap.ui.ux3.NavigationItem("WI_MSG",{key:"wi_msg",text:"Message Monitoring"}),
 			               new sap.ui.ux3.NavigationItem("WI_CHANNEL",{key:"wi_channel",text:"Channnel Monitoring"})],
 			paneBarItems: [ new sap.ui.core.Item("PI_Date",{key:"pi_date",text:"date"}),
@@ -68,6 +69,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 				var sId = oEvent.getParameter("id");
 				var oShell = oEvent.oSource;
 				switch (sId) {
+				case "WI_dashboard":
+					break;
 				case "WI_home":
 					//This will open alert dashboard
 					isLoggedin()?oShell.setContent(dashboardView):"";
@@ -111,8 +114,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 		 	}
 		});
 		
-		oShell.setSelectedWorksetItem("WI_home");
-		oShell.fireWorksetItemSelected({id : "WI_home"});
+		oShell.setSelectedWorksetItem("WI_dashboard");
+		oShell.fireWorksetItemSelected({id : "WI_dashboard"});
 		return oShell;
 		
 	}
