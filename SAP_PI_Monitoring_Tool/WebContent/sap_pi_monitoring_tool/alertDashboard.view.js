@@ -58,7 +58,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
      		 console.log("Inside ondatareceived -> view");
      		 // do something with the data (bind to model)
      		 var oTextView = new sap.ui.commons.TextView({
-     				text : data.ErrText +'\n' + obj.Timestamp,
+     				text : data.ErrText +'\n' + data.Timestamp,
      				tooltip : JSON.stringify(data),
      				wrapping : true
      				});  
