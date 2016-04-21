@@ -167,7 +167,9 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	                 			                    	    content : [  	                 			                    	                
 	                 			                    	               new sap.ui.commons.Button({  
 	                 			                    	                 text : "Approve",  
-	                 			                    	                 press : function(){},  
+	                 			                    	                 press : function(){
+	                 			                    	                	 
+	                 			                    	                 },  
 	                 			                    	                 visible : true  
 	                 			                    	               }).bindProperty("text", "status/@activationState", function(cellValue){
 	                 			                    	            	  if (cellValue.toLowerCase() == 'started') {  

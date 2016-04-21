@@ -69,17 +69,20 @@ sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
 	//
 	// }
 	
-	getMyModel : function(a1, a2, a3) {
-
+	getMyModel : function(a1, a2, a3, a4) {
+//VERYHIGH, HIGH, MEDIUM, or LOW
 		var data = [ {
-			type : "Critical",
+			type : "Very High",
 			tickets : a1
 		}, {
-			type : "Medium",
+			type : "High",
 			tickets : a2
 		}, {
-			type : "Success",
+			type : "Medium",
 			tickets : a3
+		},{
+			type : "Low",
+			tickets : a4
 		} ];
 
 		var model = new sap.ui.model.json.JSONModel();
@@ -89,11 +92,12 @@ sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
 	},
 
 	createMyChart : function(id, title, model) {
-
+     var oCon = this;
 		var oChart = new sap.makit.Chart({
-			width : "50%",
-			height : "500px",
-			type : sap.makit.ChartType.Donut,
+			id : oCon.createId(id),
+			width : "500px",
+			height : "250px",
+			type : sap.makit.ChartType.Bar,
 			showRangeSelector : false,
 			showTotalValue : true,
 			valueAxis : new sap.makit.ValueAxis({}),

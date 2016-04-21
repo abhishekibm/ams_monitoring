@@ -100,7 +100,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 							})
 				}),
 				new sap.ui.commons.TextView({
-					text : 'About this tool. Features: 1. 2. 3. Credits. @IBM',
+					text : 'PI Monitoring Tool. \nBrief description About this tool. Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy \nFeatures: 1. 2. 3. \n\n\nCredits. @IBM',
 					layoutData : new sap.ui.layout.GridData({
 						span : "L6 M6 S12"
 					})

@@ -85,12 +85,6 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			    	var oMessageNotifier = new sap.ui.ux3.Notifier(this.createId("alert_noti"));
 			    	oMessageNotifier.setTitle("Alerts");
 			    	
-			    	var oMessage = new sap.ui.core.Message({
-            			text :  'Fetching alerts...'
-            			
-            		});
-			    	oMessageNotifier.addMessage(oMessage);
-			    	
 			    	oMessageNotifier.attachMessageSelected(clickListener);
 			    	//////Channel notifier
 			    	var oChannelNotifier = new sap.ui.ux3.Notifier(this.createId("channel_noti"));
@@ -107,6 +101,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			    	oNotiBar3.addNotifier(oNotifier);
 			    	oNotiBar3.addNotifier(oNotifier2);
 			    	oNotiBar3.setMessageNotifier(oMessageNotifier);
+			    	oNotiBar3.setAlwaysShowToggler(true);
 			    	return oNotiBar3;
 	}
 
