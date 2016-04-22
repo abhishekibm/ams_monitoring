@@ -15,10 +15,23 @@ sap.ui.jsview("sap_pi_monitoring_tool.Dashboard", {
 	createContent : function(oController) {
 		var oPanel = new sap.ui.commons.Panel(this.createId("oPanel"));
 		oPanel.setText('Alert');
+		
 		var alertCount = new sap.ui.commons.TextView(this.createId('alertCount'));
 		alertCount.setText('0');
 		alertCount.addStyleClass('alertCount');
-		oPanel.addContent(alertCount);
+		
+		var oHLaoyout = new sap.ui.layout.HorizontalLayout({
+			content: [
+			          new sap.ui.commons.TextView({
+							text : "\nTotal alert count : ",
+							tooltip : "Total alert count",
+							wrapping : true
+							//width : '200px'
+							}), alertCount 
+			          ]
+		});
+		
+		oPanel.addContent(oHLaoyout);
 		
 		var oPanelMessage = new sap.ui.commons.Panel(this.createId("oPanelMessage"));
 		oPanelMessage.setText('Message Monitoring');

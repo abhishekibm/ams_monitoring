@@ -13,11 +13,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 	* @memberOf sap_pi_monitoring_tool.Initial
 	*/ 
 	createContent : function(oController) {
-		var oGrid1 = new sap.ui.layout.Grid({
-			hSpacing: 1,
-			vSpacing: 1,
-			content: [
-				new sap.ui.layout.form.SimpleForm(
+		var loginBox = new sap.ui.layout.form.SimpleForm(
 				"sf1",
 				{
 					maxContainerCols: 1,
@@ -74,23 +70,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 									
 									$("#content").html("");
 									login(oParameters);
-									
-									var view = sap.ui.view({
-										id : "home1",
-										viewName : "sap_pi_monitoring_tool.home",
-										type : sap.ui.core.mvc.ViewType.JS
-									});
-									
-									oController.getView().getParent().close(); 
-									view.placeAt("content");
-									notificationbarview = sap.ui.view({
-										id : "idnotification",
-										viewName : "sap_pi_monitoring_tool.notification",
-										type : sap.ui.core.mvc.ViewType.JS
-										
-									});
-									notificationbarview.placeAt("notificationbar");
-									console.log(alertAPI1);
+
 									
 								}
 							})
@@ -98,16 +78,29 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 					        layoutData : new sap.ui.layout.GridData({
 									span : "L6 M6 S12"
 							})
-				}),
-				new sap.ui.commons.TextView({
-					text : 'PI Monitoring Tool. \nBrief description About this tool. Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy \nFeatures: 1. 2. 3. \n\n\nCredits. @IBM',
-					layoutData : new sap.ui.layout.GridData({
-						span : "L6 M6 S12"
-					})
-				})
+				});
+		var LeftGrid = new sap.ui.layout.VerticalLayout({
+			
+			content :[
+			          	new sap.ui.commons.Image({src: 'images/ibm-logos/64px-IBM_logo.svg.png'}),
+						new sap.ui.commons.TextView({
+							text : '\n\nPI Monitoring Tool. \nBrief description About this tool. Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy \nFeatures: 1. 2. 3. \n\n\nCredits. @IBM'
+						})
+			],
+			layoutData : new sap.ui.layout.GridData({
+				span : "L6 M6 S12"
+		    })
+		});
+		var oGrid1 = new sap.ui.layout.Grid({
+			hSpacing: 2,
+			vSpacing: 1,
+			content: [
+				loginBox,
+				LeftGrid
 			]
 		});
 		
+		loginBox.addStyleClass('loginBox');
 		return oGrid1;
 	}
 

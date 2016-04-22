@@ -1,13 +1,11 @@
-.rowTemplateNoViews {
-                     width: 100%;
-                     box-sizing: border-box;
-                     -moz-box-sizing: border-box;
-                     border: 1px #cccccc solid;
-                     background-color: #eceaea;
-                 }
-                 .rowTemplateNoViewsTextSection {
-                     margin: 1px 7px 1px 7px;
-                 }
+.loginBox {
+	border : 1px solid #fff;
+	background: #fff;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.46);
+	padding: 5px 10px;
+	margin: 4px;
+}
+
 .green {  background-color: rgba(115, 197, 64, 0.81);  }  
 .red {  background-color: rgba(204, 0, 0, 0.78); }  
 .yellow {  background-color: #FFFF66; } 
@@ -24,9 +22,10 @@
 	width : 30px;
 	height : 30px;
 	border-radius : 20px;
-	font-size: 25px; !important
+	text-align: center !important;
+	font-size: 28px !important;
     font-weight: bold;
-    line-height: 25px;
+    line-height: 30px !important;
     color: #ffffff;
     vertical-align: middle;
     border: 2px solid #ffffff;

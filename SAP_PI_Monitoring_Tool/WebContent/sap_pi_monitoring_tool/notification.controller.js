@@ -41,6 +41,8 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 	
 	fetchAlerts : function(){
 		var eventBus = sap.ui.getCore().getEventBus();
+        var snd = new Audio("media/notification.mp3"); 
+
 		var request = 
 		    '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://sap.com/xi/BASIS">\
 		    	<soapenv:Header/>\
@@ -80,7 +82,15 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                 var msg = '';
 		                 if (jqXHR.status == 0) {
 		                     msg = 'Not connect. Verify Network.';
-		                     //openLoginDialog();
+		                     var now = (new Date()).toUTCString();
+		                		var oMessage = new sap.ui.core.Message({
+		                			text :  'Could not connect PI system.',
+		                			level : sap.ui.core.MessageType.Error,
+		                			timestamp : now
+		                		});
+		                		 // buffers automatically when created
+		                	snd.play();
+		                     oCon.byId("conn_noti").addMessage(oMessage);
 		                 } else if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
 		                 } else if (jqXHR.status == 500) {
@@ -109,6 +119,7 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
     	console.log("value of i "+ i);
     	var oCon = this;
 		var eventBus = sap.ui.getCore().getEventBus();
+        var snd = new Audio("media/notification.mp3"); 
 
     	var req =
     		'<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aler="http://sap.com/xi/BASIS/alerting"> \
@@ -142,7 +153,6 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                   xmlDoc=parser.parseFromString(data,"text/xml");  
 		                   alerts = xmlDoc.getElementsByTagNameNS("*","Alert");  
 		                   console.log(alerts);
-		                   var snd = new Audio("media/notification.mp3"); 
 		                    for(j=0; j< alerts.length; j++)  {
 		                    console.log(JSON.parse(alerts[j].childNodes[0].textContent));
 		                    var obj = JSON.parse(alerts[j].childNodes[0].textContent);
@@ -167,6 +177,15 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                 var msg = '';
 		                 if (jqXHR.status === 0) {
 		                     msg = 'Not connect.\n Verify Network.';
+		                     var now = (new Date()).toUTCString();
+		                		var oMessage = new sap.ui.core.Message({
+		                			text :  'Could not connect PI system.',
+		                			level : sap.ui.core.MessageType.Error,
+		                			timestamp : now
+		                		});
+		                		 // buffers automatically when created
+		                	snd.play();
+		                     oCon.byId("conn_noti").addMessage(oMessage);
 		                 } else if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
 		                 } else if (jqXHR.status == 500) {

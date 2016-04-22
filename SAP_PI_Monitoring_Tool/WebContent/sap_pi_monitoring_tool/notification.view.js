@@ -39,22 +39,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			      	/*
 			    	 * Creating a notifier
 			    	 */
-			    	var oNotifier = new sap.ui.ux3.Notifier("first_noti", {
-			    		title : "The first Notifier"
+			    	var oNotifier = new sap.ui.ux3.Notifier(this.createId("conn_noti"), {
+			    		title : "Connection"
 			    	});
-			    	for (var i = 0; i < 5; i++) {
-			    		var now = (new Date()).toUTCString();
-			    		var oMessage = new sap.ui.core.Message({
-			    			text : i + ". " + sText,
-			    			timestamp : now
-			    		});
-
-			    		if (i % 2 == 0) {
-			    			oMessage.setIcon("images/Thumbnail_32.png");
-			    		}
-
-			    		oNotifier.addMessage(oMessage);
-			    	}
 			    	oNotifier.attachMessageSelected(clickListener);
 
 			    	/*
@@ -82,8 +69,11 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			    	/*
 			    	 * Creating the message notifier with some messages
 			    	 */
-			    	var oMessageNotifier = new sap.ui.ux3.Notifier(this.createId("alert_noti"));
-			    	oMessageNotifier.setTitle("Alerts");
+			    	var oMessageNotifier = new sap.ui.ux3.Notifier(this.createId("alert_noti"),
+			    			{
+			    			title: "Alerts",
+			    			icon: 'images/alert_white_24.png'	
+			    			});
 			    	
 			    	oMessageNotifier.attachMessageSelected(clickListener);
 			    	//////Channel notifier
@@ -100,8 +90,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			    	oNotiBar3.addStyleClass("sapUiNotificationBarDemokit");
 			    	oNotiBar3.addNotifier(oNotifier);
 			    	oNotiBar3.addNotifier(oNotifier2);
-			    	oNotiBar3.setMessageNotifier(oMessageNotifier);
-			    	oNotiBar3.setAlwaysShowToggler(true);
+			    	oNotiBar3.addNotifier(oMessageNotifier);
+			    	//oNotiBar3.setMessageNotifier(oMessageNotifier);
+			    	//oNotiBar3.setAlwaysShowToggler(true);
 			    	return oNotiBar3;
 	}
 
