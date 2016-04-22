@@ -119,3 +119,33 @@ function localStore(name, obj){
 function localStore(name){ 
 	return oStorage.get(name);  
 }
+
+// Brower Notification code
+
+//request permission on page load
+document.addEventListener('DOMContentLoaded', function () {
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+});
+
+function notifyMe(title, msg) {
+  if (!Notification) {
+    console.log('Desktop notifications not available in your browser. Try Chromium.'); 
+    return;
+  }
+
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+  else {
+    var notification = new Notification('IBM Monitoring: '+ title, {
+      icon: 'images/favicon1.png',
+      body: msg,
+    });
+
+    notification.onclick = function () {
+      //window.open("http://stackoverflow.com/a/13328397/1269037");      
+    };
+
+  }
+
+}

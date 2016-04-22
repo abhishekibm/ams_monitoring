@@ -2,7 +2,7 @@
  * View for Alerts
  * @author Abhishek Saha
  */
-sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
+sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 		{
 
 			/**
@@ -13,7 +13,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
 			 * @memberOf sap_pi_monitoring_tool.alertDashboard
 			 */
 			getControllerName : function() {
-				return "sap_pi_monitoring_tool.alertDashboard";
+				return "sap_pi_monitoring_tool.AlertMonitoring";
 			},
 
 			/**
@@ -22,7 +22,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
 			 * the Controller is given to this method, its event handlers can be
 			 * attached right away.
 			 * 
-			 * @memberOf sap_pi_monitoring_tool.alertDashboard
+			 * @memberOf sap_pi_monitoring_tool.AlertMonitoring
 			 */
 			createContent : function(oController) {
 				var oPanel = new sap.ui.commons.Panel(this.createId("oPanel"));
@@ -54,7 +54,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.alertDashboard",
         	  
           },
           onDataReceived : function(channel, event, data) {
-     		 //alert(data.ErrText);
+        	 notifyMe('New Alert', data.ErrText +'\n' + data.Timestamp);
+        	  //alert(data.ErrText);
      		 console.log("Inside ondatareceived -> view");
      		 // do something with the data (bind to model)
      		 var oTextView = new sap.ui.commons.TextView({

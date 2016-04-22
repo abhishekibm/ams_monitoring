@@ -1,4 +1,4 @@
-sap.ui.controller("sap_pi_monitoring_tool.home", {
+sap.ui.controller("sap_pi_monitoring_tool.Home", {
 
 /**
 * Called when a controller is instantiated and its View controls (if available) are already created.

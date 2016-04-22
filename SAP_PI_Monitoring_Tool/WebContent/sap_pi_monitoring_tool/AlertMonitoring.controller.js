@@ -1,5 +1,5 @@
 var oCon;
-sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
+sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 
 	/**
 	 * Called when a controller is instantiated and its View controls (if
@@ -7,7 +7,7 @@ sap.ui.controller("sap_pi_monitoring_tool.alertDashboard", {
 	 * is displayed, to bind event handlers and do other one-time
 	 * initialization.
 	 * 
-	 * @memberOf sap_pi_monitoring_tool.alertDashboard
+	 * @memberOf sap_pi_monitoring_tool.AlertMonitoring
 	 */
 	 onInit: function() {
 		 oCon = this;

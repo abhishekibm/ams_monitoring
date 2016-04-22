@@ -1,4 +1,4 @@
-sap.ui.controller("sap_pi_monitoring_tool.notification", {
+sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 
 /**
 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -162,9 +162,12 @@ sap.ui.controller("sap_pi_monitoring_tool.notification", {
 		                			level : sap.ui.core.MessageType.Error,
 		                			timestamp : obj.Timestamp
 		                		});
-		                		 // buffers automatically when created
 		                		snd.play();
 		                		oCon.byId("alert_noti").addMessage(oMessage);
+		                		if(!(obj.Channel == null || obj.Channel == '')){
+		                			// Channel in error
+		                			oCon.byId("channel_noti").addMessage(oMessage);
+		                		}
 		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", obj);
 		                		eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", 1);
 		                    }

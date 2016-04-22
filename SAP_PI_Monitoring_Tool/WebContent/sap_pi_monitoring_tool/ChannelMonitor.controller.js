@@ -9,7 +9,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 		
 		this.byId('oChannelListPanel').addContent(
 			sap.ui.view({
-			viewName : "sap_pi_monitoring_tool.loadinghtml",
+			viewName : "sap_pi_monitoring_tool.Loading",
 			type : sap.ui.core.mvc.ViewType.HTML
 			})
 		);

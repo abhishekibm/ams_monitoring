@@ -1,16 +1,16 @@
-sap.ui.jsview("sap_pi_monitoring_tool.notification", {
+sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 
 	/** Specifies the Controller belonging to this View. 
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
 	* @memberOf sap_pi_monitoring_tool.notification
 	*/ 
 	getControllerName : function() {
-		return "sap_pi_monitoring_tool.notification";
+		return "sap_pi_monitoring_tool.Notification";
 	},
 
 	/** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
 	* Since the Controller is given to this method, its event handlers can be attached right away. 
-	* @memberOf sap_pi_monitoring_tool.notification
+	* @memberOf sap_pi_monitoring_tool.Notification
 	*/ 
 	createContent : function(oController) {
 		var sText = "Dummy message Dummy message Dummy message Dummy message Dummy message ";
@@ -69,6 +69,20 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			    	/*
 			    	 * Creating the message notifier with some messages
 			    	 */
+			    	jQuery.sap.require("sap.ui.core.IconPool");  
+			    	jQuery.sap.require("sap.ui.core.IconPool");  
+			    	var aNames = sap.ui.core.IconPool.getIconNames();  
+			    	var oIcon = new sap.ui.core.Icon({  
+			    	          src : sap.ui.core.IconPool.getIconURI(aNames[0]),  
+			    	          size : "32px",  
+			    	          color : "#333333",  
+			    	          activeColor : "white",  
+			    	          activeBackgroundColor : "#333333",  
+			    	          hoverColor : "#eeeeee",  
+			    	          hoverBackgroundColor : "#666666",  
+			    	          width : "60px",  
+			    	          press: function() { alert('pressed'); }  
+			    	});
 			    	var oMessageNotifier = new sap.ui.ux3.Notifier(this.createId("alert_noti"),
 			    			{
 			    			title: "Alerts",
@@ -91,6 +105,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.notification", {
 			    	oNotiBar3.addNotifier(oNotifier);
 			    	oNotiBar3.addNotifier(oNotifier2);
 			    	oNotiBar3.addNotifier(oMessageNotifier);
+			    	oNotiBar3.addNotifier(oChannelNotifier);
 			    	//oNotiBar3.setMessageNotifier(oMessageNotifier);
 			    	//oNotiBar3.setAlwaysShowToggler(true);
 			    	return oNotiBar3;

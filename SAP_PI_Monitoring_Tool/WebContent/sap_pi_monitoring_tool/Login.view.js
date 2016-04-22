@@ -2,14 +2,14 @@
  * View for Login
  * @author Abhishek Saha
  */
-sap.ui.jsview("sap_pi_monitoring_tool.login", {
+sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 
 	/** Specifies the Controller belonging to this View. 
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
 	* @memberOf sap_pi_monitoring_tool.login
 	*/ 
 	getControllerName : function() {
-		return "sap_pi_monitoring_tool.login";
+		return "sap_pi_monitoring_tool.Login";
 	},
 
 	/** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
@@ -75,24 +75,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.login", {
 									
 									
 									login(oParameters);
-									/*
-									var view = sap.ui.view({
-										id : "home1",
-										viewName : "sap_pi_monitoring_tool.home",
-										type : sap.ui.core.mvc.ViewType.JS
-									});
 									
-									oController.getView().getParent().close(); 
-									view.placeAt("content");
-									notificationbarview = sap.ui.view({
-										id : "idnotification",
-										viewName : "sap_pi_monitoring_tool.notification",
-										type : sap.ui.core.mvc.ViewType.JS
-										
-									});
-									notificationbarview.placeAt("notificationbar");
-									console.log(alertAPI1);
-									*/
 								}
 							})
 					         ]

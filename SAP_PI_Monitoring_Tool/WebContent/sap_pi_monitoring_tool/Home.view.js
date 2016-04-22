@@ -2,14 +2,14 @@
  * View for Home after login Which will contain Alert dashboard, Message Monitoring, channel Monitoring views
  * @author Abhishek Saha
  */
-sap.ui.jsview("sap_pi_monitoring_tool.home", {
+sap.ui.jsview("sap_pi_monitoring_tool.Home", {
 	
 	/** Specifies the Controller belonging to this View. 
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
 	* @memberOf sap_pi_monitoring_tool.home
 	*/ 
 	getControllerName : function() {
-		return "sap_pi_monitoring_tool.home";
+		return "sap_pi_monitoring_tool.Home";
 	},
 
 	/** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
@@ -18,7 +18,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 	*/ 
 	createContent : function(oController) {
 		
-		console.log('home view');
+		console.log('Home view');
 		var dashboardView = sap.ui.view({
 			id : "iddashboardView",
 			viewName: 'sap_pi_monitoring_tool.Dashboard',
@@ -26,7 +26,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.home", {
 		});
 		var alertView = sap.ui.view({
 			id : "iddashboardView1",
-			viewName : "sap_pi_monitoring_tool.alertDashboard",
+			viewName : "sap_pi_monitoring_tool.AlertMonitoring",
 			type : sap.ui.core.mvc.ViewType.JS
 			
 		});
