@@ -172,7 +172,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", 1);
 		                    }
 		                    
-		                    var o = {"AdapterNamespace": "http://sap.com/xi/XI/System",
+		                    /*var o = {"AdapterNamespace": "http://sap.com/xi/XI/System",
 		                			"AdapterType": "File",
 		                			"Channel": "FileSendChannel_WorkingEarlier",
 		                			"ChannelParty": "GBS_Saurav",
@@ -187,7 +187,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                			"RuleId": "f262f39bc7ae35d3a326061723d96499",
 		                			"Severity": "VERYHIGH",
 		                			"Timestamp": "2016-04-22T19:14:44Z"};
-		                    eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", o);
+		                    eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", o);*/
 		                    
 		             }).fail(function (jqXHR, exception) {
 		                 // Our error logic here
