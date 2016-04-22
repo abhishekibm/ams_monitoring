@@ -70,7 +70,6 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    	 * Creating the message notifier with some messages
 			    	 */
 			    	jQuery.sap.require("sap.ui.core.IconPool");  
-			    	jQuery.sap.require("sap.ui.core.IconPool");  
 			    	var aNames = sap.ui.core.IconPool.getIconNames();  
 			    	var oIcon = new sap.ui.core.Icon({  
 			    	          src : sap.ui.core.IconPool.getIconURI(aNames[0]),  
@@ -83,13 +82,13 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    	          width : "60px",  
 			    	          press: function() { alert('pressed'); }  
 			    	});
-			    	var oMessageNotifier = new sap.ui.ux3.Notifier(this.createId("alert_noti"),
+			    	var oAlertNotifier = new sap.ui.ux3.Notifier(this.createId("alert_noti"),
 			    			{
 			    			title: "Alerts",
 			    			icon: 'images/alert_white_24.png'	
 			    			});
 			    	
-			    	oMessageNotifier.attachMessageSelected(clickListener);
+			    	oAlertNotifier.attachMessageSelected(clickListener);
 			    	//////Channel notifier
 			    	var oChannelNotifier = new sap.ui.ux3.Notifier(this.createId("channel_noti"));
 			    	oChannelNotifier.setTitle("Channel Errors");
@@ -104,7 +103,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    	oNotiBar3.addStyleClass("sapUiNotificationBarDemokit");
 			    	oNotiBar3.addNotifier(oNotifier);
 			    	oNotiBar3.addNotifier(oNotifier2);
-			    	oNotiBar3.addNotifier(oMessageNotifier);
+			    	oNotiBar3.addNotifier(oAlertNotifier);
 			    	oNotiBar3.addNotifier(oChannelNotifier);
 			    	//oNotiBar3.setMessageNotifier(oMessageNotifier);
 			    	//oNotiBar3.setAlwaysShowToggler(true);

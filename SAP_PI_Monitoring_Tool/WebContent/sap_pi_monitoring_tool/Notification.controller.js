@@ -8,7 +8,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 	onInit: function() {
 		oCon = this;
 		
-		oCon.fetchAlerts();
+		oCon.fetchAlerts(this);
 		               		 
 	},
 
@@ -39,7 +39,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 //
 //	}
 	
-	fetchAlerts : function(){
+	fetchAlerts : function(obj){
 		var eventBus = sap.ui.getCore().getEventBus();
         var snd = new Audio("media/notification.mp3"); 
 
@@ -60,7 +60,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             data : request,  
 		             dataType : "text",  
 		             contentType : "text/xml; charset=\"utf-8\"",
-		             timeout: 10000,
+		             timeout: 100000,
 		             headers : {
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
@@ -74,7 +74,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 	                		eventBus.publish("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", nodeList);
 		                    //oStorage.put("alertConsumers", JSON.stringify(nodeList));
 		                    
-		                    oCon.fetchSingleAlert(nodeList, 0);
+		                    obj.fetchSingleAlert(nodeList, 0);
 		             })  
 		             .fail(function (jqXHR, exception) {
 		                 // Our error logic here
@@ -90,7 +90,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		});
 		                		 // buffers automatically when created
 		                	snd.play();
-		                     oCon.byId("conn_noti").addMessage(oMessage);
+		                    oCon.byId("conn_noti").addMessage(oMessage);
 		                 } else if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
 		                 } else if (jqXHR.status == 500) {
@@ -142,7 +142,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             data : req,  
 		             dataType : "text",  
 		             contentType : "text/xml; charset=\"utf-8\"",
-		             timeout: 50000,
+		             timeout: 500000,
 		             headers : {
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
@@ -172,7 +172,22 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", 1);
 		                    }
 		                    
-		                    
+		                    var o = {"AdapterNamespace": "http://sap.com/xi/XI/System",
+		                			"AdapterType": "File",
+		                			"Channel": "FileSendChannel_WorkingEarlier",
+		                			"ChannelParty": "GBS_Saurav",
+		                			"ChannelService": "BC_Saurav",
+		                			"Component": "af.po7.inmbzr0096",
+		                			"ErrCat": "",
+		                			"ErrCode": "",
+		                			"ErrLabel": "9999",
+		                			"ErrText": "Test",
+		                			"FromParty": "GBS_Saurav",
+		                			"FromService": "BC_Saurav",
+		                			"RuleId": "f262f39bc7ae35d3a326061723d96499",
+		                			"Severity": "VERYHIGH",
+		                			"Timestamp": "2016-04-22T19:14:44Z"};
+		                    eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", o);
 		                    
 		             }).fail(function (jqXHR, exception) {
 		                 // Our error logic here

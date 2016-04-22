@@ -43,7 +43,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 					      
 				         var eventBus = sap.ui.getCore().getEventBus();
 				   		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
-				   		 eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
+				   		 //eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
 				   		 eventBus.subscribe("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", this.onAlertConsumersReceived, this);
 					     return oPanel;
           },
