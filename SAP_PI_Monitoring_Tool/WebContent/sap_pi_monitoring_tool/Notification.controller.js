@@ -65,7 +65,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
 					    }
-		             }).done(function(data) {  
+		             }).done(function(data) {
+		            	   obj.byId('conn_noti').setIcon('images/Circle_Green.png');
 		                   response = data; 
 		                   console.log(data);
 		                   parser=new DOMParser();  
@@ -77,6 +78,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    obj.fetchSingleAlert(nodeList, 0);
 		             })  
 		             .fail(function (jqXHR, exception) {
+		            	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
 		                 // Our error logic here
 		            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
 		                 var msg = '';
@@ -149,6 +151,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 					    }
 		             }).done(function(data) {  		                		                    
 		                   console.log(data);
+		                   oCon.byId('conn_noti').setIcon('images/Circle_Green.png');
 		                   parser=new DOMParser();  
 		                   xmlDoc=parser.parseFromString(data,"text/xml");  
 		                   alerts = xmlDoc.getElementsByTagNameNS("*","Alert");  
@@ -190,6 +193,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", o);*/
 		                    
 		             }).fail(function (jqXHR, exception) {
+		            	 oCon.byId('conn_noti').setIcon('images/Circle_Red.png');
 		                 // Our error logic here
 		            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
 		                 var msg = '';

@@ -59,7 +59,7 @@ console.log(alertsAll);
    	var alertsAll = oStorage.get("AllAlerts"); 
   // create the row repeater control
 		var oRowRepeater = new sap.ui.commons.RowRepeater();
-		oRowRepeater.setNoData(new sap.ui.commons.TextView({text: "Sory, no data available!"}));
+		oRowRepeater.setNoData(new sap.ui.commons.TextView({text: "Sorry, no data available!"}));
 		
 		
 		// create test data
@@ -101,7 +101,7 @@ console.log(alertsAll);
 
 
 		//create title
-		var oTitle = new sap.ui.core.Title({text:"Employees", icon:"images/SAPLogo.gif", tooltip:"Employees"});
+		var oTitle = new sap.ui.core.Title({text:"Alerts", icon:"images/SAPLogo.gif", tooltip:"Employees"});
 
 		// create filters
 		//var oFilter1 = new sap.ui.commons.RowRepeaterFilter("first_filter",{text:"All Countries"});
@@ -142,13 +142,7 @@ console.log(alertsAll);
 		// main row
 		matrixRow = new sap.ui.commons.layout.MatrixLayoutRow();
 		//image
-		control = new sap.ui.commons.Image();
-		control.setHeight("60px");
-		control.setWidth("50px");
-		control.bindProperty("src","src");
-		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
-		matrixCell.addContent(control);
-		matrixRow.addCell(matrixCell);
+		
 		/*"AdapterNamespace": "http://sap.com/xi/XI/System",
 		"AdapterType": "File",
 		"Channel": "FileSendChannel_WorkingEarlier",

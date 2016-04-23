@@ -16,22 +16,33 @@ sap.ui.jsview("sap_pi_monitoring_tool.Dashboard", {
 		var oPanel = new sap.ui.commons.Panel(this.createId("oPanel"));
 		oPanel.setText('Alert');
 		
+		
+		
+		
+		
+		var oLayout = new sap.ui.commons.layout.MatrixLayout({
+			layoutFixed : false
+		});
+		
+		var control = new sap.ui.commons.Label();
+		control.setText("Total alert count: ");
 		var alertCount = new sap.ui.commons.TextView(this.createId('alertCount'));
 		alertCount.setText('0');
 		alertCount.addStyleClass('alertCount');
+		alertCount.addStyleClass('red');
 		
-		var oHLaoyout = new sap.ui.layout.HorizontalLayout({
-			content: [
-			          new sap.ui.commons.TextView({
-							text : "\nTotal alert count : ",
-							tooltip : "Total alert count",
-							wrapping : true
-							//width : '200px'
-							}), alertCount 
-			          ]
-		});
+		oLayout.createRow( control, alertCount );
 		
-		oPanel.addContent(oHLaoyout);
+		control = new sap.ui.commons.Label();
+		control.setText("Total channel alert count: ");
+		var channelErrorCount = new sap.ui.commons.TextView(this.createId('channelAlertCount'));
+		channelErrorCount.setText('0');
+		channelErrorCount.addStyleClass('alertCount');
+		channelErrorCount.addStyleClass('yellow');
+		
+		oLayout.createRow( control, channelErrorCount );
+		
+		oPanel.addContent(oLayout);
 		
 		var oPanelMessage = new sap.ui.commons.Panel(this.createId("oPanelMessage"));
 		oPanelMessage.setText('Message Monitoring');
@@ -55,7 +66,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.Dashboard", {
 	},
 	onAlertCountReceived : function(channel, event, data){
 		this.byId('alertCount').setText(parseInt(this.byId('alertCount').getText()) + 1);
-	  
+		if(data.Channel != "")
+		this.byId('channelAlertCount').setText(parseInt(this.byId('channelAlertCount').getText()) + 1);
     }
 
 });
