@@ -86,11 +86,16 @@ function logoff(){
 //Function to create the dialog
 
 function openLoginDialog() {
+	loginview = sap.ui.view({
+		viewName : "sap_pi_monitoring_tool.Login",
+		type : sap.ui.core.mvc.ViewType.JS
+		
+	});
 	var loginDialog = new sap.ui.commons.Dialog({
 		title : "Login",
 		modal : true,
 		keepInWindow : true,
-		//showCloseButton  : false,
+		showCloseButton  : false,
 		autoReposition: true,
 		content : [ loginview ]
 	});
@@ -102,6 +107,7 @@ function openLoginDialog() {
 	$(window).resize(function() {
 		loginDialog.changeView(loginview);
 	});
+	sap.ui.commons.Dialog.prototype.onsapescape = function(){ }; 
 	loginDialog.open();
 }
 
@@ -149,3 +155,16 @@ function notifyMe(title, msg) {
   }
 
 }
+
+
+$.ajaxSetup({
+    /*error: function (x, status, error) {
+        if (x.status == 403) {
+            alert("Sorry, your session has expired. Please login again to continue");
+            //window.location.href ="/Account/Login";
+        }
+        else {
+            alert("An error occurred: " + status + "nError: " + error);
+        }
+    }*/
+});

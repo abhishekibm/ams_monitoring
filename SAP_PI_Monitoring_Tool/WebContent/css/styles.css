@@ -17,6 +17,7 @@
 	margin: 4px;
 }
 
+
 .alertCount {
 	height : 30px;
 	border-radius : 20px;
@@ -29,4 +30,11 @@
     border: 2px solid #ffffff;
     padding: 3px 3px;
     left : 5px
+}
+
+.errorMessageContainer {
+	color: #cc1919;
+	background-color: #ffe6e6;
+	overflow-y: scroll !important;
+	height: 200px; 
 }

@@ -17,7 +17,11 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 	* @memberOf sap_pi_monitoring_tool.login
 	*/ 
 	createContent : function(oController) {
-		
+		var msgContainer = new sap.ui.commons.TextView({id:"msg", width: '400px', height: '200px',wrapping: true,  text:(localStore('sessionObject').msg)? localStore('sessionObject').msg:""});
+		msgContainer.addStyleClass('errorMessageContainer');
+		/*var o = localStore('sessionObject');
+		delete o.msg;
+		oStorage.put('sessionObject', o)*/
 		var oSimpleForm = new sap.ui.layout.form.SimpleForm(
 				"sf1",
 				{
@@ -26,7 +30,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 					content:[
 							//new sap.ui.core.Title({text:"Login"}),
 							new sap.ui.commons.Label({icon: "sap-icon://it-host",text:"Host"}),
-							new sap.ui.commons.TextField({id:"host", value:"inmbzr0096.in.dst.ibm.com", required: true, 
+							new sap.ui.commons.TextField({id:"host", value:(localStore('sessionObject').host)? localStore('sessionObject').host: "inmbzr0096.in.dst.ibm.com", required: true, 
 								liveChange: function (oControlEvent){
 									console.log(oControlEvent.getParameters().liveValue);
 									if(oControlEvent.getParameters().liveValue.trim() == ""){
@@ -41,7 +45,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 								}
 							}),
 							new sap.ui.commons.Label({icon: "sap-icon://number-sign",text:"Port"}),
-							new sap.ui.commons.TextField({id: "port", value:"50000", maxLength: 5, required: true}),
+							new sap.ui.commons.TextField({id: "port", value:(localStore('sessionObject').port)?localStore('sessionObject').port :"50000", maxLength: 5, required: true}),
 							
 							new sap.ui.commons.RadioButtonGroup({id: "protocol",
 								
@@ -51,11 +55,13 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 							}),
 							
 							new sap.ui.commons.Label({icon: "sap-icon://account", text:"Username"}),
-							new sap.ui.commons.TextField({id: "username", value:""}),
+							new sap.ui.commons.TextField({id: "username", value:(localStore('sessionObject').username)?localStore('sessionObject').username:""}),
 							new sap.ui.commons.Label({text:"Password"}),
 							new sap.ui.commons.PasswordField({id: "password", value:""}),	
 							new sap.ui.commons.Label({text:""}),
-							new sap.ui.commons.Label({id:"msg", text:""}),
+							msgContainer,
+							new sap.ui.commons.Label({text:""}),
+							new sap.ui.commons.Label({text:""}),
 							new sap.ui.commons.Button({ id : "btn",
 								icon : "sap-icon://log",
 								text : "Enter",

@@ -41,7 +41,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    	 */
 			    	var oNotifier = new sap.ui.ux3.Notifier(this.createId("conn_noti"), {
 			    		title : "Connection",
-			    		icon : "images/Circle_Red.png"
+			    		icon : "images/connecting.gif",
+			    		tooltip: "Connecting..."
 			    	});
 			    	oNotifier.attachMessageSelected(clickListener);
 

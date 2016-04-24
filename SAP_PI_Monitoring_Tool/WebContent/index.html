@@ -57,16 +57,17 @@
 		
 	});*/
 
-	initialView = sap.ui.view({
-		viewName : "sap_pi_monitoring_tool.Initial",
-		type : sap.ui.core.mvc.ViewType.JS
-	});
+	
 	
 	loadingview.placeAt("content");
 	
 	 setTimeout(function(){
 		
 		if(!isLoggedin()){
+			initialView = sap.ui.view({
+				viewName : "sap_pi_monitoring_tool.Initial",
+				type : sap.ui.core.mvc.ViewType.JS
+			});
 			//openLoginDialog();
 			var oShell = new sap.ui.ux3.Shell("myShell", {
 				appTitle: "IBM AMS Monitoring Tool",
@@ -108,6 +109,7 @@
 </script>
 </head>
 <body class="sapUiBody" role="application">
+        
 	<div id="content">
 	</div>
 	<div id="notificationbar"></div>

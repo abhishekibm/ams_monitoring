@@ -78,7 +78,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    obj.fetchSingleAlert(nodeList, 0);
 		             })  
 		             .fail(function (jqXHR, exception) {
-		            	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
+
 		                 // Our error logic here
 		            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
 		                 var msg = '';
@@ -91,22 +91,30 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                			timestamp : now
 		                		});
 		                		 // buffers automatically when created
-		                	snd.play();
-		                    oCon.byId("conn_noti").addMessage(oMessage);
-		                 } else if (jqXHR.status == 404) {
+		                	 snd.play();
+			            	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
+		                 } 
+		                 if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
-		                 } else if (jqXHR.status == 500) {
-		                     msg = 'Internal Server Error [500].';
-		                 } else if (exception === 'parsererror') {
+		                 } 
+		                 if (jqXHR.status == 500 || jqXHR.status == 401) {
+		                	 var o = localStore('sessionObject');
+		                	 o.msg = jqXHR.responseText;
+		                	 oStorage.put('sessionObject', o);
+		                	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
+		                	 openLoginDialog();
+		                 } 
+		                 if (exception === 'parsererror') {
 		                     msg = 'Requested XML parse failed.';
-		                 } else if (exception === 'timeout') {
-		                     msg = 'Time out error.';
-		                 } else if (exception === 'abort') {
-		                     msg = 'Ajax request aborted.';
-		                 } else {
-		                     msg = 'Uncaught Error.\n' + jqXHR.responseText;
-		                     
 		                 }
+		                 if (exception === 'timeout') {
+		                     msg = 'Time out error.';
+		                 } 
+		                 if (exception === 'abort') {
+		                     msg = 'Ajax request aborted.';
+		                 } 
+		                 
+		                 
 		                 
 		                 console.log(msg);
 		                 //eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { err : jqXHR.responseText });
@@ -193,12 +201,11 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", o);*/
 		                    
 		             }).fail(function (jqXHR, exception) {
-		            	 oCon.byId('conn_noti').setIcon('images/Circle_Red.png');
-		                 // Our error logic here
+		            	// Our error logic here
 		            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
 		                 var msg = '';
-		                 if (jqXHR.status === 0) {
-		                     msg = 'Not connect.\n Verify Network.';
+		                 if (jqXHR.status == 0) {
+		                     msg = 'Not connect. Verify Network.';
 		                     var now = (new Date()).toUTCString();
 		                		var oMessage = new sap.ui.core.Message({
 		                			text :  'Could not connect PI system.',
@@ -207,19 +214,33 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		});
 		                		 // buffers automatically when created
 		                	snd.play();
-		                     oCon.byId("conn_noti").addMessage(oMessage);
-		                 } else if (jqXHR.status == 404) {
+			            	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
+		                     obj.byId("conn_noti").addMessage(oMessage);
+		                 } 
+		                 if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
-		                 } else if (jqXHR.status == 500) {
-		                     msg = 'Internal Server Error [500].';
-		                 } else if (exception === 'parsererror') {
+		                 } 
+		                 if (jqXHR.status == 500) {
+		                	 var obj = localStore('sessionObject');
+		                	 obj.msg = jqXHR.responseText;
+		                	 oStorage.put('sessionObject', obj);
+		                	 openLoginDialog();
+		                 } 
+		                 if (exception === 'parsererror') {
 		                     msg = 'Requested XML parse failed.';
-		                 } else if (exception === 'timeout') {
+		                 }
+		                 if (exception === 'timeout') {
 		                     msg = 'Time out error.';
-		                 } else if (exception === 'abort') {
+		                 } 
+		                 if (exception === 'abort') {
 		                     msg = 'Ajax request aborted.';
-		                 } else {
-		                     msg = 'Uncaught Error.\n' + jqXHR.responseText;
+		                 } 
+		                 
+		                 if (jqXHR.status == 401){
+		                	 var obj = localStore('sessionObject');
+		                	 obj.msg = jqXHR.responseText;
+		                	 oStorage.put('sessionObject', obj);
+		                	 openLoginDialog();
 		                 }
 		                 
 		                 console.log(msg);
