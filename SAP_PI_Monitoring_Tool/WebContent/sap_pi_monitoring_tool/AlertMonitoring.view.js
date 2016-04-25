@@ -26,16 +26,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 			 */
 			createContent : function(oController) {
 				var oPanel = new sap.ui.commons.Panel(this.createId("oPanel"));
-				var myModel = oController.getMyModel(3,4,1,0);
-				var myChart = oController.createMyChart(this.createId("oChart"), "Dashboard", myModel);
 				
-				
-				var textArea = new sap.ui.commons.TextArea({  
-                    id : "textArea1"  
-				});
-				
-				oPanel.addContent(myChart);
-				//return myChart;
 				  
 			    
 					      

@@ -13,6 +13,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 	* @memberOf sap_pi_monitoring_tool.Initial
 	*/ 
 	createContent : function(oController) {
+		
 		var loginBox = new sap.ui.layout.form.SimpleForm(
 				"sf1",
 				{

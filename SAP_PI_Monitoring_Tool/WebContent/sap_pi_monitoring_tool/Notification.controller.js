@@ -40,6 +40,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 //	}
 	
 	fetchAlerts : function(obj){
+		obj.byId('conn_noti').setIcon('images/connecting.gif');
 		var eventBus = sap.ui.getCore().getEventBus();
         var snd = new Audio("media/notification.mp3"); 
 
@@ -54,7 +55,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		    var oModel = new sap.ui.model.xml.XMLModel();  
 		    var response = "";
             var returnVal = "";
-		             $.ajax({  
+		    var ajax = $.ajax({  
 		             url : serviceAPIs.alertAPI_all_alert_consumers(),  
 		             type : "POST",  
 		             data : request,  
@@ -62,6 +63,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             contentType : "text/xml; charset=\"utf-8\"",
 		             timeout: 100000,
 		             headers : {
+		            	    'X-Requested-With': 'XMLHttpRequest',
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
 					    }
@@ -97,7 +99,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                 if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
 		                 } 
-		                 if (jqXHR.status == 500 || jqXHR.status == 401) {
+		                 if (jqXHR.status == 500 || jqXHR.status == 401 || jqXHR.status == 403) {
 		                	 var o = localStore('sessionObject');
 		                	 o.msg = jqXHR.responseText;
 		                	 oStorage.put('sessionObject', o);
@@ -109,6 +111,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                 }
 		                 if (exception === 'timeout') {
 		                     msg = 'Time out error.';
+		                     
 		                 } 
 		                 if (exception === 'abort') {
 		                     msg = 'Ajax request aborted.';
