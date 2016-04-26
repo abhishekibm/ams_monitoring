@@ -1,3 +1,6 @@
+var oModel = new sap.ui.model.xml.XMLModel();
+var oTable = new sap.ui.table.Table();
+var oController;
 sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 
 /**
@@ -6,7 +9,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 * @memberOf sap_pi_monitoring_tool.ChannelMonitor
 */
 	onInit: function() {
-		
+		oController = this;
 		this.byId('oChannelListPanel').addContent(
 			sap.ui.view({
 			viewName : "sap_pi_monitoring_tool.Loading",
@@ -14,6 +17,100 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 			})
 		);
 		
+		
+		oTable.setToolbar(new sap.ui.commons.Toolbar({items: [   
+                                                      new sap.ui.commons.Label({text : "Find"}),   
+                                                      new sap.ui.commons.TextField("SearchText",{liveChange: oController.Change}),  
+                                                      new sap.ui.commons.Button({text: "Go", press: function(){}})  
+                                             ]}));
+		oTable.columns = [  
+	                    new sap.ui.table.Column({label: "Component", template:new sap.ui.commons.Link().bindProperty("text", "Component").bindProperty("href", "Component"), filterProperty:"Component" })  
+	                    //new sap.ui.table.Column({label: "Material Description", template:new sap.ui.commons.Link().bindProperty("text", "MaterialDescription").bindProperty("href", "MaterialDescriptionhref"), filterProperty:"MaterialDescription" }),  
+	                    //new sap.ui.table.Column({label: "Product Category Description", template:"ProductCategoryDescription", filterProperty:"ProductCategoryDescription" }),  
+	                    //new sap.ui.table.Column({label: "Created By", template:new sap.ui.commons.Link().bindProperty("text", "CreatedBy").bindProperty("href", "CreatedByhref"),filterProperty:"CreatedBy"  }),  
+	                    //new sap.ui.table.Column({label: "Date/Time", template:"DateTime", filterProperty:"DateTime" })  
+	                    ] ;
+		
+    	oTable.setTitle("Channel status");
+    	oTable.setNoData(new sap.ui.commons.TextView({text: "Sorry, no data available!"}));
+
+    	//oModel.setXML(new XMLSerializer().serializeToString(returnVal));  
+         
+    	
+    	oTable.addColumn(new sap.ui.table.Column({ 
+    		              width : '100px',
+                          label: new sap.ui.commons.Label({text: "Party"}),          
+                          template: new sap.ui.commons.TextField().bindProperty("value", "@party")    
+     		})   
+          );
+	     oTable.addColumn(new sap.ui.table.Column({          
+	                          label: new sap.ui.commons.Label({text: "Component"}),          
+	                          template: new sap.ui.commons.TextField().bindProperty("value", "@service")    
+	     				})   
+	      );   
+	      oTable.addColumn(new sap.ui.table.Column({          
+	                      label: new sap.ui.commons.Label({text: "Channel"}),          
+	                      template: new sap.ui.commons.TextField().bindProperty("value", "@name")    
+	      				})   
+	      );
+	      oTable.addColumn(new sap.ui.table.Column({          
+              label: new sap.ui.commons.Label({text: "Running Status"}),          
+              template: new sap.ui.layout.HorizontalLayout({  
+            	    content : [  
+            	               new sap.ui.commons.TextView({  			                    	                   
+            	                 textAlign: sap.ui.core.TextAlign.Left,  
+            	                 visible : true  
+            	               }).bindProperty("text", "status/@activationState", function(cellValue){
+            	            	  // remove styles else it will overwrite   
+            	                  this.removeStyleClass('green');  
+            	                  this.removeStyleClass('yellow');  
+            	                  this.removeStyleClass('red');  
+            	                  // Set style Conditionally  
+            	                  if(cellValue == null){
+            	                	  
+            	                  }else if (cellValue.toLowerCase() == 'started') {  
+            	                      this.addStyleClass('green');  
+            	                  } else{  
+            	                	  this.addStyleClass('red');               
+            	                  }  
+            	                  return cellValue; 
+            	               })  
+            	                
+            	             ]  
+            	           })     
+				})   
+	      );
+	     oTable.addColumn(new sap.ui.table.Column({          
+              label: new sap.ui.commons.Label({text: "Running Status"}),          
+              template: new sap.ui.layout.HorizontalLayout({  
+            	    content : [  	                 			                    	                
+            	               new sap.ui.commons.Button({  
+            	                 text : "Approve",  
+            	                 press : function(){
+            	                	 
+            	                 },  
+            	                 visible : true  
+            	               }).bindProperty("text", "status/@activationState", function(cellValue){
+            	            	  if(cellValue == null){
+            	            		  
+            	            	  }else if (cellValue.toLowerCase() == 'started') {  
+            	                      return "Stop";  
+            	                  } else{  
+            	                	  return "Start";               
+            	                  }  
+            	               })  
+            	             ]  
+            	           })     
+				})   
+	      );
+	      oTable.setModel(oModel);     
+	      oTable.bindRows({path: "/channelStatus"});  
+	      //colorRows(oTable, oModel);
+	      this.byId('oChannelListPanel').destroyContent();
+	      this.byId('oChannelListPanel').addContent(oTable);
+	      
+	      oTable.setBusy(true);
+		  this.getChannels(this);
 		
 	},
 
@@ -32,7 +129,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 * @memberOf sap_pi_monitoring_tool.ChannelMonitor
 */
 	onAfterRendering: function() {
-		this.getChannels(this);
+		
 		
 	},
 
@@ -44,6 +141,27 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 //
 //	}
 	
+	Change: function(oEvent){  
+         
+        var searchText = oEvent.getParameters().liveValue;  
+          
+        var filters=[];  
+          
+        if(searchText.trim()!=''){  
+              
+            var filter1 = new sap.ui.model.Filter({path:"Component",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter2 = new sap.ui.model.Filter({path:"MaterialDescription",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter3 = new sap.ui.model.Filter({path:"ProductCategoryDescription",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter4 = new sap.ui.model.Filter({path:"CreatedBy",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            filters = [filter1,filter2,filter3,filter4];  
+            var finalFilter = new sap.ui.model.Filter({filters:filters, and:false});  
+            oTable.getBinding("rows").filter(finalFilter, sap.ui.model.FilterType.Application);  
+        }else{  
+            oTable.getBinding("rows").filter([], sap.ui.model.FilterType.Application);  
+            }  
+          
+          
+    }  ,
 	getChannels: function(obj){
 		
 		var request =
@@ -113,81 +231,14 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	                    		            	 parser=new DOMParser();  
 	                    		                 xmlDoc=parser.parseFromString(data,"text/xml");  
 	                    		                 returnVal = xmlDoc.getElementsByTagNameNS("*","getChannelAutomationStatusResponse")[0];
-	                    		            	 var oModel = new sap.ui.model.xml.XMLModel();
-	                 	                    	 var oTable = new sap.ui.table.Table(); 
-	                 	                    	oTable.setTitle("Channel status");
-	                 	                    	
-	                 	                    	oModel.setXML(new XMLSerializer().serializeToString(returnVal));  
-	                 				             
-	                 	                    	
-	                 	                    	oTable.addColumn(new sap.ui.table.Column({ 
-	                 	                    		              width : '100px',
-	                 					                          label: new sap.ui.commons.Label({text: "Party"}),          
-	                 					                          template: new sap.ui.commons.TextField().bindProperty("value", "@party")    
-	                 					     		})   
-	                 					          );
-	                 						     oTable.addColumn(new sap.ui.table.Column({          
-	                 						                          label: new sap.ui.commons.Label({text: "Component"}),          
-	                 						                          template: new sap.ui.commons.TextField().bindProperty("value", "@service")    
-	                 						     				})   
-	                 						      );   
-	                 						      oTable.addColumn(new sap.ui.table.Column({          
-	                 						                      label: new sap.ui.commons.Label({text: "Channel"}),          
-	                 						                      template: new sap.ui.commons.TextField().bindProperty("value", "@name")    
-	                 						      				})   
-	                 						      );
-	                 						      oTable.addColumn(new sap.ui.table.Column({          
-	                 			                      label: new sap.ui.commons.Label({text: "Running Status"}),          
-	                 			                      template: new sap.ui.layout.HorizontalLayout({  
-	                 			                    	    content : [  
-	                 			                    	               new sap.ui.commons.TextView({  			                    	                   
-	                 			                    	                 textAlign: sap.ui.core.TextAlign.Left,  
-	                 			                    	                 visible : true  
-	                 			                    	               }).bindProperty("text", "status/@activationState", function(cellValue){
-	                 			                    	            	  // remove styles else it will overwrite   
-	                 			                    	                  this.removeStyleClass('green');  
-	                 			                    	                  this.removeStyleClass('yellow');  
-	                 			                    	                  this.removeStyleClass('red');  
-	                 			                    	                  // Set style Conditionally  
-	                 			                    	                  if (cellValue.toLowerCase() == 'started') {  
-	                 			                    	                      this.addStyleClass('green');  
-	                 			                    	                  } else{  
-	                 			                    	                	  this.addStyleClass('red');               
-	                 			                    	                  }  
-	                 			                    	                  return cellValue; 
-	                 			                    	               })  
-	                 			                    	                
-	                 			                    	             ]  
-	                 			                    	           })     
-	                 			      				})   
-	                 						      );
-	                 						     oTable.addColumn(new sap.ui.table.Column({          
-	                 			                      label: new sap.ui.commons.Label({text: "Running Status"}),          
-	                 			                      template: new sap.ui.layout.HorizontalLayout({  
-	                 			                    	    content : [  	                 			                    	                
-	                 			                    	               new sap.ui.commons.Button({  
-	                 			                    	                 text : "Approve",  
-	                 			                    	                 press : function(){
-	                 			                    	                	 
-	                 			                    	                 },  
-	                 			                    	                 visible : true  
-	                 			                    	               }).bindProperty("text", "status/@activationState", function(cellValue){
-	                 			                    	            	  if (cellValue.toLowerCase() == 'started') {  
-	                 			                    	                      return "Stop";  
-	                 			                    	                  } else{  
-	                 			                    	                	  return "Start";               
-	                 			                    	                  }  
-	                 			                    	               })  
-	                 			                    	             ]  
-	                 			                    	           })     
-	                 			      				})   
-	                 						      );
-	                 						      oTable.setModel(oModel);     
-	                 						      oTable.bindRows({path: "/channelStatus"});  
-	                 						      colorRows(oTable, oModel);
-	                 						      obj.byId('oChannelListPanel').destroyContent();
-	                 						      obj.byId('oChannelListPanel').addContent(oTable);
+	                    		                 oModel.setXML(new XMLSerializer().serializeToString(returnVal));
 	                 	                    
+	                    		             })
+	                    		             .fail(function(){
+	                    		            	 
+	                    		             })
+	                    		             .always(function(){
+	                    		            	 oTable.setBusy(false);
 	                    		             });
 	                    
 	                        
@@ -195,10 +246,11 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	             })  
 	             .fail(function (jqXHR, exception) {
 	                 // Our error logic here
-	            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
+	            	 console.log(jqXHR);
+	            	 console.log(exception);
 	                 var msg = '';
 	                 if (jqXHR.status === 0) {
-	                     msg = 'Not connect.\n Verify Network.';
+	                     msg = jqXHR.responseText;
 	                 } else if (jqXHR.status == 404) {
 	                     msg = 'Requested page not found. [404]';
 	                 } else if (jqXHR.status == 500) {

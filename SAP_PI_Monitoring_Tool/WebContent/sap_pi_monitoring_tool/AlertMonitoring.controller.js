@@ -1,5 +1,5 @@
 var oCon;
-var oModel = new sap.ui.model.json.JSONModel();
+var oModel_Alerts = new sap.ui.model.json.JSONModel();
 var oModel_chart = new sap.ui.model.json.JSONModel();
 sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 	/**
@@ -10,185 +10,190 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 	 * 
 	 * @memberOf sap_pi_monitoring_tool.AlertMonitoring
 	 */
-	 onInit: function() {
-		 
-		 oCon = this;
-			var eventBus = sap.ui.getCore().getEventBus();
-	  		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
-	  		 eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, oCon);
-		 console.log(oCon);
-		 //var eventBus = sap.ui.getCore().getEventBus();
-		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
-		 //eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
-		
-		 ///////////////CHART
-		 
-		 var oChart = new sap.makit.Chart({
-				id : oCon.createId('altrs'),
-				width : "500px",
-				height : "250px",
-				type : sap.makit.ChartType.Column,
-				showRangeSelector : false,
-				showTotalValue : true,
-				valueAxis : new sap.makit.ValueAxis({}),
-				categoryAxis : new sap.makit.CategoryAxis({}),
-				category : new sap.makit.Category({
-					column : "type"
-				}),
+	onInit : function() {
 
-				values : [ new sap.makit.Value({
+		oCon = this;
+		var eventBus = sap.ui.getCore().getEventBus();
+		// 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
+		eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent",
+				this.onDataReceived, oCon);
+		console.log(oCon);
+		// var eventBus = sap.ui.getCore().getEventBus();
+		// 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
+		// eventBus.subscribe("FetchAlertsFromNotificationBar",
+		// "onNavigateEvent", this.onDataReceived, this);
 
-					expression : "tickets",
+		// /////////////CHART
 
-					format : "number"
+		var oChart = new sap.makit.Chart({
+			id : oCon.createId('altrs'),
+			width : "500px",
+			height : "250px",
+			type : sap.makit.ChartType.Column,
+			showRangeSelector : false,
+			showTotalValue : true,
+			valueAxis : new sap.makit.ValueAxis({}),
+			categoryAxis : new sap.makit.CategoryAxis({}),
+			category : new sap.makit.Category({
+				column : "type"
+			}),
 
-				}) ]
+			values : [ new sap.makit.Value({
+				expression : "tickets",
+				format : "number"
+			}) ]
 
-			});
+		});
 
-			oChart.addColumn(new sap.makit.Column({
-				name : "type",
-				value : "{type}"
-			}));
+		oChart.addColumn(new sap.makit.Column({
+			name : "type",
+			value : "{type}"
+		}));
 
-			oChart.addColumn(new sap.makit.Column({
-				name : "tickets",
-				value : "{tickets}",
-				type : "number"
-			}));
+		oChart.addColumn(new sap.makit.Column({
+			name : "tickets",
+			value : "{tickets}",
+			type : "number"
+		}));
 
-			oChart.setModel(oModel_chart);
+		oChart.setModel(oModel_chart);
 
-			oChart.bindRows("/");
-			this.byId('oPanel').addContent(oChart);
-		 
-		 
-		 
-		 /////////////////END of CHart initi
-		 
-		 
-		 
-		 console.log(alertsAll);
-	   		var alertsAll = oStorage.get("AllAlerts"); 
-	  // create the row repeater control
-			var oRowRepeater = new sap.ui.commons.RowRepeater();
-			oRowRepeater.setNoData(new sap.ui.commons.TextView({text: "Sorry, no data available!"}));
-			
-			
-			
-			
+		oChart.bindRows("/");
+		this.byId('oPanel').addContent(oChart);
 
-			// create JSON model
-			
-			oModel.setData(alertsAll);
-			sap.ui.getCore().setModel(oModel);
+		// ///////////////END of CHart initi
 
+		console.log(alertsAll);
+		var alertsAll = oStorage.get("AllAlerts");
+		// create the row repeater control
+		var oRowRepeater = new sap.ui.commons.RowRepeater();
+		oRowRepeater.setNoData(new sap.ui.commons.TextView({
+			text : "Sorry, no data available!"
+		}));
 
-			//create title
-			var oTitle = new sap.ui.core.Title({text:"Alerts", icon:"images/SAPLogo.gif", tooltip:"Employees"});
+		// create JSON model
 
-			// create filters
-			//var oFilter1 = new sap.ui.commons.RowRepeaterFilter("first_filter",{text:"All Countries"});
-			//var oFilter2 = new sap.ui.commons.RowRepeaterFilter("second_filter",{text:"Germany",filters:[new sap.ui.model.Filter("country","EQ", "DE")],tooltip:"Show Employees working in Germany"});
-			//var oFilter3 = new sap.ui.commons.RowRepeaterFilter("third_filter",{text:"USA",filters:[new sap.ui.model.Filter("country", "EQ","US")],tooltip:"Show Emloyees working in USA"});
+		oModel_Alerts.setData(alertsAll);
+		sap.ui.getCore().setModel(oModel_Alerts);
 
-			// create sorters
-			var oSorter1 = new sap.ui.commons.RowRepeaterSorter({text:"Channel",sorter:new sap.ui.model.Sorter("Channel",true),tooltip:"Sort By Channel"});
-			var oSorter2 = new sap.ui.commons.RowRepeaterSorter({text:"Channel Service",sorter:new sap.ui.model.Sorter("ChannelService",false),tooltip:"Sort By Channel Service"});
-			//var oSorter3 = new sap.ui.commons.RowRepeaterSorter("second_sorter",{text:"Last Name",sorter:new sap.ui.model.Sorter("lastName",false)});
+		// create title
+		var oTitle = new sap.ui.core.Title({
+			text : "Alerts",
+			icon : "images/alert_white_24.png",
+			tooltip : "Alerts"
+		});
 
-			//add title
-			oRowRepeater.setTitle(oTitle);
+		// create filters
+		// var oFilter1 = new
+		// sap.ui.commons.RowRepeaterFilter("first_filter",{text:"All
+		// Countries"});
+		// var oFilter2 = new
+		// sap.ui.commons.RowRepeaterFilter("second_filter",{text:"Germany",filters:[new
+		// sap.ui.model.Filter("country","EQ", "DE")],tooltip:"Show Employees
+		// working in Germany"});
+		// var oFilter3 = new
+		// sap.ui.commons.RowRepeaterFilter("third_filter",{text:"USA",filters:[new
+		// sap.ui.model.Filter("country", "EQ","US")],tooltip:"Show Emloyees
+		// working in USA"});
 
-			//add filters and sorters
-			//oRowRepeater.addFilter(oFilter1);
-			//oRowRepeater.addFilter(oFilter2);
-			//oRowRepeater.addFilter(oFilter3);
+		// create sorters
+		var oSorter1 = new sap.ui.commons.RowRepeaterSorter({
+			text : "Channel",
+			sorter : new sap.ui.model.Sorter("Channel", true),
+			tooltip : "Sort By Channel"
+		});
+		var oSorter2 = new sap.ui.commons.RowRepeaterSorter({
+			text : "Channel Service",
+			sorter : new sap.ui.model.Sorter("ChannelService", false),
+			tooltip : "Sort By Channel Service"
+		});
+		// var oSorter3 = new
+		// sap.ui.commons.RowRepeaterSorter("second_sorter",{text:"Last
+		// Name",sorter:new sap.ui.model.Sorter("lastName",false)});
 
-			oRowRepeater.addSorter(oSorter1);
-			oRowRepeater.addSorter(oSorter2);
-			//oRowRepeater.addSorter(oSorter3);
+		// add title
+		oRowRepeater.setTitle(oTitle);
 
-			//configure the RowRepeater
-			oRowRepeater.setDesign("Standard");
-			oRowRepeater.setNumberOfRows(5);
-			oRowRepeater.setCurrentPage(1);
-			oRowRepeater.setTitle(oTitle);
+		// add filters and sorters
+		// oRowRepeater.addFilter(oFilter1);
+		// oRowRepeater.addFilter(oFilter2);
+		// oRowRepeater.addFilter(oFilter3);
 
+		oRowRepeater.addSorter(oSorter1);
+		oRowRepeater.addSorter(oSorter2);
+		// oRowRepeater.addSorter(oSorter3);
 
+		// configure the RowRepeater
+		oRowRepeater.setDesign("Standard");
+		oRowRepeater.setNumberOfRows(20);
+		oRowRepeater.setCurrentPage(1);
+		oRowRepeater.setTitle(oTitle);
 
-			//create the template control that will be repeated and will display the data
-			var oRowTemplate = new sap.ui.commons.layout.MatrixLayout();
+		// create the template control that will be repeated and will display
+		// the data
+		var oRowTemplate = new sap.ui.commons.layout.MatrixLayout();
 
-			var  matrixRow, matrixCell, control;
-			// main matrix
-			oRowTemplate.setWidth("70%");
-			// main row
-			matrixRow = new sap.ui.commons.layout.MatrixLayoutRow();
-			//image
-			
-			/*"AdapterNamespace": "http://sap.com/xi/XI/System",
-			"AdapterType": "File",
-			"Channel": "FileSendChannel_WorkingEarlier",
-			"ChannelParty": "GBS_Saurav",
-			"ChannelService": "BC_Saurav",
-			"Component": "af.po7.inmbzr0096",
-			"ErrCat": "",
-			"ErrCode": "",
-			"ErrLabel": "9999",
-			"ErrText": "No suitable sender agreement found",
-			"FromParty": "GBS_Saurav",
-			"FromService": "BC_Saurav",
-			"RuleId": "f262f39bc7ae35d3a326061723d96499",
-			"Severity": "VERYHIGH",
-			"Timestamp": "2016-04-22T19:14:44Z"*/
-			//label 1
-			control = new sap.ui.commons.Label();
-			control.bindProperty("text","ChannelService");
-			matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
-			matrixCell.addContent(control);
-			matrixRow.addCell(matrixCell);
+		var matrixRow, matrixCell, control;
+		// main matrix
+		oRowTemplate.setWidth("70%");
+		// main row
+		matrixRow = new sap.ui.commons.layout.MatrixLayoutRow();
+		// image
 
-			//label 2
-			control = new sap.ui.commons.Label();
-			control.bindProperty("text","AdapterType");
-			control.setWidth('80px');
-			matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
-			matrixCell.addContent(control);
-			matrixRow.addCell(matrixCell);
+		/*
+		 * "AdapterNamespace": "http://sap.com/xi/XI/System", "AdapterType":
+		 * "File", "Channel": "FileSendChannel_WorkingEarlier", "ChannelParty":
+		 * "GBS_Saurav", "ChannelService": "BC_Saurav", "Component":
+		 * "af.po7.inmbzr0096", "ErrCat": "", "ErrCode": "", "ErrLabel": "9999",
+		 * "ErrText": "No suitable sender agreement found", "FromParty":
+		 * "GBS_Saurav", "FromService": "BC_Saurav", "RuleId":
+		 * "f262f39bc7ae35d3a326061723d96499", "Severity": "VERYHIGH",
+		 * "Timestamp": "2016-04-22T19:14:44Z"
+		 */
+		// label 1
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "ChannelService");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
 
-			//label 3
-			control = new sap.ui.commons.Label();
-			control.bindProperty("text","Channel");
-			matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
-			matrixCell.addContent(control);
-			matrixRow.addCell(matrixCell);
+		// label 2
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "AdapterType");
+		control.setWidth('80px');
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
 
-			//link
-			control = new sap.ui.commons.Link();
-			control.bindProperty("text","AdapterNamespace");
-			matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
-			matrixCell.addContent(control);
-			matrixRow.addCell(matrixCell);
-			
-			//label 3
-			control = new sap.ui.commons.Label();
-			control.bindProperty("text","ErrText");
-			matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
-			matrixCell.addContent(control);
-			matrixRow.addCell(matrixCell);
-			// add row to matrix
-			oRowTemplate.addRow(matrixRow);
+		// label 3
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "Channel");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
 
+		// link
+		control = new sap.ui.commons.Link();
+		control.bindProperty("text", "AdapterNamespace");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
 
+		// label 3
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "ErrText");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
+		// add row to matrix
+		oRowTemplate.addRow(matrixRow);
 
-			//attach data to the RowRepeater
-			oRowRepeater.bindRows("/data", oRowTemplate);
-			//this.byId('oPanel').destroyContent();
-			this.byId('oPanel').addContent(oRowRepeater);
-	 },
-	 
-	 
+		// attach data to the RowRepeater
+		oRowRepeater.bindRows("/data", oRowTemplate);
+		// this.byId('oPanel').destroyContent();
+		this.byId('oPanel').addContent(oRowRepeater);
+	},
+
 	/**
 	 * Similar to onAfterRendering, but this hook is invoked before the
 	 * controller's View is re-rendered (NOT before the first rendering!
@@ -206,27 +211,26 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 	 * 
 	 * @memberOf sap_pi_monitoring_tool.alertDashboard
 	 */
-	onAfterRendering: function() {
-		
+	onAfterRendering : function() {
+
 	},
 	onDataReceived : function(channel, event, alertObj) {
-	 console.log(oStorage.get("AllAlerts"));
-   	 notifyMe('New Alert', alertObj.ErrText +'\n' + alertObj.Timestamp);
-   	var a = oStorage.get("AllAlerts");
-  	 if(a == null){
-  		a = {data:[]};
-  		a.data.push(alertObj);
-  		oStorage.put("AllAlerts", a);
-  	} else {
-  		a.data.push(alertObj);
-  		oStorage.put("AllAlerts", a);
-  	}
-  	console.log("Alert received");
-  	
-  	oModel.setData(oStorage.get("AllAlerts"));
-  	sap.ui.getCore().setModel(oModel);
-  	
-  	oModel_chart.setData([ {
+		console.log(oStorage.get("AllAlerts"));
+		notifyMe('New Alert', alertObj.ErrText + '\n' + alertObj.Timestamp);
+		var a = oLocalStorage.get("AllAlerts");
+		if (a == null) {
+			a = {
+				data : []
+			};
+		}
+		a.data.push(alertObj);
+		oLocalStorage.put("AllAlerts", a);
+		console.log("Alert received");
+
+		oModel_Alerts.setData(oLocalStorage.get("AllAlerts"));
+		sap.ui.getCore().setModel(oModel_Alerts);
+
+		oModel_chart.setData([ {
 			type : "Very High",
 			tickets : Math.floor((Math.random() * 10) + 1)
 		}, {
@@ -235,7 +239,7 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 		}, {
 			type : "Medium",
 			tickets : Math.floor((Math.random() * 10) + 1)
-		},{
+		}, {
 			type : "Low",
 			tickets : Math.floor((Math.random() * 10) + 1)
 		} ]);
@@ -249,9 +253,8 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 	// onExit: function() {
 	//
 	// }
-	
 	getMyModel : function(a1, a2, a3, a4) {
-//VERYHIGH, HIGH, MEDIUM, or LOW
+		// VERYHIGH, HIGH, MEDIUM, or LOW
 		var data = [ {
 			type : "Very High",
 			tickets : a1
@@ -261,7 +264,7 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 		}, {
 			type : "Medium",
 			tickets : a3
-		},{
+		}, {
 			type : "Low",
 			tickets : a4
 		} ];
@@ -273,7 +276,7 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 	},
 
 	createMyChart : function(id, title, model) {
-     var oCon = this;
+		var oCon = this;
 		var oChart = new sap.makit.Chart({
 			id : oCon.createId(id),
 			width : "500px",

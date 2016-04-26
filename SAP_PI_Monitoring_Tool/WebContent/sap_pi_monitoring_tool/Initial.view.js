@@ -14,72 +14,20 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 	*/ 
 	createContent : function(oController) {
 		
-		var loginBox = new sap.ui.layout.form.SimpleForm(
-				"sf1",
-				{
-					maxContainerCols: 1,
-					editable: true,
-					content:[
-							//new sap.ui.core.Title({text:"Login"}),
-							new sap.ui.commons.Label({icon: "sap-icon://it-host",text:"Host"}),
-							new sap.ui.commons.TextField({id:"host", value:"inmbzr0096.in.dst.ibm.com", required: true, 
-								liveChange: function (oControlEvent){
-									console.log(oControlEvent.getParameters().liveValue);
-									if(oControlEvent.getParameters().liveValue.trim() == ""){
-										sap.ui.getCore().getElementById('msg').setText("Host cannot be empty.");
-										this.setValueState(sap.ui.core.ValueState.Error);
-										sap.ui.getCore().getElementById('btn').setEnabled(false);
-									}else{
-										this.setValueState(sap.ui.core.ValueState.Success);
-										sap.ui.getCore().getElementById('btn').setEnabled(true);
-									}
-									
-								}
-							}),
-							new sap.ui.commons.Label({icon: "sap-icon://number-sign",text:"Port"}),
-							new sap.ui.commons.TextField({id: "port", value:"50000", maxLength: 5, required: true}),
-							
-							new sap.ui.commons.RadioButtonGroup({id: "protocol",
-								
-								columns: 2,
-								items: [new sap.ui.core.Item({id: "http",text: "http", checked: "true"}),
-												new sap.ui.core.Item({id: "https", text: "https"})]
-							}),
-							
-							new sap.ui.commons.Label({icon: "sap-icon://account", text:"Username"}),
-							new sap.ui.commons.TextField({id: "username", value:""}),
-							new sap.ui.commons.Label({text:"Password"}),
-							new sap.ui.commons.PasswordField({id: "password", value:""}),	
-							new sap.ui.commons.Label({text:""}),
-							new sap.ui.commons.Label({id:"msg", text:""}),
-							new sap.ui.commons.Button({ id : "btn",
-								icon : "sap-icon://log",
-								text : "Enter",
-								tooltip : "Click here to login",
-								enabled : true,
-								press : function() {
-									console.log(sap.ui.getCore().getElementById('protocol').getSelectedItem().getText());
-									
-									var oParameters = {
-									           "username" : sap.ui.getCore().getElementById('username').getValue(),
-									           "password" : sap.ui.getCore().getElementById('password').getValue(),
-									           "host" : sap.ui.getCore().getElementById('host').getValue(),
-									           "port" : sap.ui.getCore().getElementById('port').getValue(),
-									           "protocol" : sap.ui.getCore().getElementById('protocol').getSelectedItem().getText(),
-									           "isLoggedin" : false
-									};
-									
-									$("#content").html("");
-									login(oParameters);
-
-									
-								}
-							})
-					         ],
-					        layoutData : new sap.ui.layout.GridData({
+		var loginBox = sap.ui.view({
+			id : "idhome",
+			viewName : "sap_pi_monitoring_tool.Login",
+			type : sap.ui.core.mvc.ViewType.JS,
+			layoutData : new sap.ui.layout.GridData({
+				span : "L6"
+		    })
+		});
+		
+		/*
+		 * layoutData : new sap.ui.layout.GridData({
 									span : "L6 M6 S12"
 							})
-				});
+		 */
 		var LeftGrid = new sap.ui.layout.VerticalLayout({
 			
 			content :[
@@ -89,7 +37,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 						})
 			],
 			layoutData : new sap.ui.layout.GridData({
-				span : "L6 M6 S12"
+				span : "L6"
 		    })
 		});
 		var oGrid1 = new sap.ui.layout.Grid({

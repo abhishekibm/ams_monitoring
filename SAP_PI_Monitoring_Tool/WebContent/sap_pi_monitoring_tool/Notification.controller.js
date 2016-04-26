@@ -82,7 +82,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             .fail(function (jqXHR, exception) {
 
 		                 // Our error logic here
-		            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
+		            	 console.log(jqXHR);
 		                 var msg = '';
 		                 if (jqXHR.status == 0) {
 		                     msg = 'Not connect. Verify Network.';
@@ -205,7 +205,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    
 		             }).fail(function (jqXHR, exception) {
 		            	// Our error logic here
-		            	 console.log(jqXHR.status +"--->"+jqXHR.responseText);
+		            	 console.log(jqXHR);
 		                 var msg = '';
 		                 if (jqXHR.status == 0) {
 		                     msg = 'Not connect. Verify Network.';
@@ -217,8 +217,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		});
 		                		 // buffers automatically when created
 		                	snd.play();
-			            	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
-		                     obj.byId("conn_noti").addMessage(oMessage);
+			            	 oCon.byId('conn_noti').setIcon('images/Circle_Red.png');
+		                     oCon.byId("conn_noti").addMessage(oMessage);
 		                 } 
 		                 if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
@@ -258,7 +258,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 
 		            	 }else{// When all consumers alerts fetched(or tried)
 		            		 	var currentdate = new Date();
-		            		 	if(currentdate.getHours()%23 == 0){ // Refrsh Alert Consumer List one time per day.
+		            		 	if(currentdate.getHours()%20 == 0){ // Refrsh Alert Consumer List one time per day.
 		            		 		setTimeout(oCon.fetchAlerts(), 100000);
 		            		 	}else{
 		            		 		setTimeout(oCon.fetchSingleAlert(nodeList, 0), 50000);

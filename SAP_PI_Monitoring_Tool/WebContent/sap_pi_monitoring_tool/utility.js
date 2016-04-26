@@ -3,6 +3,8 @@ proxy = true;
 
 jQuery.sap.require("jquery.sap.storage");
 oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
+oLocalStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local); 
+
 
 if(mode.toLowerCase() != 'debug'){
 	console.log = function() {}
@@ -67,13 +69,23 @@ function isLoggedin(){
  * @param sessionObject
  */
 function login(sessionObject){
+	if(oLocalStorage.get("Saved_PI_Servers") == null){
+		oLocalStorage.put("Saved_PI_Servers", {servers : []});
+	}
+	//if()
+	var a = oLocalStorage.get("Saved_PI_Servers").servers;
+	a.push({protocol : sessionObject.protocol , host : sessionObject.host, port : sessionObject.port});
+	oLocalStorage.put("Saved_PI_Servers", {servers : a});
 	sessionObject.isLoggedin = true;
 	oStorage.put('sessionObject', sessionObject);
 	
 	console.log(localStore('sessionObject'));
 	location.reload();
 }
-	
+
+function deleteSavedPIServers(){
+	sessionObject.put("Saved_PI_Servers", null);
+}
 /**
  * Funtion to delete host and user credential information form session variable
  */
@@ -92,7 +104,6 @@ function openLoginDialog() {
 		
 	});
 	var loginDialog = new sap.ui.commons.Dialog({
-		title : "Login",
 		modal : true,
 		keepInWindow : true,
 		showCloseButton  : false,
@@ -126,7 +137,7 @@ function localStore(name){
 	return oStorage.get(name);  
 }
 
-// Brower Notification code
+// Broswer Notification code
 
 //request permission on page load
 document.addEventListener('DOMContentLoaded', function () {
@@ -158,13 +169,42 @@ function notifyMe(title, msg) {
 
 
 $.ajaxSetup({
-    /*error: function (x, status, error) {
-        if (x.status == 403) {
-            alert("Sorry, your session has expired. Please login again to continue");
-            //window.location.href ="/Account/Login";
+    error: function (x, status, error) {
+    	console.log(x);
+   	    console.log(status);
+   	    console.log(error);
+        var msg = '';
+        if (x.status == 0) {
+            msg = 'Retrying...';
+            x;
+        } 
+        if (x.status == 404) {
+            msg = 'Requested page not found. [404]';
+        } 
+        if (x.status == 500 || x.status == 401 || x.status == 403) {
+       	 var o = localStore('sessionObject');
+       	 o.msg = x.responseText;
+       	 oStorage.put('sessionObject', o);
+       	 openLoginDialog();
+        } 
+        if (error === 'parsererror') {
+            msg = 'Requested XML parse failed.';
         }
-        else {
-            alert("An error occurred: " + status + "nError: " + error);
-        }
-    }*/
+        if (error === 'timeout') {
+            msg = 'Time out error.';
+            
+        } 
+        if (error === 'abort') {
+            msg = 'Ajax request aborted.';
+        } 
+        
+        
+        
+        console.log(msg);
+        //eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", { err : jqXHR.responseText });
+    },
+    complete : function () {
+   	 console.log("complete");
+    }
 });
+

@@ -54,7 +54,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Home", {
 			worksetItems: [new sap.ui.ux3.NavigationItem("WI_dashboard",{key:"wi_dashboard",text:"Dashboard"}),
 			               new sap.ui.ux3.NavigationItem("WI_home",{key:"wi_home",text:"Alert Monitoring"}),
 			               new sap.ui.ux3.NavigationItem("WI_MSG",{key:"wi_msg",text:"Message Monitoring"}),
-			               new sap.ui.ux3.NavigationItem("WI_CHANNEL",{key:"wi_channel",text:"Channnel Monitoring"})],
+			               new sap.ui.ux3.NavigationItem("WI_CHANNEL",{key:"wi_channel",text:"Channel Monitoring"})],
 			paneBarItems: [ new sap.ui.core.Item("PI_Date",{key:"pi_date",text:"date"}),
 			                new sap.ui.core.Item("PI_Browser",{key:"pi_browser",text:"browser"})],
 			content: "",
