@@ -17,71 +17,139 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 	* @memberOf sap_pi_monitoring_tool.login
 	*/ 
 	createContent : function(oController) {
-		var msgContainer = new sap.ui.commons.TextView({id:"msg", width: '400px',wrapping: true,  text:(localStore('sessionObject') && localStore('sessionObject').msg)? localStore('sessionObject').msg:""});
+		var msgContainer = new sap.ui.commons.TextView({wrapping: true,  text:(localStore('sessionObject') && localStore('sessionObject').msg)? localStore('sessionObject').msg:""});
 		msgContainer.addStyleClass('errorMessageContainer');
 		
-		var protocol = new sap.ui.commons.RadioButtonGroup({id: "protocol",
-			columns: 2,
-			items: [new sap.ui.core.Item({id: "http",text: "http", checked: "true"}),
-							new sap.ui.core.Item({id: "https", text: "https"})]
-		}); 
-		//new sap.ui.commons.Label({icon: "sap-icon://it-host",text:"Host"}),
-		//new sap.ui.commons.Label({text:"://"}),
-		var hostField = new sap.ui.commons.TextField({id:"host", placeholder: "Host",value:(localStore('sessionObject') && localStore('sessionObject').host)? localStore('sessionObject').host: "inmbzr0096.in.dst.ibm.com", required: true, 
+		var protocol = new sap.ui.commons.DropdownBox({
+			editable : true,
+			width : "60px",
+		    items : [
+		             new sap.ui.core.ListItem({text : 'http'}),
+		             new sap.ui.core.ListItem({text : 'https'})
+		            ]
+		});
+		
+		
+		var hostField = new sap.ui.commons.TextField({ width: "200px", placeholder: "Host",value:(localStore('sessionObject') && localStore('sessionObject').host)? localStore('sessionObject').host: "inmbzr0096.in.dst.ibm.com", required: true, 
 			liveChange: function (oControlEvent){
 				if(oControlEvent.getParameters().liveValue.trim() == ""){
 					msgContainer.setText("Host cannot be empty.");
 					this.setValueState(sap.ui.core.ValueState.Error);
-					sap.ui.getCore().getElementById('btn').setEnabled(false);
+					button.setEnabled(false);
 				}else{
 					msgContainer.setText("");
 					this.setValueState(sap.ui.core.ValueState.Success);
-					sap.ui.getCore().getElementById('btn').setEnabled(true);
+					button.setEnabled(true);
 				}
 				
 			}
 		});
-		var port = new sap.ui.commons.TextField({id: "port", placeholder: "Port", width: "50px", value:(localStore('sessionObject') && localStore('sessionObject').port)?localStore('sessionObject').port :"50000", maxLength: 5, required: true,
+		var port = new sap.ui.commons.TextField({ placeholder: "Port", width: "50px", value:(localStore('sessionObject') && localStore('sessionObject').port)?localStore('sessionObject').port :"50000", maxLength: 5, required: true,
 				liveChange: function (oControlEvent){
-					if(oControlEvent.getParameters().liveValue.trim() == ""){
+					var n = oControlEvent.getParameters().liveValue.trim();
+					if(n == ""){
 						msgContainer.setText("Port cannot be empty.");
 						this.setValueState(sap.ui.core.ValueState.Error);
-						sap.ui.getCore().getElementById('btn').setEnabled(false);
+						button.setEnabled(false);
+					}else if (isNaN(parseInt(n, 10)) || !isFinite(n)){
+						msgContainer.setText("Port should be a number.");
+						this.setValueState(sap.ui.core.ValueState.Error);
+						button.setEnabled(false);
 					}else{
 						msgContainer.setText("");
 						this.setValueState(sap.ui.core.ValueState.Success);
-						sap.ui.getCore().getElementById('btn').setEnabled(true);
+						button.setEnabled(true);
 					}
 					
 				}
 		
 		});
-		var s_pi = new sap.ui.commons.Menu("menu1");
+		
+		var usernameField = new sap.ui.commons.TextField({ value:(localStore('sessionObject') && localStore('sessionObject').username)?localStore('sessionObject').username:"", required: true, 
+				liveChange: function (oControlEvent){
+					if(oControlEvent.getParameters().liveValue.trim() == ""){
+						msgContainer.setText("Username cannot be empty.");
+						this.setValueState(sap.ui.core.ValueState.Error);
+						button.setEnabled(false);
+					}else{
+						msgContainer.setText("");
+						this.setValueState(sap.ui.core.ValueState.Success);
+						button.setEnabled(true);
+					}
+					
+				}
+		
+		});
+		
+		var passwordField = new sap.ui.commons.PasswordField({ value:"", required: true, 
+			liveChange: function (oControlEvent){
+				if(oControlEvent.getParameters().liveValue == ""){
+					msgContainer.setText("Password cannot be empty.");
+					this.setValueState(sap.ui.core.ValueState.Error);
+					button.setEnabled(false);
+				}else{
+					msgContainer.setText("");
+					this.setValueState(sap.ui.core.ValueState.Success);
+					button.setEnabled(true);
+				}
+				
+			}
+		
+		});
+		
+		var button = new sap.ui.commons.Button({
+			icon : "sap-icon://log",
+			text : "Enter",
+			tooltip : "Click here to Enter",
+			enabled : true,
+			press : function() {
+				
+				var oParameters = {
+				           "username" : usernameField.getValue().trim(),
+				           "password" : passwordField.getValue().trim(),
+				           "host" : hostField.getValue().trim(),
+				           "port" : port.getValue(),
+				           "protocol" : protocol.getValue(),
+				           "isLoggedin" : false
+				};
+				
+				console.log(oParameters);
+				login(oParameters);
+				
+			}
+		})
+		var s_pi = new sap.ui.unified.Menu();
 		s_pi.attachItemSelect(function(oEvent){
 			var obj = oEvent.getParameter("item").data("data");
+			if(obj != null || obj != undefined){
 			hostField.setValue(obj.host);
 			port.setValue(obj.port);
+			}else{
+				s_pi.destroyItems();
+				s_pi.setEnabled(false);
+				deleteSavedPIServers();
+			}
 		});
 		if(oLocalStorage.get("Saved_PI_Servers") != null){
+			s_pi.setEnabled(true);
 			var h = oLocalStorage.get("Saved_PI_Servers").servers;
 			for (var i =0 ; i<h.length ; i++) {
-				var item = new sap.ui.commons.MenuItem({id : "item"+i+"-", text: h[i].protocol+"://"+h[i].host + ":" + h[i].port, obj : h[i], obj : h[i]
+				var item = new sap.ui.commons.MenuItem({ text: h[i].protocol+"://"+h[i].host + ":" + h[i].port, obj : h[i], obj : h[i]
 				
 				});
 				item.data("data", h[i]);
 				s_pi.addItem(item);
 			}
-			var item = new sap.ui.commons.MenuItem({id : "delete", text: "Clear"});
+			var item = new sap.ui.commons.MenuItem({ text: "Clear"});
 			s_pi.addItem(item);
 		}else{
-			
+			s_pi.setEnabled(false);
 		}
 		
 		/*var o = localStore('sessionObject');
 		delete o.msg;
 		oStorage.put('sessionObject', o)*/
 		var oSimpleForm = new sap.ui.layout.form.SimpleForm(
-				"sf1",
 				{
 					maxContainerCols: 2,
 					editable: true,
@@ -89,16 +157,19 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 							new sap.ui.core.Title({text:"Login : "}),
 							
 							new sap.ui.layout.HorizontalLayout({
+								width: "100%",
+								allowWrapping : true,
+								hSpacing : 3,
 								content : [
+								           	
 								           	protocol,
 											hostField,
-											//new sap.ui.commons.Label({icon: "sap-icon://number-sign",text:"Port"}),
-											new sap.ui.commons.Label({text:" : "}),
 											port,
 											new sap.ui.commons.MenuButton({
-												text: "Saved instances",
+												text: "",
 												tooltip: "Saved instances",
-												menu: s_pi
+												menu: s_pi,
+												icon: "sap-icon://expand"
 											})
 											
 								]
@@ -109,62 +180,14 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 							
 							
 							new sap.ui.commons.Label({icon: "sap-icon://account", text:"Username"}),
-							new sap.ui.commons.TextField({id: "username", value:(localStore('sessionObject') && localStore('sessionObject').username)?localStore('sessionObject').username:"", required: true, 
-									liveChange: function (oControlEvent){
-										if(oControlEvent.getParameters().liveValue.trim() == ""){
-											msgContainer.setText("Username cannot be empty.");
-											this.setValueState(sap.ui.core.ValueState.Error);
-											sap.ui.getCore().getElementById('btn').setEnabled(false);
-										}else{
-											msgContainer.setText("");
-											this.setValueState(sap.ui.core.ValueState.Success);
-											sap.ui.getCore().getElementById('btn').setEnabled(true);
-										}
-										
-									}
-							
-							}),
+							usernameField,
 							new sap.ui.commons.Label({text:"Password"}),
-							new sap.ui.commons.PasswordField({id: "password", value:"", required: true, 
-								liveChange: function (oControlEvent){
-									if(oControlEvent.getParameters().liveValue == ""){
-										msgContainer.setText("Password cannot be empty.");
-										this.setValueState(sap.ui.core.ValueState.Error);
-										sap.ui.getCore().getElementById('btn').setEnabled(false);
-									}else{
-										msgContainer.setText("");
-										this.setValueState(sap.ui.core.ValueState.Success);
-										sap.ui.getCore().getElementById('btn').setEnabled(true);
-									}
-									
-								}
-							
-							}),	
+							passwordField,	
 							new sap.ui.commons.Label({text:""}),
 							msgContainer,
 							new sap.ui.commons.Label({text:""}),
 							new sap.ui.commons.Label({text:""}),
-							new sap.ui.commons.Button({ id : "btn",
-								icon : "sap-icon://log",
-								text : "Enter",
-								tooltip : "Click here to Enter",
-								enabled : true,
-								press : function() {
-									
-									var oParameters = {
-									           "username" : sap.ui.getCore().getElementById('username').getValue(),
-									           "password" : sap.ui.getCore().getElementById('password').getValue(),
-									           "host" : sap.ui.getCore().getElementById('host').getValue(),
-									           "port" : sap.ui.getCore().getElementById('port').getValue(),
-									           "protocol" : sap.ui.getCore().getElementById('protocol').getSelectedItem().getText(),
-									           "isLoggedin" : false
-									};
-									
-									
-									login(oParameters);
-									
-								}
-							})
+							button
 					         ]
 				});
 		

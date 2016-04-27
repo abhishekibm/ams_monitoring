@@ -73,9 +73,12 @@ function login(sessionObject){
 		oLocalStorage.put("Saved_PI_Servers", {servers : []});
 	}
 	//if()
+	if(!oLocalStorage.get("Saved_PI_Servers").servers.contains({protocol : sessionObject.protocol , host : sessionObject.host, port : sessionObject.port})){
 	var a = oLocalStorage.get("Saved_PI_Servers").servers;
+	console.log(a.indexOf({protocol : sessionObject.protocol , host : sessionObject.host, port : sessionObject.port}));
 	a.push({protocol : sessionObject.protocol , host : sessionObject.host, port : sessionObject.port});
 	oLocalStorage.put("Saved_PI_Servers", {servers : a});
+	}
 	sessionObject.isLoggedin = true;
 	oStorage.put('sessionObject', sessionObject);
 	
@@ -84,13 +87,15 @@ function login(sessionObject){
 }
 
 function deleteSavedPIServers(){
-	sessionObject.put("Saved_PI_Servers", null);
+	oLocalStorage.put("Saved_PI_Servers", null);
 }
 /**
  * Funtion to delete host and user credential information form session variable
  */
 function logoff(){
 	oStorage.clear();
+	oLocalStorage.put("AllAlerts", {data : []});
+	
 	location.reload();
 }
 
@@ -98,16 +103,21 @@ function logoff(){
 //Function to create the dialog
 
 function openLoginDialog() {
-	loginview = sap.ui.view({
+	
+	var loginview = sap.ui.view({
 		viewName : "sap_pi_monitoring_tool.Login",
 		type : sap.ui.core.mvc.ViewType.JS
 		
 	});
+	
+	
+	
 	var loginDialog = new sap.ui.commons.Dialog({
 		modal : true,
 		keepInWindow : true,
 		showCloseButton  : false,
 		autoReposition: true,
+		width: '400px',
 		content : [ loginview ]
 	});
 	
@@ -167,8 +177,17 @@ function notifyMe(title, msg) {
 
 }
 
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (JSON.stringify(this[i]) === JSON.stringify(obj)) {
+            return true;
+        }
+    }
+    return false;
+}
 
-$.ajaxSetup({
+/*$.ajaxSetup({
     error: function (x, status, error) {
     	console.log(x);
    	    console.log(status);
@@ -206,5 +225,5 @@ $.ajaxSetup({
     complete : function () {
    	 console.log("complete");
     }
-});
+});*/
 

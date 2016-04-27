@@ -104,6 +104,11 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                	 o.msg = jqXHR.responseText;
 		                	 oStorage.put('sessionObject', o);
 		                	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
+		                	 var loginview = sap.ui.view({
+		                			viewName : "sap_pi_monitoring_tool.Login",
+		                			type : sap.ui.core.mvc.ViewType.JS
+		                			
+		                		});
 		                	 openLoginDialog();
 		                 } 
 		                 if (exception === 'parsererror') {
@@ -131,6 +136,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
     fetchSingleAlert: function(nodeList, i){
     	console.log("value of i "+ i);
     	var oCon = this;
+		oCon.byId('conn_noti').setIcon('images/connecting.gif');
+
 		var eventBus = sap.ui.getCore().getEventBus();
         var snd = new Audio("media/notification.mp3"); 
 
@@ -169,20 +176,20 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                   console.log(alerts);
 		                    for(j=0; j< alerts.length; j++)  {
 		                    console.log(JSON.parse(alerts[j].childNodes[0].textContent));
-		                    var obj = JSON.parse(alerts[j].childNodes[0].textContent);
+		                    var obj1 = JSON.parse(alerts[j].childNodes[0].textContent);
 		                		var now = (new Date()).toUTCString();
 		                		var oMessage = new sap.ui.core.Message({
-		                			text :  obj.ErrText,
+		                			text :  obj1.ErrText,
 		                			level : sap.ui.core.MessageType.Error,
-		                			timestamp : obj.Timestamp
+		                			timestamp : obj1.Timestamp
 		                		});
 		                		snd.play();
 		                		oCon.byId("alert_noti").addMessage(oMessage);
-		                		if(!(obj.Channel == null || obj.Channel == '')){
+		                		if(!(obj1.Channel == null || obj1.Channel == '')){
 		                			// Channel in error
 		                			oCon.byId("channel_noti").addMessage(oMessage);
 		                		}
-		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", obj);
+		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", obj1);
 		                		eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", 1);
 		                    }
 		                    
@@ -204,6 +211,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", o);*/
 		                    
 		             }).fail(function (jqXHR, exception) {
+		            	 oCon.byId('conn_noti').setIcon('images/Circle_Red.png');
+
 		            	// Our error logic here
 		            	 console.log(jqXHR);
 		                 var msg = '';
@@ -217,16 +226,15 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		});
 		                		 // buffers automatically when created
 		                	snd.play();
-			            	 oCon.byId('conn_noti').setIcon('images/Circle_Red.png');
 		                     oCon.byId("conn_noti").addMessage(oMessage);
 		                 } 
 		                 if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
 		                 } 
 		                 if (jqXHR.status == 500) {
-		                	 var obj = localStore('sessionObject');
-		                	 obj.msg = jqXHR.responseText;
-		                	 oStorage.put('sessionObject', obj);
+		                	 var obj2 = localStore('sessionObject');
+		                	 obj2.msg = jqXHR.responseText;
+		                	 oStorage.put('sessionObject', obj2);
 		                	 openLoginDialog();
 		                 } 
 		                 if (exception === 'parsererror') {
@@ -240,9 +248,9 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                 } 
 		                 
 		                 if (jqXHR.status == 401){
-		                	 var obj = localStore('sessionObject');
-		                	 obj.msg = jqXHR.responseText;
-		                	 oStorage.put('sessionObject', obj);
+		                	 var obj3 = localStore('sessionObject');
+		                	 obj3.msg = jqXHR.responseText;
+		                	 oStorage.put('sessionObject', obj3);
 		                	 openLoginDialog();
 		                 }
 		                 
@@ -254,14 +262,17 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		            		 console.log("Starting next ajax ");
 		            		 //console.log(nodeList);
 		            		 //console.log(nodeList[i+1]);
-		            		 setTimeout(oCon.fetchSingleAlert(nodeList, i+1), 50000);
+		            		 
+		            		 setTimeout(function() { oCon.fetchSingleAlert(nodeList, i+1); }, 50000);
+		            		 
+		            		 
 
 		            	 }else{// When all consumers alerts fetched(or tried)
 		            		 	var currentdate = new Date();
 		            		 	if(currentdate.getHours()%20 == 0){ // Refrsh Alert Consumer List one time per day.
-		            		 		setTimeout(oCon.fetchAlerts(), 100000);
+		            		 		setTimeout(function(){oCon.fetchAlerts();}, 100000);
 		            		 	}else{
-		            		 		setTimeout(oCon.fetchSingleAlert(nodeList, 0), 50000);
+		            		 		setTimeout(function(){oCon.fetchSingleAlert(nodeList, 0);}, 50000);
 		            		 	}
 		            			  
 		            		 
