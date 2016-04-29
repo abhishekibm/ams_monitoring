@@ -23,16 +23,17 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 				 * Now the application can decide how to display the bar. It can be maximized, default, minimized (please see NotificationBarStatus)
 				 */
 				var sStatus = sap.ui.ux3.NotificationBarStatus.Default;
-				oNotiBar2.setVisibleStatus(sStatus);
+				//oNotiBar2.setVisibleStatus(sStatus);
 			} else {
 				var sStatus = sap.ui.ux3.NotificationBarStatus.None;
-				oNotiBar2.setVisibleStatus(sStatus);
+				//oNotiBar2.setVisibleStatus(sStatus);
 			}
 		};
 
 		
 		function clickListener(oEvent) {
 			var oMessage = oEvent.getParameter("message");
+			console.log(oMessage.data());
 			alert("Message selected: " + oMessage.getText());
 		};
 
@@ -87,19 +88,23 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    	var oAlertNotifier = new sap.ui.ux3.Notifier(this.createId("alert_noti"),
 			    			{
 			    			title: "Alerts",
-			    			icon: 'images/alert_white_24.png'	
+			    			icon: 'images/alert.png'	
 			    			});
 			    	
 			    	oAlertNotifier.attachMessageSelected(clickListener);
 			    	//////Channel notifier
-			    	var oChannelNotifier = new sap.ui.ux3.Notifier(this.createId("channel_noti"));
-			    	oChannelNotifier.setTitle("Channel Errors");
+			    	var oChannelNotifier = new sap.ui.ux3.Notifier(this.createId("channel_noti"),
+			    			{
+			    			title : "Channel Errors",
+			    			icon: 'images/channel.png'
+			    			});
+			    	
 			    	oChannelNotifier.attachMessageSelected(clickListener);
 			    	
 			    	///////
 			    	
 			    	var oNotiBar3 = new sap.ui.ux3.NotificationBar({
-			    		display : displayListener,
+			    		//display : displayListener,
 			    		visibleStatus : "Default"
 			    	});
 			    	oNotiBar3.addStyleClass("sapUiNotificationBarDemokit");
@@ -107,6 +112,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    	oNotiBar3.addNotifier(oNotifier2);
 			    	oNotiBar3.addNotifier(oAlertNotifier);
 			    	oNotiBar3.addNotifier(oChannelNotifier);
+			    	
 			    	//oNotiBar3.setMessageNotifier(oMessageNotifier);
 			    	//oNotiBar3.setAlwaysShowToggler(true);
 			    	return oNotiBar3;

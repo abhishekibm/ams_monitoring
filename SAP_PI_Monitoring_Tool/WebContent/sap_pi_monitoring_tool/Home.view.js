@@ -21,7 +21,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Home", {
 		console.log('Home view');
 		var dashboardView = sap.ui.view({
 			id : "iddashboardView",
-			viewName: 'sap_pi_monitoring_tool.Dashboard',
+			viewName: 'sap_pi_monitoring_tool.DashboardReport',
 			type : sap.ui.core.mvc.ViewType.JS
 		});
 		var alertView = sap.ui.view({
@@ -35,6 +35,12 @@ sap.ui.jsview("sap_pi_monitoring_tool.Home", {
 			viewName : "sap_pi_monitoring_tool.messageMonitoring",
 			type : sap.ui.core.mvc.ViewType.JS
 			
+		});
+		
+		getMessageDetailsView = sap.ui.view({
+				id : "idGetMessageDetails",
+				viewName : "sap_pi_monitoring_tool.GetMessageDetails",
+				type : sap.ui.core.mvc.ViewType.JS
 		});
 		
 		var channelMonitroringView = new sap.ui.view({

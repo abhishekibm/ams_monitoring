@@ -17,12 +17,7 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 		// 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
 		eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent",
 				this.onDataReceived, oCon);
-		console.log(oCon);
-		// var eventBus = sap.ui.getCore().getEventBus();
-		// 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
-		// eventBus.subscribe("FetchAlertsFromNotificationBar",
-		// "onNavigateEvent", this.onDataReceived, this);
-
+		
 		// /////////////CHART
 
 		var oChart = new sap.makit.Chart({
@@ -64,7 +59,7 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 		// ///////////////END of CHart initi
 
 		console.log(alertsAll);
-		var alertsAll = oStorage.get("AllAlerts");
+		var alertsAll = oLocalStorage.get("AllAlerts");
 		// create the row repeater control
 		var oRowRepeater = new sap.ui.commons.RowRepeater();
 		oRowRepeater.setNoData(new sap.ui.commons.TextView({
@@ -152,39 +147,99 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 		 */
 		// label 1
 		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "Severity");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
+		
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "AdapterNamespace");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
+		
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "AdapterType");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
+		
+		control = new sap.ui.commons.Label();
 		control.bindProperty("text", "ChannelService");
 		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
 		matrixCell.addContent(control);
 		matrixRow.addCell(matrixCell);
-
+		
 		// label 2
 		control = new sap.ui.commons.Label();
-		control.bindProperty("text", "AdapterType");
-		control.setWidth('80px');
+		control.bindProperty("text", "ChannelParty");
 		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
 		matrixCell.addContent(control);
 		matrixRow.addCell(matrixCell);
 
 		// label 3
-		control = new sap.ui.commons.Label();
+		control = new sap.ui.commons.Link();
 		control.bindProperty("text", "Channel");
+		control.bindProperty("href", {
+            parts: [
+                "ChannelParty",
+                "ChannelService",
+                "Channel"
+            ],
+            formatter: function(party, service, channel) {
+                return localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port +'/webdynpro/resources/sap.com/tc~lm~itsam~ui~mainframe~wd/FloorPlanApp?applicationID=com.sap.itsam.mon.xi.adapter.channel&channel_name='+channel+'&component='+service+'&party='+party+'#';
+            }
+        });
+		control.setTarget("_blank");
 		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
 		matrixCell.addContent(control);
 		matrixRow.addCell(matrixCell);
 
 		// link
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "MsgId");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
+		
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "Interface");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
+		
 		control = new sap.ui.commons.Link();
-		control.bindProperty("text", "AdapterNamespace");
+		control.bindProperty("text", "Monitoring Link");
+		control.bindProperty("href", "MonitoringUrl");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
+		
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "ErrCat");
 		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
 		matrixCell.addContent(control);
 		matrixRow.addCell(matrixCell);
 
+		control = new sap.ui.commons.Link();
+		control.bindProperty("text", "ErrCat");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
 		// label 3
 		control = new sap.ui.commons.Label();
 		control.bindProperty("text", "ErrText");
 		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
 		matrixCell.addContent(control);
 		matrixRow.addCell(matrixCell);
+		
+		
+		control = new sap.ui.commons.Label();
+		control.bindProperty("text", "Timestamp");
+		matrixCell = new sap.ui.commons.layout.MatrixLayoutCell();
+		matrixCell.addContent(control);
+		matrixRow.addCell(matrixCell);
+		
 		// add row to matrix
 		oRowTemplate.addRow(matrixRow);
 
@@ -212,10 +267,10 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 	 * @memberOf sap_pi_monitoring_tool.alertDashboard
 	 */
 	onAfterRendering : function() {
-
+		oModel_Alerts.setData(oLocalStorage.get("AllAlerts"));
 	},
 	onDataReceived : function(channel, event, alertObj) {
-		console.log(oStorage.get("AllAlerts"));
+		console.log(oLocalStorage.get("AllAlerts"));
 		notifyMe('New Alert', alertObj.ErrText + '\n' + alertObj.Timestamp);
 		var a = oLocalStorage.get("AllAlerts");
 		if (a == null) {
@@ -228,7 +283,6 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 		console.log("Alert received");
 
 		oModel_Alerts.setData(oLocalStorage.get("AllAlerts"));
-		sap.ui.getCore().setModel(oModel_Alerts);
 
 		oModel_chart.setData([ {
 			type : "Very High",

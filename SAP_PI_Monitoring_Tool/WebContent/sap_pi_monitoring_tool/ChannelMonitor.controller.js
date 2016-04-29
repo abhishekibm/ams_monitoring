@@ -143,16 +143,15 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	
 	Change: function(oEvent){  
          
-        var searchText = oEvent.getParameters().liveValue;  
-          
+        var searchText = oEvent.getParameters().liveValue;   
         var filters=[];  
           
         if(searchText.trim()!=''){  
               
-            var filter1 = new sap.ui.model.Filter({path:"Component",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter2 = new sap.ui.model.Filter({path:"MaterialDescription",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter3 = new sap.ui.model.Filter({path:"ProductCategoryDescription",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter4 = new sap.ui.model.Filter({path:"CreatedBy",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter1 = new sap.ui.model.Filter({path:"/Component",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter2 = new sap.ui.model.Filter({path:"/Channel",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter3 = new sap.ui.model.Filter({path:"/Party",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter4 = new sap.ui.model.Filter({path:"/status/@activationState",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
             filters = [filter1,filter2,filter3,filter4];  
             var finalFilter = new sap.ui.model.Filter({filters:filters, and:false});  
             oTable.getBinding("rows").filter(finalFilter, sap.ui.model.FilterType.Application);  
@@ -232,7 +231,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	                    		                 xmlDoc=parser.parseFromString(data,"text/xml");  
 	                    		                 returnVal = xmlDoc.getElementsByTagNameNS("*","getChannelAutomationStatusResponse")[0];
 	                    		                 oModel.setXML(new XMLSerializer().serializeToString(returnVal));
-	                 	                    
+	                    		                 sap.ui.getCore().setModel(oModel);  
 	                    		             })
 	                    		             .fail(function(){
 	                    		            	 
@@ -259,6 +258,8 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	                     msg = 'Requested XML parse failed.';
 	                 } else if (exception === 'timeout') {
 	                     msg = 'Time out error.';
+	                     
+	                     
 	                 } else if (exception === 'abort') {
 	                     msg = 'Ajax request aborted.';
 	                 } else {

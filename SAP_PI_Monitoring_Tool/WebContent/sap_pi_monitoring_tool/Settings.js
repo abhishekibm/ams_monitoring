@@ -4,6 +4,6 @@ settings = {
 	proxy : true,
 	
 	/// Scheduling
-	alertFetchTimeInterval : 10*60*100 // Miliseconds
-	
+	alertFetchTimeInterval : 10*60*100, // Miliseconds
+	ajaxTimeout : 100000
 }

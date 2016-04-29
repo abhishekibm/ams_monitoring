@@ -1,16 +1,16 @@
  
- oTable = null;
+ var MessageListTable = null;
  //layout = null;
- resultPannel = null;
- //oModel = null;
- //satrtDate = "";
- //endDate = "";
- //startTime = "";
- //endTime = "";
- statusType = "";
- startDateTime = "";
- endDateTime = "";
-sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
+ var resultPannel = null;
+ var oModel = null;
+ var startDate = "";
+ var endDate = "";
+ var startTime = "";
+ var endTime = "";
+ var statusType = "systemError";
+ var startDateTime = "";
+ var endDateTime = "";
+ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 
 	/** Specifies the Controller belonging to this View. 
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
@@ -20,152 +20,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 		return "sap_pi_monitoring_tool.messageMonitoring";
 	},
 	
-	extractData : function (statusType,startDateTime,endDateTime){
-		
-		var request = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:AdapterMessageMonitoringVi\" xmlns:urn1=\"urn:com.sap.aii.mdt.server.adapterframework.ws\" xmlns:urn2=\"urn:com.sap.aii.mdt.api.data\" xmlns:lang=\"urn:java/lang\">\n" +
-        "    <soapenv:Header/>\n" +
-			"      <soapenv:Body>\n" +
-        "       <urn:getMessageList>\n" +
-        "          <urn:filter>\n" +
-        "				<urn1:archive>false</urn1:archive>\n" +
-       	"               <urn1:dateType></urn1:dateType>\n" +
-        "               <!--Optional:-->\n" +
-        //"               <urn1:fromTime>2016-02-28T13:10:57.000</urn1:fromTime>\n" +
-        "               <urn1:fromTime>" + startDateTime + "</urn1:fromTime>\n"  + 
-        "               <urn1:nodeId></urn1:nodeId>\n" +
-        "               <urn1:onlyFaultyMessages></urn1:onlyFaultyMessages>\n" +
-        " 				<urn1:retries></urn1:retries>\n" +
-        "				<urn1:retryInterval></urn1:retryInterval>\n" +
-        "				<!--Optional:-->\n" +
-        "				<urn1:status>" + statusType + "</urn1:status>\n" +
-        
-        "				<urn1:timesFailed></urn1:timesFailed>\n" +
-        "				<!--Optional:-->\n" +
-        //"				<urn1:toTime>2016-03-29T13:10:57.000</urn1:toTime>\n" +
-        "               <urn1:toTime>" + endDateTime + "</urn1:toTime>\n" +
-        "				<urn1:wasEdited>false</urn1:wasEdited>\n" +
-        "		</urn:filter>\n" +
-     	"       <!--Optional:-->\n" +
-     	"       <urn:maxMessages>100</urn:maxMessages>\n" +
-  		"		</urn:getMessageList>\n"  +
-			"     </soapenv:Body>\n" +
-		"</soapenv:Envelope>";
-	   console.log("request");
-	   console.log(request);
-		var response = "";	
-	  
-		$.ajax({
-
-		     url : serviceAPIs.messageAPI(),
-			 
-		     type : "POST",
-		     data : request,
-		     dataType : "text",
-		     contentType : "text/xml; charset=\"utf-8\"",
-		     headers: {
-		    	 	'Access-Control-Allow-Origin': '*',
-		    	 	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
-             },
-		     success : function(data, textStatus, jqXHR) {
-		          response = data;
-		          console.log("SUCCESS");
-		          console.log(response);
-
-		     },
-		     error: function(xhr, status)
-
-		     {
-		          console.log("ERROR");
-		          console.log(xhr);
-
-		     },
-
-		     complete: function(xhr,status) {
-
-		         console.log("COMPLETE"); 
-		         parser=new DOMParser();  
-                 
-		         xmlDoc=parser.parseFromString(response,"text/xml");  
-		         			                    
-		         returnVal = xmlDoc.getElementsByTagNameNS("*","getMessageListResponse")[0]; 
-		         console.log("prob"); 
-		         console.log(new XMLSerializer().serializeToString(returnVal)); 
-		         var s= new XMLSerializer().serializeToString(returnVal);
-		         //var xmlWithoutNS = s.replace("xmlns(:\w+)?=""[^""]*""","");
-		         
-	/*response = response.replace("<SOAP-ENV:Envelope xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
-		        		 ,"");
-		        		 		response = response.replace("<SOAP-ENV:Body xmlns:rpl='urn:AdapterMessageMonitoringVi'>","");
-		        		 		response = response.replace("</SOAP-ENV:Body>", "");                  
-		        		 		response = response.replace("</SOAP-ENV:Envelope>", "");*/
-		         				console.log("S"); 
-		        		 		console.log(s); 
-		        		 		/*try{
-
-		        		 			  alert("response after modification>>>>:"+ response);
-
-		        		 			  }catch(e){
-
-		        		 			  alert(e.message);
-
-		        		 		}*/
-		        		 		
-		        		 		
-
-		        		 		
-		        		 		//Create a model and bind the table rows to this model
-		        		 		console.log("before create model");
-		        		 		oModel = new sap.ui.model.xml.XMLModel();
-		        		 		oModel.refresh(true);
-		        		 		oModel.setXML(s);
-		        		 		console.log("after create model");
-		        		 		
-		        		 		
-																
-								
-		        		 		
-		        		 			console.log("before set model");
-		        		 			/*oModel.setNameSpace("urn:AdapterMessageMonitoringVi","rp11");
-		        		 			oModel.setNameSpace("java:sap/standard","rn11");
-		        		 			oModel.setNameSpace("urn:java.lang","rn01");
-		        		 			oModel.setNameSpace("urn:com.sap.aii.mdt.api.data","rn21");
-		        		 			oModel.setNameSpace("http://schemas.xmlsoap.org/soap/encoding/","rn41");
-		        		 			oModel.setNameSpace("urn:com.sap.exception","rn31");
-		        		 			oModel.setNameSpace("urn:com.sap.aii.mdt.server.adapterframework.ws","rn51");
-		        		 			oModel.setNameSpace("urn:com.sap.aii.mdt.api.data.esiext","rn61");
-		        		 			oModel.setNameSpace("urn:com.sap.aii.mdt.server.adapterframework.ws.esiext","rn71");*/
-		        		 			//oModel.setNameSpace("urn:com.sap.aii.mdt.server.adapterframework.ws.esiext","rn7");
-		        		 			//oModel.setNameSpace("urn:com.sap.aii.mdt.server.adapterframework.ws.esiext","rn7");
-		        		 			//oModel.setNameSpace("urn:java/lang","rn81");
-		        		 			oTable.setModel(oModel);
-		        		 			console.log("after set model");
-		        		 			oTable.bindRows({path: "/rpl:Response/rn5:list/rn5:AdapterFrameworkData"});
-		        		 			
-		        		 			     
-									
-									/*resultPannel.addContent(oTable);    
-									layout.createRow(resultPannel);*/
-									resultPannel.setVisible(true);
-									
-		        		 			console.log("after bindrows");
-		        		 			
-		        		 			
-		     }
-
-		});
-		
-		/*try{
-
-			  alert("response>>>>:"+ response);
-
-			  }catch(e){
-
-			  alert(e.message);
-
-		}*/
-		
-	},
-	//end of extractData
+	
+	
+	
 
 	/** Is initially called once after the Controller has been instantiated. It is the place where the UI is constructed. 
 	* Since the Controller is given to this method, its event handlers can be attached right away. 
@@ -173,111 +30,121 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 	*/ 
 	createContent : function(oController) {
 		
-		/*var oDisplayForm = new sap.ui.layout.form.SimpleForm(
-				"display1",
-				{
-					maxContainerCols: 1,
-					editable: true,
-					content:[
-							new sap.ui.core.Title({text:"Display"}),
-							new sap.ui.commons.Label({text:"Type"}),
-							new sap.ui.commons.DropdownBox("drpBoxType", {
-								rows: 2,
-								items: [
-								        new sap.ui.core.ListItem("Error",{text: "Error"}),
-								        new sap.ui.core.ListItem("Successfull",{text: "Successfull"})
-								]
-							}),
-							
-							
-							
-							new sap.ui.commons.Button({
-								text : "Show",
-								tooltip : "show Messages",
-								press : function() {
-									
-
-									var oTable = new sap.ui.table.Table({
-
-									     id: "table1"
-
-									});
-
-									 
-
-									oTable.addColumn(
-
-									     new sap.ui.table.Column({
-
-									          label: new sap.ui.commons.Label({text: "ErrorCategory"}),       
-
-									          template: new sap.ui.commons.TextField().bindProperty("value", "errorCategory/text()") 
-
-									     })
-
-									);
-
-									oTable.addColumn(
-
-									     new sap.ui.table.Column({
-
-									          label: new sap.ui.commons.Label({text: "ErrorCode"}),
-
-									          template: new sap.ui.commons.TextField().bindProperty("value", "errorCode")
-
-									  })
-
-									);
-									
-									oTable.addColumn(
-
-										     new sap.ui.table.Column({
-
-										          label: new sap.ui.commons.Label({text: "Interface"}),
-
-										          template: new sap.ui.commons.TextField().bindProperty("value", "interface/name")
-
-										  })
-
-										);
-
-									oTable.setModel(oModel);
-
-									oTable.bindRows({path: "/rpl:getMessageListResponse"});*/
-		
-		
 									var layout = new sap.ui.commons.layout.MatrixLayout('layout');    
-									layout.setWidth('100%');    
+									//layout.setWidth('100%');    
 									// Search Box starts here   
 									var searchPannel = new sap.ui.commons.Panel('searchPannel');  
 									var sTitle = new sap.ui.commons.Title('sTitle');  
 									sTitle.setText('Search Message');  
 									searchPannel.setTitle(sTitle);  
-									var sLayout = new sap.ui.commons.layout.MatrixLayout('sLayout');  
-									sLayout.setWidth('100%');   
+									var sLayout = new sap.ui.commons.layout.MatrixLayout('sLayout'); 
+									
+									var customLayout = new sap.ui.commons.layout.MatrixLayout('customLayout', {
+										colSpan : 4
+									});
+									//customLayout.setWidth('80%');   
 									var lbSearch = new sap.ui.commons.Label('lbSearch');  
 									lbSearch.setText("Type");  
 									//var txt_search = new sap.ui.commons.TextField('txt_search');   
 									//txt_search.setTooltip('Please provide Order id!..'); 
 									
-									var oCmbType = new sap.ui.commons.DropdownBox("oCmbType");
+									//var oCmbType = new sap.ui.commons.DropdownBox("oCmbType");
+									
+									var oCmbType = new sap.ui.commons.DropdownBox({
+
+										  items: [
+
+										      new sap.ui.core.ListItem("item1", {text: "System Error"}),
+										      new sap.ui.core.ListItem("item2", {text: "Delivered"}),
+										      new sap.ui.core.ListItem("item3", {text: "Delivering"}),
+										      new sap.ui.core.ListItem("item4", {text: "Cancelled"}),
+										      new sap.ui.core.ListItem("item5", {text: "Holding"}),
+										      new sap.ui.core.ListItem("item6", {text: "Waiting"}),
+										      new sap.ui.core.ListItem("item7", {text: "To Be Delivered"})
+										  ]
+
+									});
+									
 									oCmbType.setTooltip("Type");
 									oCmbType.setEditable(true);
-									oCmbType.setWidth("250px");    
+									
+									var oCmbTimeInterval = new sap.ui.commons.DropdownBox({
+
+										  items: [
+
+										      new sap.ui.core.ListItem({text: "One Hour"}),
+										      new sap.ui.core.ListItem({text: "Two Hours"}),
+										      new sap.ui.core.ListItem({text: "Six Hours"}),
+										      new sap.ui.core.ListItem({text: "Twelve Hours"}),
+										      new sap.ui.core.ListItem({text: "24 Hours"}),
+										      new sap.ui.core.ListItem({text: "Custom"}),
+										      
+										  ]
+
+									});
+									
+									
+									var lbTimeInterval = new sap.ui.commons.Label('lbTimeInterval');  
+									lbTimeInterval.setText("Time Interval");
+									
+									oCmbTimeInterval.setTooltip("Time Interval");
+									oCmbTimeInterval.setEditable(true);
+									
+									oCmbTimeInterval.attachChange(function(oControlEvent) {
+										var interval = "";
+										var strInterval = oCmbTimeInterval.getValue();
+										
+										if(strInterval == "Custom"){
+											//interval = "systemError";
+											customLayout.setVisible(true);
+										}
+										else{
+											customLayout.setVisible(false);
+											
+										}
+										
+									});
+									//oCmbType.setWidth("250px");    
 									//var list = new sap.ui.commons.ListBox({allowMultiSelect: false, visibleItems: 1});    
-									var oItem = new sap.ui.core.ListItem("item1");
-									oItem.setText("systemError");
+									/*var oItem = new sap.ui.core.ListItem("item1");
+									oItem.setText("System Error");
 									oCmbType.addItem(oItem);
 									oItem = new sap.ui.core.ListItem("item2");
 									oItem.setText("Delivered");
 									oCmbType.addItem(oItem);
 									oItem = new sap.ui.core.ListItem("item3");
 									oItem.setText("Delivering");
+									oItem = new sap.ui.core.ListItem("item4");
+									oItem.setText("Successfull");
 									oCmbType.addItem(oItem);
+									oItem = new sap.ui.core.ListItem("item5");
+									oItem.setText("Cancelled");
+									oCmbType.addItem(oItem);*/
 									
 									oCmbType.attachChange(function(oControlEvent) {
-										
-										var type = oCmbType.getValue();
+										var Type = "";
+										var strType = oCmbType.getValue();
+										if(strType == "System Error"){
+											Type = "systemError";
+										}
+										else if(strType == "Delivered"){
+											Type = "success";
+										}
+										else if(strType == "Delivering"){
+											Type = "delivering";
+										}
+										else if(strType == "Holding"){
+											Type = "holding";
+										}
+										else if(strType == "Waiting"){
+											Type = "waiting";
+										}
+										else if(strType == "Cancelled"){
+											Type = "canceled";
+										}
+										else if(strType == "To Be Delivered"){
+											Type = "toBeDelivered";
+										}
 										console.log("type");
 								        console.log(type);
 								        statusType = type;
@@ -286,14 +153,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 									//Startdate
 									
 									/*var oStartDate = new sap.m.DatePicker(this.createId("datePickerTest"), {
-								        type: "Date",
-								        width: '200px',
-								        value: {
-								            path:"/dateValue", 
-								            type: dateType
-								        },
-								        placeholder: "Date"
-								    });*/
+								  
 									
 									var lbStartDate = new sap.ui.commons.Label('lbStartDate');  
 									lbStartDate.setText("Start Date"); 
@@ -317,6 +177,23 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 								        console.log(satrtDate);
 								        
 								    });*/
+									
+									var lbStartDate = new sap.ui.commons.Label('lbStartDate');  
+									lbStartDate.setText("Start Date");
+									var oStartDatePicker = new sap.m.DatePicker(this.createId("datePickerStart"), {
+								        
+										displayFormat: 'dd/MM/yyyy',
+								        valueFormat: 'yyyy-MM-dd' ,
+								        dateValue : new Date(),
+								        change: function(oEvent) {
+											startDate = oStartDatePicker.getValue();
+									        console.log("startDate");
+									        console.log(startDate);
+									        //startDateTime = startDate;
+										}
+										
+								    });
+									
 									var lbStartTime = new sap.ui.commons.Label('lbStartTime');  
 									lbStartTime.setText("Start Time"); 
 									var oStartTimePicker = new sap.m.TimePicker(this.createId("timePickerStart"), {
@@ -325,18 +202,18 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 											displayFormat : "HH:mm:ss",
 								            dateValue : new Date(),
 								            change: function(oEvent) {
-												var startTime = oStartTimePicker.getValue();
+												startTime = oStartTimePicker.getValue();
 										        console.log("startTime");
 										        console.log(startTime);
-										        startDateTime = startDateTime + "T" + startTime;
-										        console.log("startDateTime");
-										        console.log(startDateTime);
+										        //startDateTime = startDateTime + "T" + startTime;
+										        //console.log("startDateTime");
+										        //console.log(startDateTime);
 											}
 								    });
 									
 									//startDateTime = satrtDate + "T" + startTime;
-									console.log("startDateTime");
-							        console.log(startDateTime);
+									//console.log("startDateTime");
+							        //console.log(startDateTime);
 									
 									var lbEndDate = new sap.ui.commons.Label('lbEndDate');  
 									lbEndDate.setText("End Date");
@@ -346,10 +223,10 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 								        valueFormat: 'yyyy-MM-dd' ,
 								        dateValue : new Date(),
 								        change: function(oEvent) {
-											var endDate = oEndDatePicker.getValue();
+											endDate = oEndDatePicker.getValue();
 									        console.log("endDate");
 									        console.log(endDate);
-									        endDateTime = endDate;
+									        //endDateTime = endDate;
 										}
 										
 								    });
@@ -362,12 +239,12 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 										displayFormat : "HH:mm:ss",
 								        dateValue : new Date(),
 								        change: function(oEvent) {
-											var endTime = oEndTimePicker.getValue();
+											endTime = oEndTimePicker.getValue();
 									        console.log("endTime");
 									        console.log(endTime);
-									        endDateTime = endDateTime + "T" + endTime;
-									        console.log("endDateTime");
-									        console.log(endDateTime);
+									        //endDateTime = endDateTime + "T" + endTime;
+									        //console.log("endDateTime");
+									        //console.log(endDateTime);
 										}
 								    });
 									
@@ -379,28 +256,36 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 									var btnSearch = new sap.ui.commons.Button({
 										  text : "   Show  ",
 										  press: function(e) {
-											  /*try{
-
-												  //alert("responsecp>>>>:"+ sap.ui.getCore().byId("iddisplay"));
-												  alert("responsecp>>>>:"+ oController.getView());
-
-												  }catch(e){
-
-												  alert(e.message);
-
-											}*/
+											 
 											//sap.ui.getCore().byId("display").getController().submitData(); 
 											//sap.ui.getCore().byId("display").submitData();
-											oController.getView().extractData(statusType,startDateTime,endDateTime); 
+											//oController.getView().extractData(statusType,startDateTime,endDateTime);
+											  oController.extractData(statusType,startDate,startTime,endDate,endTime);
+											  console.log(startDate);
 											//resultPannel.setVisible(true);
 										    //uPanel.setVisible(true);
 										    //oShell.invalidate();
 										  }
 									});
 									
+									var oRow = new sap.ui.commons.layout.MatrixLayoutRow();
+
+									sLayout.addRow(oRow);
+
+									var oCell = new sap.ui.commons.layout.MatrixLayoutCell({
+										colSpan : 8 });
+
 									
+									customLayout.createRow(lbStartDate, oStartDatePicker, lbStartTime, oStartTimePicker, lbEndDate, oEndDatePicker, lbEndTime, oEndTimePicker);
+									oCell.addContent(customLayout);
+									oRow.addCell(oCell);
+									
+									customLayout.setVisible(false);
 									//btnSearch.attachPress(oController.searchAction);   
-									sLayout.createRow(lbSearch, oCmbType, lbStartDate, oStartDatePicker, lbStartTime, oStartTimePicker, lbEndDate, oEndDatePicker, lbEndTime, oEndTimePicker, btnSearch);  
+									sLayout.createRow(lbSearch, oCmbType, lbTimeInterval, oCmbTimeInterval);  
+									
+									sLayout.addRow(oRow);
+									sLayout.createRow(btnSearch);
 									searchPannel.addContent(sLayout);  
 									layout.createRow(searchPannel); 
 									
@@ -408,14 +293,22 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 									
 									
 									//Create an instance of the table control
-			        		 		oTable = new sap.ui.table.Table({
+			        		 		MessageListTable = new sap.ui.table.Table(this.createId("MessageListTable"),{
 			        		 			
 			        		 			visibleRowCount: 7,
 			        		 			firstVisibleRow: 3,
 			        		 			selectionMode: sap.ui.table.SelectionMode.Single,
 			        		 		});
 			        		 		
-			        		 		oTable.addColumn(
+			        		 		var btnExport = new sap.ui.commons.Button({
+										  text : "Export",
+										  press: function(e) {
+											 
+										  }
+									});
+			        		 		MessageListTable.setToolbar(new sap.ui.commons.Toolbar({items: [ btnExport ]}));  
+			        		 		
+			        		 		MessageListTable.addColumn(
 
 			        		 			     new sap.ui.table.Column({
 
@@ -427,7 +320,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 
 			        		 			);
 
-			        		 			oTable.addColumn(
+			        		 			MessageListTable.addColumn(
 
 			        		 			     new sap.ui.table.Column({
 
@@ -439,7 +332,19 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 
 			        		 			);
 			        		 			
-			        		 			oTable.addColumn(
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Message Key"}),
+
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:messageKey/text()")
+
+				        		 			  })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
 
 			        		 				     new sap.ui.table.Column({
 
@@ -450,171 +355,58 @@ sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
 			        		 				  })
 
 			        		 			);
-			        		 		
-			        		 		resultPannel = new sap.ui.commons.Panel('resultPannel');              
+			        		 			resultPannel = new sap.ui.commons.Panel(this.createId('resultPannel'));	
+			        		 			/*var getMessageDetailsView = sap.ui.view({
+		        		 					id : "idGetMessageDetails",
+		        		 					viewName : "sap_pi_monitoring_tool.GetMessageDetails",
+		        		 					type : sap.ui.core.mvc.ViewType.JS
+		        		 				});*/
+		        		 				
+			        		 			MessageListTable.attachRowSelectionChange(function(oEvent){
+			        		 				//alert("Row is selected");
+			        		 				//alert(oTableMessagelist.getSelectedIndex());
+			        		 				console.log("Row is Selected");	
+			        		 				//console.log(MessageListTable.getRows());
+			        		 				//console.log(MessageListTable.getRows()[MessageListTable.getSelectedIndex()]);
+			        		 				//console.log(MessageListTable.getRows()[MessageListTable.getSelectedIndex()].getCells()[2].getValue());
+			        		 				//oController.doIt1();
+			        		 				
+			        		 				var tableModel= MessageListTable.getModel();
+			        		 				//var contextPath="/SOAP-ENV:Body/rpl:getMessageListResponse/rpl:Response/rn5:list/rn5:AdapterFrameworkData/rn5:messageKey/";
+			        		 				//var contextPath="/rpl:Response/rn5:list/rn5:AdapterFrameworkData/rn5:messageKey/";
+			        		 				//var currentRowContext = oEvent.getParameter("rowContext"); 
+			        		 				//var strMessageKey = tableModel.getProperty(contextPath, MessageListTable.getSelectedIndex());
+			        		 				console.log(MessageListTable.getSelectedIndex());
+			        		 				var strMessageKey = MessageListTable.getRows()[MessageListTable.getSelectedIndex()].getCells()[2].getValue();
+			        		 				console.log("strMessageKey");
+			        		 			    console.log(strMessageKey);
+			        		 				
+			        		 				var strArchiveFlag="false";
+			        		 				//var strDate = "2016-04-27T06:31:25.619-01:00";
+			        		 				//var strDate = sap.ui.getCore().byId("myview").getController().formattedCurrentDate();
+			        		 				var strDate = oController.formattedCurrentDate();
+			        		 				getMessageDetailsView.getController().doIt1(strMessageKey,strArchiveFlag,strDate);
+			        		 				resultPannel.addContent(getMessageDetailsView);
+			        		 		  });
+			        		 			
+			        		 		//Create a model and bind the table rows to this model
+			        			    console.log("before create model in view");
+			        			    oModel = new sap.ui.model.xml.XMLModel(this.createId("oModel"));
+			        			    MessageListTable.setModel(oModel);
+			        		 		              
 									var rTitle = new sap.ui.commons.Title('rTitle');     
 									rTitle.setText('Message Details');     
 									resultPannel.setTitle(rTitle);
 									
-			        		 		resultPannel.addContent(oTable);    
+			        		 		resultPannel.addContent(MessageListTable);    
 									layout.createRow(resultPannel);
 									resultPannel.setVisible(false);
-									//Create an instance of the table control
-			        		 		/*oTable = new sap.ui.table.Table({
-			        		 			
-			        		 			visibleRowCount: 7,
-			        		 			firstVisibleRow: 3,
-			        		 			selectionMode: sap.ui.table.SelectionMode.Single,
-			        		 		});*/
-			        		 		
-			        		 		/*var resultPannel = new sap.ui.commons.Panel('resultPannel');              
-									var rTitle = new sap.ui.commons.Title('rTitle');     
-									rTitle.setText('Message Details');     
-									resultPannel.setTitle(rTitle);     
-									resultPannel.setVisible(false);*/
-									console.log("after setinf result pannel");
+									
+									console.log("after seting result pannel");
 									
 										//layout.placeAt('content'); 
 									this.addContent(layout);
-									//oController.getView().addContent(layout);
 									
-									/*try{
-
-										  alert("GETXML>>>>:"+oModel.getXML());
-
-										  }catch(e){
-
-										  alert(e.message);
-
-									}
-									function uicontrols(){
-
-									     oModel.setXML(response);
-
-									}*/
-													
-									/*oModel.setXML("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
-
-									  "<config>"+
-
-									  "<item date=\"January 2009\">"+
-
-									  "<mode>1</mode>"+
-
-									  "<unit>900</unit>"+
-
-									  "<current>1</current>"+
-
-									  "<interactive>1</interactive>"+
-
-									  "</item>"+
-
-									  "<item date=\"February 2009\">"+
-
-									  "<mode>2</mode>"+
-
-									  "<unit>400</unit>"+
-
-									  "<current>2</current>"+
-
-									  "<interactive>5</interactive>"+
-
-									  "</item>"+
-
-									  "<item date=\"December 2009\">"+
-
-									  "<mode>9</mode>"+
-
-									  "<unit>5</unit>"+
-
-									  "<current>100</current>"+
-
-									  "<interactive>3</interactive>"+
-
-									  "</item>"+
-
-									  "</config>");
-
-									 
-
-									  try{
-
-									  alert("GETXML>>>>:"+oModel.getXML());
-
-									  }catch(e){
-
-									  alert(e.message);
-
-									  }
-
-									 
-
-									  oTable.addColumn(
-
-									  new sap.ui.table.Column({
-
-									  label: new sap.ui.commons.Label({text: "Date"}),
-
-									  template: new sap.ui.commons.TextField().bindProperty("value", "@date")  }
-
-									  )
-
-									  );
-
-									  oTable.addColumn(
-
-									  new sap.ui.table.Column({
-
-									  label: new sap.ui.commons.Label({text: "Mode"}),
-
-									  template: new sap.ui.commons.TextField().bindProperty("value", "mode/text()")  }
-
-									  )
-
-									  );
-
-									  oTable.addColumn(
-
-									  new sap.ui.table.Column({
-
-									  label: new sap.ui.commons.Label({text: "Unit"}),
-
-									  template: new sap.ui.commons.TextField().bindProperty("value", "unit/text()")  }
-
-									  )
-
-									  );
-
-									  oTable.addColumn(
-
-									  new sap.ui.table.Column({
-
-									  label: new sap.ui.commons.Label({text: "Current"}),
-
-									  template: new sap.ui.commons.TextField().bindProperty("value", "current/text()")  }
-
-									  )
-
-									  );
-
-									  oTable.addColumn(
-
-									  new sap.ui.table.Column({
-
-									  label: new sap.ui.commons.Label({text: "Interactive"}),
-
-									  template: new sap.ui.commons.TextField().bindProperty("value", "interactive/text()")  }
-
-									  )
-
-									  );*/
-									
-									
-
-									  /*oTable.setModel(oModel);
-
-									  oTable.bindRows({path: "/item/"});*/
-									          
 									   
 									}
 

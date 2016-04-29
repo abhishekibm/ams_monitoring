@@ -1,3 +1,5 @@
+var ajaxCounter1 =0 ;
+var ajaxCounter2 =0 ;
 sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 
 /**
@@ -40,6 +42,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 //	}
 	
 	fetchAlerts : function(obj){
+		ajaxCounter1++;
 		obj.byId('conn_noti').setIcon('images/connecting.gif');
 		var eventBus = sap.ui.getCore().getEventBus();
         var snd = new Audio("media/notification.mp3"); 
@@ -76,8 +79,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    nodeList = xmlDoc.getElementsByTagNameNS("*","AlertConsumers");  
 	                		eventBus.publish("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", nodeList);
 		                    //oStorage.put("alertConsumers", JSON.stringify(nodeList));
+	                		setTimeout(function() { obj.fetchSingleAlert(nodeList, 0); }, 1000);
 		                    
-		                    obj.fetchSingleAlert(nodeList, 0);
 		             })  
 		             .fail(function (jqXHR, exception) {
 
@@ -104,11 +107,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                	 o.msg = jqXHR.responseText;
 		                	 oStorage.put('sessionObject', o);
 		                	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
-		                	 var loginview = sap.ui.view({
-		                			viewName : "sap_pi_monitoring_tool.Login",
-		                			type : sap.ui.core.mvc.ViewType.JS
-		                			
-		                		});
+		                	 
 		                	 openLoginDialog();
 		                 } 
 		                 if (exception === 'parsererror') {
@@ -117,6 +116,10 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                 if (exception === 'timeout') {
 		                     msg = 'Time out error.';
 		                     
+		                     console.log("Timeout : Retrying count: "+ ajaxCounter1);
+		                     console.log("Max retrying count 5");
+		                     if(!(ajaxCounter1 > 5))
+		                    	 obj.fetchAlerts(obj);
 		                 } 
 		                 if (exception === 'abort') {
 		                     msg = 'Ajax request aborted.';
@@ -129,11 +132,13 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             })
 		             .always(function () {
 		            	 console.log("complete");
+		            	 ajaxCounter1--;
 		             });
 	},
 	
 	
     fetchSingleAlert: function(nodeList, i){
+    	ajaxCounter2++;
     	console.log("value of i "+ i);
     	var oCon = this;
 		oCon.byId('conn_noti').setIcon('images/connecting.gif');
@@ -183,9 +188,10 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                			level : sap.ui.core.MessageType.Error,
 		                			timestamp : obj1.Timestamp
 		                		});
+		                		oMessage.data("alert", obj1);
 		                		snd.play();
 		                		oCon.byId("alert_noti").addMessage(oMessage);
-		                		if(!(obj1.Channel == null || obj1.Channel == '')){
+		                		if(!(obj1.Channel == null || obj1.Channel == undefined || obj1.Channel == '')){
 		                			// Channel in error
 		                			oCon.byId("channel_noti").addMessage(oMessage);
 		                		}
@@ -193,22 +199,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", 1);
 		                    }
 		                    
-		                    /*var o = {"AdapterNamespace": "http://sap.com/xi/XI/System",
-		                			"AdapterType": "File",
-		                			"Channel": "FileSendChannel_WorkingEarlier",
-		                			"ChannelParty": "GBS_Saurav",
-		                			"ChannelService": "BC_Saurav",
-		                			"Component": "af.po7.inmbzr0096",
-		                			"ErrCat": "",
-		                			"ErrCode": "",
-		                			"ErrLabel": "9999",
-		                			"ErrText": "Test",
-		                			"FromParty": "GBS_Saurav",
-		                			"FromService": "BC_Saurav",
-		                			"RuleId": "f262f39bc7ae35d3a326061723d96499",
-		                			"Severity": "VERYHIGH",
-		                			"Timestamp": "2016-04-22T19:14:44Z"};
-		                    eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", o);*/
+		                    
 		                    
 		             }).fail(function (jqXHR, exception) {
 		            	 oCon.byId('conn_noti').setIcon('images/Circle_Red.png');
@@ -242,6 +233,11 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                 }
 		                 if (exception === 'timeout') {
 		                     msg = 'Time out error.';
+		                     console.log('Timeout : Retrying count : ' + ajaxCounter2);
+		                     console.log("Max retrying count 5");
+		                     if(!(ajaxCounter2 > 5)){
+		                    	 oCon.fetchSingleAlert(nodeList, i);
+		                     }
 		                 } 
 		                 if (exception === 'abort') {
 		                     msg = 'Ajax request aborted.';
@@ -257,13 +253,14 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                 console.log(msg);
 		             })
 		             .always(function () {
+		            	 ajaxCounter2--;
 		            	 console.log("complete");
 		            	 if(i+1<nodeList.length){
 		            		 console.log("Starting next ajax ");
 		            		 //console.log(nodeList);
 		            		 //console.log(nodeList[i+1]);
 		            		 
-		            		 setTimeout(function() { oCon.fetchSingleAlert(nodeList, i+1); }, 50000);
+		            		 setTimeout(function() { ajaxCounter2 = 0; oCon.fetchSingleAlert(nodeList, i+1); }, 50000);
 		            		 
 		            		 
 
@@ -272,7 +269,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		            		 	if(currentdate.getHours()%20 == 0){ // Refrsh Alert Consumer List one time per day.
 		            		 		setTimeout(function(){oCon.fetchAlerts();}, 100000);
 		            		 	}else{
-		            		 		setTimeout(function(){oCon.fetchSingleAlert(nodeList, 0);}, 50000);
+		            		 		setTimeout(function(){ajaxCounter1 = 0; ajaxCounter2 = 0 ; oCon.fetchSingleAlert(nodeList, 0);}, 50000);
 		            		 	}
 		            			  
 		            		 
