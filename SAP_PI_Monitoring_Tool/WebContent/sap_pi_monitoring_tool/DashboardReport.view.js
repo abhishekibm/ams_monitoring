@@ -1,4 +1,4 @@
-
+var oModel_chart = new sap.ui.model.json.JSONModel();
 var startDateTime = "";
 var endDateTime = "";
 sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
@@ -46,7 +46,49 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		
 		oLayout.createRow( control, channelErrorCount );
 		
+		var oChart = new sap.makit.Chart({
+
+			type : sap.makit.ChartType.Donut,
+			showTotalValue : true,
+			showRangeSelector : false,
+			showTotalValue : true,
+			valueAxis : new sap.makit.ValueAxis({}),
+			categoryAxis : new sap.makit.CategoryAxis({}),
+			category : new sap.makit.Category({
+				column : "type"
+			}),
+
+			values : [ new sap.makit.Value({
+				expression : "tickets",
+				format : "number"
+			}) ]
+
+		});
+
+		oChart.addColumn(new sap.makit.Column({
+			name : "type",
+			value : "{type}"
+		}));
+
+		oChart.addColumn(new sap.makit.Column({
+			name : "tickets",
+			value : "{tickets}",
+			type : "number"
+		}));
+		
+		
+		oModel_chart.setData([
+		                      {type: 'VERYHIGH', tickets : 100},
+		                      {type: 'HIGH', tickets : 170},
+		                      {type: 'MEDIUM', tickets : -10},
+		                      {type: 'LOW', tickets : 10}
+		                      ]);
+		oChart.setModel(oModel_chart);
+
+		oChart.bindRows("/");
+		//oChart.setBusy(true);
 		oPanel.addContent(oLayout);
+		oPanel.addContent(oChart);
 		
 		
 		/// Message Monitoring ///
@@ -165,6 +207,20 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 			return oGrid;
 	},
 	onAlertCountReceived : function(channel, event, data){
+		var a = oModel_chart.getData();
+		if(data.Severity == 'VERYHIGH'){
+			a[0].tickets += 1;
+		}
+		if(data.Severity == 'HIGH'){
+			a[1].tickets += 1;
+		}
+		if(data.Severity == 'MEDIUM'){
+			a[2].tickets += 1;
+		}
+		if(data.Severity == 'LOW'){
+			a[3].tickets += 1;
+		}
+		oModel_chart.setData(a);
 		this.byId('alertCount').setText(parseInt(this.byId('alertCount').getText()) + 1);
 		if(data.Channel != "")
 		this.byId('channelAlertCount').setText(parseInt(this.byId('channelAlertCount').getText()) + 1);

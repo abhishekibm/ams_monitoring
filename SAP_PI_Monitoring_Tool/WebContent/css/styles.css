@@ -47,3 +47,7 @@
 .show {
 	display: block;
 }
+
+.wrap {
+	white-space: normal !important;
+}

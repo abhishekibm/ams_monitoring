@@ -143,9 +143,9 @@ extractData : function (obj, startDateTime,endDateTime){
 		 		for(var i=0;i<AdapterFrameworkDataNo;i++){
 		 			var AdapterFrameworkDataNode = AdapterFrameworkDataList.item(i);
 		 			var statusNode = AdapterFrameworkDataNode.getElementsByTagNameNS("*","status").item(0);
-		 			console.log("statusNode");
+		 			/*console.log("statusNode");
 		 			console.log(statusNode.textContent);
-			 		console.log(statusNode.nodeName);
+			 		console.log(statusNode.nodeName);*/
 		 			if(statusNode.textContent == "success"){
 		 				ctrSuccess = ctrSuccess + 1;
 		 			}
@@ -169,12 +169,12 @@ extractData : function (obj, startDateTime,endDateTime){
 		 				ctrToBeDelivered = ctrToBeDelivered + 1;
 		 			}
 		 		}
-		         console.log("ctrSuccess"); 
+		         /*console.log("ctrSuccess"); 
 		         console.log(ctrSuccess);
 		         console.log("systemError");
 		         console.log(ctrSystemError);
 		         console.log("canceled");
-		         console.log(ctrCancelled);
+		         console.log(ctrCancelled);*/
 		         obj.byId("lbSuccess").setText("No of Successfull Messages " + ctrSuccess);
 		         obj.byId("lbDelivering").setText("No of Delivering Messages " + ctrDelivering);
 		         obj.byId("lbCancelled").setText("No of Cancelled Messages " + ctrCancelled);

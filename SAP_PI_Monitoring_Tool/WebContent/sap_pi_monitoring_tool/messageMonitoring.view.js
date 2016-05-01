@@ -356,11 +356,11 @@
 
 			        		 			);
 			        		 			resultPannel = new sap.ui.commons.Panel(this.createId('resultPannel'));	
-			        		 			/*var getMessageDetailsView = sap.ui.view({
+			        		 			var getMessageDetailsView = sap.ui.view({
 		        		 					id : "idGetMessageDetails",
 		        		 					viewName : "sap_pi_monitoring_tool.GetMessageDetails",
 		        		 					type : sap.ui.core.mvc.ViewType.JS
-		        		 				});*/
+		        		 				});
 		        		 				
 			        		 			MessageListTable.attachRowSelectionChange(function(oEvent){
 			        		 				//alert("Row is selected");

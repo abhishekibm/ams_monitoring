@@ -97,6 +97,11 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 		
 		});
 		
+		var rememberMe = new sap.ui.commons.CheckBox({
+			text : 'Remember me',
+			tooltip : 'Remember me',
+			checked : true
+			});
 		var button = new sap.ui.commons.Button({
 			icon : "sap-icon://log",
 			text : "Enter",
@@ -114,7 +119,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 				};
 				
 				console.log(oParameters);
-				login(oParameters);
+				login(oParameters , rememberMe.getChecked());
 				
 			}
 		})
@@ -183,6 +188,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 							usernameField,
 							new sap.ui.commons.Label({text:"Password"}),
 							passwordField,	
+							new sap.ui.commons.Label({text:""}),
+							rememberMe,
 							new sap.ui.commons.Label({text:""}),
 							msgContainer,
 							new sap.ui.commons.Label({text:""}),

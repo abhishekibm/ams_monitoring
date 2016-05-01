@@ -36,6 +36,12 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			console.log(oMessage.data());
 			alert("Message selected: " + oMessage.getText());
 		};
+		function clickAlertListener(oEvent) {
+			var oMessage = oEvent.getParameter("message");
+			console.log(oMessage.data().alert);
+			openObjectDialog(oMessage.data().alert);
+		};
+		
 
 			      	/*
 			    	 * Creating a notifier
@@ -91,7 +97,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    			icon: 'images/alert.png'	
 			    			});
 			    	
-			    	oAlertNotifier.attachMessageSelected(clickListener);
+			    	oAlertNotifier.attachMessageSelected(clickAlertListener);
 			    	//////Channel notifier
 			    	var oChannelNotifier = new sap.ui.ux3.Notifier(this.createId("channel_noti"),
 			    			{
@@ -99,7 +105,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    			icon: 'images/channel.png'
 			    			});
 			    	
-			    	oChannelNotifier.attachMessageSelected(clickListener);
+			    	oChannelNotifier.attachMessageSelected(clickAlertListener);
 			    	
 			    	///////
 			    	

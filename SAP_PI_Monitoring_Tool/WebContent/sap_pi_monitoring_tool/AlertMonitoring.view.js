@@ -26,42 +26,72 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 			 */
 			createContent : function(oController) {
 				var oPanel = new sap.ui.commons.Panel(this.createId("oPanel"));
+				var oLayout = new sap.ui.commons.layout.MatrixLayout({
+					layoutFixed : false
+				});
 				
-				  
-			    
-					      
-					      
-					      
-				         var eventBus = sap.ui.getCore().getEventBus();
-				   		 // 1. ChannelName, 2. EventName, 3. Function to be executed, 4. Listener
-				   		 //eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent", this.onDataReceived, this);
-				   		 eventBus.subscribe("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", this.onAlertConsumersReceived, this);
-					     return oPanel;
-          },
-          
-          onAlertConsumersReceived : function(channel, event, data){
-        	  //var oModel = new sap.ui.model.xml.XMLModel();
-        	  //oModel.setXML(data);
-        	  
-          },
-          onDataReceived : function(channel, event, data) {
-        	 notifyMe('New Alert', data.ErrText +'\n' + data.Timestamp);
-        	  //alert(data.ErrText);
-     		 console.log("Inside ondatareceived -> view");
-     		 // do something with the data (bind to model)
-     		 var oTextView = new sap.ui.commons.TextView({
-     				text : data.ErrText +'\n' + data.Timestamp,
-     				tooltip : JSON.stringify(data),
-     				wrapping : true
-     				});  
-     		 oTextView.addStyleClass('alert_ticker');
-     		 console.log(this.byId('oPanel'));
-     		
-     		this.byId('oPanel').addContent(oTextView);
-     		//this.byId('oPanel').rerender();
-     		
-     		//var myModel = this.getMyModel(Math.floor((Math.random() * 100) + 1),Math.floor((Math.random() * 100) + 1),Math.floor((Math.random() * 100) + 1));
-     		//this.byId('oChart').setModel(model);
-     	}
+		 		var oTable = new sap.ui.table.Table(this.createId("alertTable"), {
+		 			visibleRowCount: 7,
+		 			//firstVisibleRow: 3,
+		 			selectionMode: sap.ui.table.SelectionMode.Single,
+		 			navigationMode: sap.ui.table.NavigationMode.Paginator,
+		 			//fixedColumnCount: 2,
+		 			//enableCustomFilter: true,
+		 			//enableCellFilter: true
+		 		});
+		 		oTable.setToolbar(new sap.ui.commons.Toolbar({items: [   
+		 		                                                      new sap.ui.commons.Label({text : "Find"}),   
+		 		                                                      new sap.ui.commons.TextField("SearchText",{/*liveChange: oController.Change*/}),  
+		 		                                                      new sap.ui.commons.Button({text: "Go", press: function(){}})  
+		 		                                             ]}));
+ 				oTable.columns = [  
+ 			                    new sap.ui.table.Column({label: "Severity", template:new sap.ui.commons.Link().bindProperty("text", "severity"), filterProperty:"Severity" }),  
+ 			                    new sap.ui.table.Column({label: "Payload", template:new sap.ui.commons.TextView().bindProperty("text", "payload"), filterProperty:"payload" }),  
+ 			                    new sap.ui.table.Column({label: "Timestamp", template:new sap.ui.commons.TextField().bindProperty("value", "timestamp"), filterProperty:"ProductCategoryDescription" }),  
+ 			                    //new sap.ui.table.Column({label: "Created By", template:new sap.ui.commons.Link().bindProperty("text", "CreatedBy").bindProperty("href", "CreatedByhref"),filterProperty:"CreatedBy"  }),  
+ 			                    //new sap.ui.table.Column({label: "Date/Time", template:"DateTime", filterProperty:"DateTime" })  
+ 			                    ] ;
+ 				
+ 				oTable.addColumn(new sap.ui.table.Column({ 
+		            width : '100px',
+                    label: new sap.ui.commons.Label({text: "Severity"}),          
+                    template: new sap.ui.commons.TextField().bindProperty("value", "severity")    
+ 					})   
+ 				);
+ 				
+ 				oTable.addColumn(new sap.ui.table.Column({ 
+		            //width : '100px',
+                    label: new sap.ui.commons.Label({text: "Payload"}),          
+                    template: new sap.ui.commons.TextView().addStyleClass('wrap').bindProperty("text", "payload")    
+ 					})   
+ 				);
+ 				oTable.addColumn(new sap.ui.table.Column({ 
+		            width : '100px',
+                    label: new sap.ui.commons.Label({text: "Timestamp"}),          
+                    template: new sap.ui.commons.TextField().bindProperty("value", "timestamp")    
+ 					})   
+ 				);
+ 		    	oTable.setTitle("Alerts");
+ 		    	//oTable.sort(oTable.getColumns()[2]);
+ 		    	oTable.setNoData(new sap.ui.commons.TextView({text: "Sorry, no data available!"}));
+
+ 		    	//oModel.setXML(new XMLSerializer().serializeToString(returnVal));  
+ 		         oTable.attachRowSelectionChange(function(Event){
+ 		        	openObjectDialog(JSON.parse(oTable.getRows()[oTable.getSelectedIndex()].getCells()[1].getText()));
+ 		        	console.log(JSON.parse(oTable.getRows()[oTable.getSelectedIndex()].getCells()[1].getText()));
+ 		         });
+ 		    	
+ 		        oTable.attachColumnSelect(function(oData, fnFunction, oListener){
+ 		        	oTable.sort(oListener);
+ 		        });
+ 		    	oLayout.createRow(oTable);
+ 		    	oLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+ 		    	oLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+ 		    	oLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+ 		    	oLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+ 		    	oPanel.addContent(oLayout);
+		 		
+			    return oPanel;
+          }
 			
 		});

@@ -20,16 +20,16 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 		
 		oTable.setToolbar(new sap.ui.commons.Toolbar({items: [   
                                                       new sap.ui.commons.Label({text : "Find"}),   
-                                                      new sap.ui.commons.TextField("SearchText",{liveChange: oController.Change}),  
+                                                      new sap.ui.commons.TextField({liveChange: oController.Change}),  
                                                       new sap.ui.commons.Button({text: "Go", press: function(){}})  
                                              ]}));
-		oTable.columns = [  
+		/*oTable.columns = [  
 	                    new sap.ui.table.Column({label: "Component", template:new sap.ui.commons.Link().bindProperty("text", "Component").bindProperty("href", "Component"), filterProperty:"Component" })  
-	                    //new sap.ui.table.Column({label: "Material Description", template:new sap.ui.commons.Link().bindProperty("text", "MaterialDescription").bindProperty("href", "MaterialDescriptionhref"), filterProperty:"MaterialDescription" }),  
-	                    //new sap.ui.table.Column({label: "Product Category Description", template:"ProductCategoryDescription", filterProperty:"ProductCategoryDescription" }),  
-	                    //new sap.ui.table.Column({label: "Created By", template:new sap.ui.commons.Link().bindProperty("text", "CreatedBy").bindProperty("href", "CreatedByhref"),filterProperty:"CreatedBy"  }),  
-	                    //new sap.ui.table.Column({label: "Date/Time", template:"DateTime", filterProperty:"DateTime" })  
-	                    ] ;
+	                    new sap.ui.table.Column({label: "Material Description", template:new sap.ui.commons.Link().bindProperty("text", "MaterialDescription").bindProperty("href", "MaterialDescriptionhref"), filterProperty:"MaterialDescription" }),  
+	                    new sap.ui.table.Column({label: "Product Category Description", template:"ProductCategoryDescription", filterProperty:"ProductCategoryDescription" }),  
+	                    new sap.ui.table.Column({label: "Created By", template:new sap.ui.commons.Link().bindProperty("text", "CreatedBy").bindProperty("href", "CreatedByhref"),filterProperty:"CreatedBy"  }),  
+	                    new sap.ui.table.Column({label: "Date/Time", template:"DateTime", filterProperty:"DateTime" })  
+	                    ] ;*/
 		
     	oTable.setTitle("Channel status");
     	oTable.setNoData(new sap.ui.commons.TextView({text: "Sorry, no data available!"}));
@@ -103,6 +103,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
             	           })     
 				})   
 	      );
+	      oTable.setVisibleRowCount(5);
 	      oTable.setModel(oModel);     
 	      oTable.bindRows({path: "/channelStatus"});  
 	      //colorRows(oTable, oModel);
@@ -119,9 +120,9 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 * (NOT before the first rendering! onInit() is used for that one!).
 * @memberOf sap_pi_monitoring_tool.ChannelMonitor
 */
-//	onBeforeRendering: function() {
-//
-//	},
+	onBeforeRendering: function() {
+		
+	},
 
 /**
 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
@@ -130,7 +131,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 */
 	onAfterRendering: function() {
 		
-		
+		//this.getChannels(this);
 	},
 
 /**
@@ -148,15 +149,15 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
           
         if(searchText.trim()!=''){  
               
-            var filter1 = new sap.ui.model.Filter({path:"/Component",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter2 = new sap.ui.model.Filter({path:"/Channel",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter3 = new sap.ui.model.Filter({path:"/Party",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter4 = new sap.ui.model.Filter({path:"/status/@activationState",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter1 = new sap.ui.model.Filter({path:"Component",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter2 = new sap.ui.model.Filter({path:"Channel",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter3 = new sap.ui.model.Filter({path:"Party",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter4 = new sap.ui.model.Filter({path:"status/@activationState",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
             filters = [filter1,filter2,filter3,filter4];  
             var finalFilter = new sap.ui.model.Filter({filters:filters, and:false});  
-            oTable.getBinding("rows").filter(finalFilter, sap.ui.model.FilterType.Application);  
+            oTable.getBinding("channelStatus").filter(finalFilter, sap.ui.model.FilterType.Application);  
         }else{  
-            oTable.getBinding("rows").filter([], sap.ui.model.FilterType.Application);  
+            oTable.getBinding("channelStatus").filter([], sap.ui.model.FilterType.Application);  
             }  
           
           
@@ -182,7 +183,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	             data : request,  
 	             dataType : "text",  
 	             contentType : "text/xml; charset=\"utf-8\"",
-	             timeout: 10000,
+	             timeout: 1000000,
 	             headers : {
 				    	'Access-Control-Allow-Origin': '*',
 				    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
@@ -270,6 +271,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	             })
 	             .always(function () {
 	            	 console.log("complete");
+	            	 oTable.setBusy(false);
 	             });
 	               
 			    // }, 2000);

@@ -1,5 +1,7 @@
 var ajaxCounter1 =0 ;
 var ajaxCounter2 =0 ;
+var eventBus = sap.ui.getCore().getEventBus();
+var snd = new Audio("media/notification.mp3"); 
 sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 
 /**
@@ -44,8 +46,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 	fetchAlerts : function(obj){
 		ajaxCounter1++;
 		obj.byId('conn_noti').setIcon('images/connecting.gif');
-		var eventBus = sap.ui.getCore().getEventBus();
-        var snd = new Audio("media/notification.mp3"); 
+		
 
 		var request = 
 		    '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bas="http://sap.com/xi/BASIS">\
@@ -64,7 +65,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             data : request,  
 		             dataType : "text",  
 		             contentType : "text/xml; charset=\"utf-8\"",
-		             timeout: 100000,
+		             timeout: settings.AlertAjaxTimeout,
 		             headers : {
 		            	    'X-Requested-With': 'XMLHttpRequest',
 					    	'Access-Control-Allow-Origin': '*',
@@ -73,7 +74,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             }).done(function(data) {
 		            	   obj.byId('conn_noti').setIcon('images/Circle_Green.png');
 		                   response = data; 
-		                   console.log(data);
+		                   //console.log(data);
 		                   parser=new DOMParser();  
 		                    xmlDoc=parser.parseFromString(response,"text/xml");  
 		                    nodeList = xmlDoc.getElementsByTagNameNS("*","AlertConsumers");  
@@ -96,7 +97,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                			timestamp : now
 		                		});
 		                		 // buffers automatically when created
-		                	 snd.play();
+		                	 //snd.play();
 			            	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
 		                 } 
 		                 if (jqXHR.status == 404) {
@@ -116,10 +117,13 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                 if (exception === 'timeout') {
 		                     msg = 'Time out error.';
 		                     
-		                     console.log("Timeout : Retrying count: "+ ajaxCounter1);
+		                     
 		                     console.log("Max retrying count 5");
-		                     if(!(ajaxCounter1 > 5))
-		                    	 obj.fetchAlerts(obj);
+		                     if(ajaxCounter1 < 5){
+		                    	 console.log("Timeout : Retrying count: "+ ajaxCounter1++);
+		                    	 setTimeout(function(){obj.fetchAlerts(obj);}, 100);
+		                     }
+		                    	 
 		                 } 
 		                 if (exception === 'abort') {
 		                     msg = 'Ajax request aborted.';
@@ -139,12 +143,9 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 	
     fetchSingleAlert: function(nodeList, i){
     	ajaxCounter2++;
-    	console.log("value of i "+ i);
+    	console.log("Ajax call for "+ nodeList[i].textContent + " " + i +"/"+nodeList.length);
     	var oCon = this;
 		oCon.byId('conn_noti').setIcon('images/connecting.gif');
-
-		var eventBus = sap.ui.getCore().getEventBus();
-        var snd = new Audio("media/notification.mp3"); 
 
     	var req =
     		'<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aler="http://sap.com/xi/BASIS/alerting"> \
@@ -152,36 +153,46 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
     		   <soapenv:Body> \
     		      <aler:RetrieveSingleAlertsRequest>\
     		         <ConsumerID>'+nodeList[i].textContent+'</ConsumerID>\
-    		         <MaxAlerts>10</MaxAlerts>\
+    		         <MaxAlerts>1000</MaxAlerts>\
     		      </aler:RetrieveSingleAlertsRequest>\
     		   </soapenv:Body>\
     		</soapenv:Envelope>';
 		    var oModel = new sap.ui.model.xml.XMLModel();  
 		    var response = "";
               var returnVal = "";
-              console.log(serviceAPIs.alertAPI_single_alert());
-               
+             
 		             $.ajax({  
 		             url : serviceAPIs.alertAPI_single_alert(),  
 		             type : "POST",  
 		             data : req,  
 		             dataType : "text",  
 		             contentType : "text/xml; charset=\"utf-8\"",
-		             timeout: 500000,
+		             timeout: settings.AlertAjaxTimeout,
 		             headers : {
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
 					    }
 		             }).done(function(data) {  		                		                    
-		                   console.log(data);
+		                   //console.log(data);
 		                   oCon.byId('conn_noti').setIcon('images/Circle_Green.png');
 		                   parser=new DOMParser();  
 		                   xmlDoc=parser.parseFromString(data,"text/xml");  
 		                   alerts = xmlDoc.getElementsByTagNameNS("*","Alert");  
-		                   console.log(alerts);
-		                    for(j=0; j< alerts.length; j++)  {
+		                   //console.log(alerts);
+		                   
+		                   /// Storing alerts in IndexedDB
+		                	                   
+		                   for(j=0; j< alerts.length; j++)  {
 		                    console.log(JSON.parse(alerts[j].childNodes[0].textContent));
 		                    var obj1 = JSON.parse(alerts[j].childNodes[0].textContent);
+		                    
+		                    db.alerts
+		            		.add({
+		            			payload: JSON.stringify(obj1),
+		            			severity: obj1.Severity,
+		            			timestamp: obj1.Timestamp
+		            		});
+		                    
 		                		var now = (new Date()).toUTCString();
 		                		var oMessage = new sap.ui.core.Message({
 		                			text :  obj1.ErrText,
@@ -191,7 +202,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		oMessage.data("alert", obj1);
 		                		snd.play();
 		                		oCon.byId("alert_noti").addMessage(oMessage);
-		                		if(!(obj1.Channel == null || obj1.Channel == undefined || obj1.Channel == '')){
+		                		if(!(obj1.Channel == null || obj1.Channel == '')){
 		                			// Channel in error
 		                			oCon.byId("channel_noti").addMessage(oMessage);
 		                		}
@@ -199,7 +210,25 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                		eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", 1);
 		                    }
 		                    
-		                    
+		                   if(i+1<nodeList.length){
+			            		 //console.log("Starting next ajax ");
+			            		 //console.log(nodeList);
+			            		 //console.log(nodeList[i+1]);
+			            		 
+			            		 setTimeout(function() { ajaxCounter2 = 0; oCon.fetchSingleAlert(nodeList, i+1); }, settings.WaitBetweenAjaxCall);
+			            		 
+			            		 
+
+			            	 }else{// When all consumers alerts fetched(or tried)
+			            		 	var currentdate = new Date();
+			            		 	if(currentdate.getHours()%20 == 0){ // Refrsh Alert Consumer List one time per day.
+			            		 		setTimeout(function(){ajaxCounter1 = 0; ajaxCounter2 = 0 ; oCon.fetchAlerts(oCon);}, settings.WaitBetweenAjaxCall);
+			            		 	}else{
+			            		 		setTimeout(function(){ ajaxCounter2 = 0 ; oCon.fetchSingleAlert(nodeList, 0);}, settings.WaitBetweenAjaxCall);
+			            		 	}
+			            			  
+			            		 
+			            	 }
 		                    
 		             }).fail(function (jqXHR, exception) {
 		            	 oCon.byId('conn_noti').setIcon('images/Circle_Red.png');
@@ -233,10 +262,12 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                 }
 		                 if (exception === 'timeout') {
 		                     msg = 'Time out error.';
-		                     console.log('Timeout : Retrying count : ' + ajaxCounter2);
+		                     
 		                     console.log("Max retrying count 5");
-		                     if(!(ajaxCounter2 > 5)){
-		                    	 oCon.fetchSingleAlert(nodeList, i);
+		                     if(ajaxCounter2 < settings.MaxRetryCount){
+		                    	 console.log('Timeout : Retrying count : ' + ajaxCounter2++);
+		                    	 
+		                    	 setTimeout(function(){oCon.fetchSingleAlert(nodeList, i);}, 100);
 		                     }
 		                 } 
 		                 if (exception === 'abort') {
@@ -255,25 +286,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             .always(function () {
 		            	 ajaxCounter2--;
 		            	 console.log("complete");
-		            	 if(i+1<nodeList.length){
-		            		 console.log("Starting next ajax ");
-		            		 //console.log(nodeList);
-		            		 //console.log(nodeList[i+1]);
-		            		 
-		            		 setTimeout(function() { ajaxCounter2 = 0; oCon.fetchSingleAlert(nodeList, i+1); }, 50000);
-		            		 
-		            		 
-
-		            	 }else{// When all consumers alerts fetched(or tried)
-		            		 	var currentdate = new Date();
-		            		 	if(currentdate.getHours()%20 == 0){ // Refrsh Alert Consumer List one time per day.
-		            		 		setTimeout(function(){oCon.fetchAlerts();}, 100000);
-		            		 	}else{
-		            		 		setTimeout(function(){ajaxCounter1 = 0; ajaxCounter2 = 0 ; oCon.fetchSingleAlert(nodeList, 0);}, 50000);
-		            		 	}
-		            			  
-		            		 
-		            	 }
+		            	 
 		            		 
 		             });
     }
