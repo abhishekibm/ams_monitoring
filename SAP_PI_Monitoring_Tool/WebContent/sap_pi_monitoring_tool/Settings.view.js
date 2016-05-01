@@ -13,7 +13,32 @@ sap.ui.jsview("sap_pi_monitoring_tool.Settings", {
 	* @memberOf sap_pi_monitoring_tool.Settings
 	*/ 
 	createContent : function(oController) {
- 		
+		var oLayout = new sap.ui.commons.layout.MatrixLayout({
+			layoutFixed : false
+		});
+		
+		console.log(settings);
+		for(prop in settings){
+			
+			if(!prop.endsWith("_allowed")){
+			var lbProp = new sap.ui.commons.Label({text : prop+' : '});
+			var ddBox = new sap.ui.commons.DropdownBox();
+			var lbCurrent = new sap.ui.commons.Label({text : ' Current value: '+settings[prop]});
+			var lbDefault = new sap.ui.commons.Label({text : ' Default value: '+default_settings[prop]});
+			for(var k=0; k<settings[prop+'_allowed'].length; k++ ){
+			oItem = new sap.ui.core.ListItem();
+			oItem.setText(settings[prop+'_allowed'][k]);
+			ddBox.addItem(oItem);
+			
+			}
+			//ddBox.attachChange(function(){ update(prop, ddBox.getValue()); oTextView.setText(JSON.stringify(settings));});
+			oLayout.createRow(lbProp, ddBox, lbCurrent, lbDefault);
+			}
+		}
+		
+		
+		//oLayout.createRow(oTextView);
+		return oLayout;
 	}
 
 });

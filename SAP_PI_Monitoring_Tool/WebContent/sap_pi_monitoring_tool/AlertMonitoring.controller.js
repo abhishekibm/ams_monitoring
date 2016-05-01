@@ -18,53 +18,28 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 		eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent",
 				this.onDataReceived, oCon);
 		
-		// /////////////CHART
-
-		var oChart = new sap.makit.Chart({
-			id : oCon.createId('altrs'),
-			width : "500px",
-			height : "250px",
-			type : sap.makit.ChartType.Column,
-			showRangeSelector : false,
-			showTotalValue : true,
-			valueAxis : new sap.makit.ValueAxis({}),
-			categoryAxis : new sap.makit.CategoryAxis({}),
-			category : new sap.makit.Category({
-				column : "type"
-			}),
-
-			values : [ new sap.makit.Value({
-				expression : "tickets",
-				format : "number"
-			}) ]
-
-		});
-
-		oChart.addColumn(new sap.makit.Column({
-			name : "type",
-			value : "{type}"
-		}));
-
-		oChart.addColumn(new sap.makit.Column({
-			name : "tickets",
-			value : "{tickets}",
-			type : "number"
-		}));
-
-		oChart.setModel(oModel_chart);
-
-		oChart.bindRows("/");
-		//this.byId('oPanel').addContent(oChart);
+		
 
 		// ///////////////END of CHart initi
 		
 		/// Get alerts from IndexedDB
 		var alertsAll = [];
+		var h = oLocalStorage.get('alertCounts');
 		db.alerts
 		.each(function(alert){
 			alertsAll.push(alert);
-			//console.log(alert);
+			if(alert.severity == 'VERYHIGH')
+				h[0].tickets += 1;
+			if(alert.severity == 'HIGH')
+				h[1].tickets += 1;
+			else if(alert.severity == 'MEDIUM')
+				h[2].tickets += 1;
+			else if(alert.severity == 'LOW')
+				h[3].tickets += 1;
+			else
+				h[4].tickets += 1;
 		}).then(function(alerts){
+			oLocalStorage.put('alertCounts', h);
 			oModel_Alerts.setData(alertsAll);
 		});
 

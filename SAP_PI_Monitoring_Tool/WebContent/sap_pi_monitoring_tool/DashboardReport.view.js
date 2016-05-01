@@ -1,4 +1,5 @@
 var oModel_chart = new sap.ui.model.json.JSONModel();
+
 var startDateTime = "";
 var endDateTime = "";
 sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
@@ -43,12 +44,11 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		channelErrorCount.setText('0');
 		channelErrorCount.addStyleClass('alertCount');
 		channelErrorCount.addStyleClass('yellow');
-		
 		oLayout.createRow( control, channelErrorCount );
 		
 		var oChart = new sap.makit.Chart({
 
-			type : sap.makit.ChartType.Donut,
+			type : sap.makit.ChartType.Column,
 			showTotalValue : true,
 			showRangeSelector : false,
 			showTotalValue : true,
@@ -77,18 +77,64 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		}));
 		
 		
-		oModel_chart.setData([
-		                      {type: 'VERYHIGH', tickets : 100},
-		                      {type: 'HIGH', tickets : 170},
-		                      {type: 'MEDIUM', tickets : -10},
-		                      {type: 'LOW', tickets : 10}
-		                      ]);
+		
 		oChart.setModel(oModel_chart);
 
 		oChart.bindRows("/");
 		//oChart.setBusy(true);
 		oPanel.addContent(oLayout);
 		oPanel.addContent(oChart);
+		
+		
+		console.log(oLocalStorage.get('alertCounts'));
+		var h = [
+                  {type: 'VERYHIGH', tickets : 0},
+                  {type: 'HIGH', tickets : 0},
+                  {type: 'MEDIUM', tickets : 0},
+                  {type: 'LOW', tickets : 0},
+                  {type: 'ELSE', tickets : 0}
+                ];
+		
+		var alertsAll = [];
+		var chaErr = 0;
+		db.alerts
+		.each(function(alert){
+			alertsAll.push(alert);
+			if(alert.severity === 'VERYHIGH')
+				h[0].tickets += 1;
+			if(alert.severity === 'HIGH')
+				h[1].tickets += 1;
+			else if(alert.severity === 'MEDIUM')
+				h[2].tickets += 1;
+			else if(alert.severity === 'LOW')
+				h[3].tickets += 1;
+			else if(alert.severity === 'ELSE')
+				h[4].tickets += 1;
+			
+			if(alert.channel!=''){
+				chaErr++;
+			}
+		}).then(function(alerts){
+			oLocalStorage.put('alertCounts', h);
+			console.log(h);
+			if(h!=null){
+				alertCount.setText(h[0].tickets +h[1].tickets +h[2].tickets +h[3].tickets +h[4].tickets );
+			}else{
+				alertCount.setText(0);
+			}
+			channelErrorCount.setText(chaErr);
+			oModel_chart.setData(oLocalStorage.get('alertCounts'));
+		}).catch (function (err) {
+
+		    // Transaction will abort!
+		    console.log(err);
+
+		});;
+		
+		
+		
+		
+		
 		
 		
 		/// Message Monitoring ///
@@ -203,26 +249,33 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 				]
 			});
 			var eventBus = sap.ui.getCore().getEventBus();
-			eventBus.subscribe("FetchAlertCountFromNotificationBar", "onNavigateEvent", this.onAlertCountReceived, this);
+			//eventBus.subscribe("FetchAlertCountFromNotificationBar", "onNavigateEvent", this.onAlertCountReceived, this);
+			eventBus.subscribe("FetchAlertsFromNotificationBar", "onNavigateEvent",
+					this.onAlertCountReceived, this);
+			
 			return oGrid;
 	},
-	onAlertCountReceived : function(channel, event, data){
-		var a = oModel_chart.getData();
-		if(data.Severity == 'VERYHIGH'){
-			a[0].tickets += 1;
-		}
-		if(data.Severity == 'HIGH'){
-			a[1].tickets += 1;
-		}
-		if(data.Severity == 'MEDIUM'){
-			a[2].tickets += 1;
-		}
-		if(data.Severity == 'LOW'){
-			a[3].tickets += 1;
-		}
-		oModel_chart.setData(a);
+	onAlertCountReceived : function(channel, event, alert){
+		var h = oLocalStorage.get('alertCounts');
+console.log(alert.Severity);
+console.log(alert.Severity === 'VERYHIGH');
+console.log(alert.Severity === "VERYHIGH");
+console.log(alert.Severity == 'VERYHIGH');
+		if(alert.Severity === 'VERYHIGH')
+			h[0].tickets += 1;
+		else if(alert.Severity === 'HIGH')
+			h[1].tickets += 1;
+		else if(alert.Severity === 'MEDIUM')
+			h[2].tickets += 1;
+		else if(alert.Severity === 'LOW')
+			h[3].tickets += 1;
+		else if(alert.Severity === 'ELSE')
+			h[4].tickets += 1;
+		oLocalStorage.put('alertCounts', h);
+		oModel_chart.setData(oLocalStorage.get('alertCounts'));
+		
 		this.byId('alertCount').setText(parseInt(this.byId('alertCount').getText()) + 1);
-		if(data.Channel != "")
+		if(alert.Channel != "")
 		this.byId('channelAlertCount').setText(parseInt(this.byId('channelAlertCount').getText()) + 1);
     }
 

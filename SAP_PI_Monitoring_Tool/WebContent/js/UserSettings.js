@@ -1,12 +1,18 @@
-var default_settings = {
-	//appname : 'SAP PI Monitoring Tool',
+default_settings = {
 	mode : 'debug', //prod, dev, debug
+	mode_allowed : ["prod", "dev", "debug" ],
 	proxy : true,
+	proxy_allowed : ["true", "false" ],
+	
 	/// Scheduling 
-	AlertAjaxTimeout : 1000000,
+	AlertAjaxTimeout : 100000,
+	AlertAjaxTimeout_allowed : [5000, 10000, 20000, 50000, 100000 ],
 	ChannelFetchAjaxTimeout : 500000,
+	ChannelFetchAjaxTimeout_allowed :[5000, 10000, 20000, 50000, 100000 ],
+	WaitBetweenAjaxCall : 5000,
+	WaitBetweenAjaxCall_allowed : [5000, 10000, 20000, 50000, 100000 ],
 	MaxRetryCount : 5,
-	WaitBetweenAjaxCall : 5000
+	MaxRetryCount_allowed : [0, 2, 5, 10, 20, 100]
 	
 }
 
@@ -17,8 +23,8 @@ s.put('settings', default_settings);
 settings = 	s.get('settings');
 
 function update(property, value){
-	var s = s.get('settings');
-	s.property = value;
-	s.put('settings', s);
+	a = s.get('settings');
+	a.property = value;
+	s.put('settings', a);
 	settings = s.get('settings');
 }

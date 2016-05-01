@@ -77,8 +77,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 
  		    	//oModel.setXML(new XMLSerializer().serializeToString(returnVal));  
  		         oTable.attachRowSelectionChange(function(Event){
- 		        	openObjectDialog(JSON.parse(oTable.getRows()[oTable.getSelectedIndex()].getCells()[1].getText()));
- 		        	console.log(JSON.parse(oTable.getRows()[oTable.getSelectedIndex()].getCells()[1].getText()));
+ 		        	 console.log(oTable.getSelectedIndex());
+ 		        	openObjectDialog(JSON.parse(oTable.getRows()[oTable.getSelectedIndex()%oTable.getVisibleRowCount()].getCells()[1].getText()));
+ 		        	console.log(JSON.parse(oTable.getRows()[oTable.getSelectedIndex()%oTable.getVisibleRowCount()].getCells()[1].getText()));
  		         });
  		    	
  		        oTable.attachColumnSelect(function(oData, fnFunction, oListener){

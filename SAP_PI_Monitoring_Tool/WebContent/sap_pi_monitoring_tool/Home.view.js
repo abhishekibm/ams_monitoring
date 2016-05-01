@@ -51,6 +51,11 @@ sap.ui.jsview("sap_pi_monitoring_tool.Home", {
 			type : sap.ui.core.mvc.ViewType.JS
 			
 		});*/
+		var settingsView = new sap.ui.view({
+			viewName : "sap_pi_monitoring_tool.Settings",
+			type : sap.ui.core.mvc.ViewType.JS
+			
+		});
 		var oShell = new sap.ui.ux3.Shell("myShell", {
 			appTitle: "IBM AMS Monitoring Tool",
 			appIcon: "images/ibm-logos/64px-IBM_logo.svg.png",
@@ -69,7 +74,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Home", {
 			
 			headerItems: [new sap.ui.commons.TextView({text:(isLoggedin()? localStore('sessionObject').username : "User Name"),tooltip:"Username"}),
 			              new sap.ui.commons.TextView({text:(isLoggedin()? localStore('sessionObject').host +':'+localStore('sessionObject').port : "Not defined"),tooltip:"Host:Port"}),
-			              new sap.ui.commons.Button({text:"Personalize",tooltip:"Personalize",press:function(oEvent){alert("Here could open an personalize dialog");}}),
+			              new sap.ui.commons.Button({text:"Personalize",tooltip:"Personalize",press:function(oEvent){openViewDialog(settingsView)}}),
 										new sap.ui.commons.MenuButton({
 											text: "Settings",
 											tooltip: "Settings",

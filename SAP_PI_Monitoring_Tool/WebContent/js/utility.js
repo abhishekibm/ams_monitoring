@@ -2,14 +2,20 @@
 jQuery.sap.require("jquery.sap.storage");
 oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
 oLocalStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local); 
-
+/*oLocalStorage.put('alertCounts', [
+                   {type: 'VERYHIGH', tickets : 0},
+                   {type: 'HIGH', tickets : 0},
+                   {type: 'MEDIUM', tickets : 0},
+                   {type: 'LOW', tickets : 0},
+                   {type: 'ELSE', tickets : 0}
+                 ]);*/
 //
 // Define your database
 //
 db = new Dexie("monitoring_tool");
 
 db.version(1).stores({
-    alerts: '++id, payload,severity,timestamp'
+    alerts: '++id, payload,severity,channel,timestamp'
     // ...add more stores (tables) here...
 });
 //
@@ -170,9 +176,31 @@ function openLoginDialog() {
 		loginDialog.changeView(loginview);
 	});
 	sap.ui.commons.Dialog.prototype.onsapescape = function(){ }; 
-	loginDialog.open();
+	//loginDialog.open();
 }
 
+function openViewDialog(view) {
+	$('.sapUiDlg').hide();
+	var objDialog = new sap.ui.commons.Dialog({
+		modal : false,
+		keepInWindow : true,
+		showCloseButton  : true,
+		autoReposition: true,
+		width: '600px',
+		height: '500px',
+		content : [ view ]
+	});
+	
+	objDialog.changeView = function(view) {
+		this.removeAllContent();
+		this.addContent(view);
+	}
+	$(window).resize(function() {
+		objDialog.changeView(view);
+	});
+	//sap.ui.commons.Dialog.prototype.onsapescape = function(){ }; 
+	objDialog.open();
+}
 function openObjectDialog(jsonObj) {
 	$('.sapUiDlg').hide();
 	console.log(jsonObj);
@@ -194,7 +222,7 @@ function openObjectDialog(jsonObj) {
 		}
 		
     }
-	
+
 	
 	
 	var objDialog = new sap.ui.commons.Dialog({

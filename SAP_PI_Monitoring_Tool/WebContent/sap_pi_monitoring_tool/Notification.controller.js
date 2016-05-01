@@ -80,7 +80,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    nodeList = xmlDoc.getElementsByTagNameNS("*","AlertConsumers");  
 	                		eventBus.publish("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", nodeList);
 		                    //oStorage.put("alertConsumers", JSON.stringify(nodeList));
-	                		setTimeout(function() { obj.fetchSingleAlert(nodeList, 0); }, 1000);
+	                		setTimeout(function() { obj.fetchSingleAlert(nodeList, 0, settings.AlertAjaxTimeout); }, 1000);
 		                    
 		             })  
 		             .fail(function (jqXHR, exception) {
@@ -141,7 +141,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 	},
 	
 	
-    fetchSingleAlert: function(nodeList, i){
+    fetchSingleAlert: function(nodeList, i, timeout){
     	ajaxCounter2++;
     	console.log("Ajax call for "+ nodeList[i].textContent + " " + i +"/"+nodeList.length);
     	var oCon = this;
@@ -167,7 +167,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             data : req,  
 		             dataType : "text",  
 		             contentType : "text/xml; charset=\"utf-8\"",
-		             timeout: settings.AlertAjaxTimeout,
+		             timeout: timeout,
 		             headers : {
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
@@ -190,6 +190,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		            		.add({
 		            			payload: JSON.stringify(obj1),
 		            			severity: obj1.Severity,
+		            			channel: (obj1.Channel == undefined || obj1.Channel == '')?'':obj1.Channel,
 		            			timestamp: obj1.Timestamp
 		            		});
 		                    
@@ -207,7 +208,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                			oCon.byId("channel_noti").addMessage(oMessage);
 		                		}
 		                		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", obj1);
-		                		eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", 1);
+		                		//eventBus.publish("FetchAlertCountFromNotificationBar", "onNavigateEvent", obj1);
 		                    }
 		                    
 		                   if(i+1<nodeList.length){
@@ -215,7 +216,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 			            		 //console.log(nodeList);
 			            		 //console.log(nodeList[i+1]);
 			            		 
-			            		 setTimeout(function() { ajaxCounter2 = 0; oCon.fetchSingleAlert(nodeList, i+1); }, settings.WaitBetweenAjaxCall);
+			            		 setTimeout(function() { ajaxCounter2 = 0; oCon.fetchSingleAlert(nodeList, i+1, 2*timeout); }, settings.WaitBetweenAjaxCall);
 			            		 
 			            		 
 
@@ -224,7 +225,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 			            		 	if(currentdate.getHours()%20 == 0){ // Refrsh Alert Consumer List one time per day.
 			            		 		setTimeout(function(){ajaxCounter1 = 0; ajaxCounter2 = 0 ; oCon.fetchAlerts(oCon);}, settings.WaitBetweenAjaxCall);
 			            		 	}else{
-			            		 		setTimeout(function(){ ajaxCounter2 = 0 ; oCon.fetchSingleAlert(nodeList, 0);}, settings.WaitBetweenAjaxCall);
+			            		 		setTimeout(function(){ ajaxCounter2 = 0 ; oCon.fetchSingleAlert(nodeList, 0, timeout);}, settings.WaitBetweenAjaxCall);
 			            		 	}
 			            			  
 			            		 
@@ -240,13 +241,13 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                     msg = 'Not connect. Verify Network.';
 		                     var now = (new Date()).toUTCString();
 		                		var oMessage = new sap.ui.core.Message({
-		                			text :  'Could not connect PI system.',
+		                			text :  jqXHR.responseText,
 		                			level : sap.ui.core.MessageType.Error,
 		                			timestamp : now
 		                		});
 		                		 // buffers automatically when created
 		                	snd.play();
-		                     oCon.byId("conn_noti").addMessage(oMessage);
+		                    oCon.byId("conn_noti").addMessage(oMessage);
 		                 } 
 		                 if (jqXHR.status == 404) {
 		                     msg = 'Requested page not found. [404]';
