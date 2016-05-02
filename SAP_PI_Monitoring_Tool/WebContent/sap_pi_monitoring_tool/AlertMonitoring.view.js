@@ -1,10 +1,12 @@
+var oTable = new sap.ui.table.Table();
 /**
+
  * View for Alerts
  * @author Abhishek Saha
  */
 sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 		{
-
+	 oCon: this,
 			/**
 			 * Specifies the Controller belonging to this View. In the case that
 			 * it is not implemented, or that "null" is returned, this View does
@@ -25,12 +27,13 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 			 * @memberOf sap_pi_monitoring_tool.AlertMonitoring
 			 */
 			createContent : function(oController) {
+				oCon = this;
 				var oPanel = new sap.ui.commons.Panel(this.createId("oPanel"));
 				var oLayout = new sap.ui.commons.layout.MatrixLayout({
 					layoutFixed : false
 				});
 				
-		 		var oTable = new sap.ui.table.Table(this.createId("alertTable"), {
+				oTable = new sap.ui.table.Table(this.createId("alertTable"), {
 		 			visibleRowCount: 7,
 		 			//firstVisibleRow: 3,
 		 			selectionMode: sap.ui.table.SelectionMode.Single,
@@ -41,7 +44,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 		 		});
 		 		oTable.setToolbar(new sap.ui.commons.Toolbar({items: [   
 		 		                                                      new sap.ui.commons.Label({text : "Find"}),   
-		 		                                                      new sap.ui.commons.TextField("SearchText",{/*liveChange: oController.Change*/}),  
+		 		                                                      new sap.ui.commons.TextField("SearchText",{liveChange: this.Change}),  
 		 		                                                      new sap.ui.commons.Button({text: "Go", press: function(){}})  
 		 		                                             ]}));
  				oTable.columns = [  
@@ -93,6 +96,26 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
  		    	oPanel.addContent(oLayout);
 		 		
 			    return oPanel;
-          }
+          },
+          Change: function(oEvent){  
+              console.log("change function");
+              var searchText = oEvent.getParameters().liveValue;   
+              var filters=[];  
+                
+              if(searchText.trim()!=''){  
+                    
+                  var filter1 = new sap.ui.model.Filter({path:"Severity",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+                  var filter2 = new sap.ui.model.Filter({path:"Payload",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+                  var filter3 = new sap.ui.model.Filter({path:"Timestamp",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+                  var filter4 = new sap.ui.model.Filter({path:"status/@activationState",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+                  filters = [filter2];  
+                  var finalFilter = new sap.ui.model.Filter({filters:filters, and:false});  
+                  oTable.getBinding("rows").filter(filter2, sap.ui.model.FilterType.Application);  
+              }else{  
+            	  oTable.getBinding("rows").filter([], sap.ui.model.FilterType.Application);  
+                  }  
+                
+                
+          } 
 			
 		});

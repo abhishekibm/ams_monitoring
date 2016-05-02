@@ -149,15 +149,15 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
           
         if(searchText.trim()!=''){  
               
-            var filter1 = new sap.ui.model.Filter({path:"Component",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter2 = new sap.ui.model.Filter({path:"Channel",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter3 = new sap.ui.model.Filter({path:"Party",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
-            var filter4 = new sap.ui.model.Filter({path:"status/@activationState",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter1 = new sap.ui.model.Filter({path:"/channelStatus/Component",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter2 = new sap.ui.model.Filter({path:"/channelStatus/Channel",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter3 = new sap.ui.model.Filter({path:"/channelStatus/Party",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
+            var filter4 = new sap.ui.model.Filter({path:"/channelStatus/status/@activationState",operator:sap.ui.model.FilterOperator.Contains,value1:searchText});   
             filters = [filter1,filter2,filter3,filter4];  
             var finalFilter = new sap.ui.model.Filter({filters:filters, and:false});  
-            oTable.getBinding("channelStatus").filter(finalFilter, sap.ui.model.FilterType.Application);  
+            oTable.getBinding("rows").filter(finalFilter, sap.ui.model.FilterType.Control);  
         }else{  
-            oTable.getBinding("channelStatus").filter([], sap.ui.model.FilterType.Application);  
+            oTable.getBinding("rows").filter([], sap.ui.model.FilterType.Control);  
             }  
           
           
