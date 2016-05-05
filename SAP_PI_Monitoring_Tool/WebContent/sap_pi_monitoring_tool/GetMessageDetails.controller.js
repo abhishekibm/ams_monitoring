@@ -11,9 +11,9 @@ sap.ui.controller("sap_pi_monitoring_tool.GetMessageDetails", {
 	},
 	
 	
-	doIt1 : function(strMessageKey,strArchiveFlag,strDate) {		
+	extractMessageLog : function(strMessageKey,strArchiveFlag,strDate) {		
 		
-		console.log("Inside doIT");
+		console.log("extractMessageLog");
 		
 		//var oTableMessagelist = this.byId("MessageListTable");
 		
@@ -84,6 +84,8 @@ sap.ui.controller("sap_pi_monitoring_tool.GetMessageDetails", {
 					},
 
 					complete : function(jqXHR, status) {
+						
+						
 					
 					}
 

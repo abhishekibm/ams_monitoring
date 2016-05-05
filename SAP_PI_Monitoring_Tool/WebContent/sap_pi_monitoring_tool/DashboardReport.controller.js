@@ -10,9 +10,9 @@ var ctrToBeDelivered = 0;
 sap.ui.controller("sap_pi_monitoring_tool.DashboardReport", {
 
 	
-calculateBackDate : function(){
-		
-		var dateOffset = (24*60*60*1000) * 30; 
+calculateBackDate : function(interval){
+		var intervalHours = interval;
+		var dateOffset = (intervalHours*60*60*1000); 
 		var myDate = new Date().getTime() - dateOffset;
 		console.log("myDate " + myDate);
 		var backdate = new Date(myDate);
@@ -53,8 +53,31 @@ calculateBackDate : function(){
 		return formattedDate;
 	},
 	
+	returnInterval : function( interval) {
+		var strInterval = "";
+		if(interval == "Last One Hour"){
+			strInterval = "1";
+		}
+		else if(interval == "Last Two Hours"){
+			strInterval = "2";
+		}
+		else if(interval == "Last Six Hours"){
+			strInterval = "6";
+		}
+		else if(interval == "Last Twelve Hours"){
+			strInterval		}
+		else if(interval == "Last 24 Hours"){
+			strInterval = "24";
+		}
+		return strInterval;
+		
+	},
+	
+	
+	
 	
 extractData : function (obj, startDateTime,endDateTime){
+		obj.byId('layoutID').setBusy(true);
 		var request = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:AdapterMessageMonitoringVi\" xmlns:urn1=\"urn:com.sap.aii.mdt.server.adapterframework.ws\" xmlns:urn2=\"urn:com.sap.aii.mdt.api.data\" xmlns:lang=\"urn:java/lang\">\n" +
         "    <soapenv:Header/>\n" +
 			"      <soapenv:Body>\n" +
@@ -111,7 +134,7 @@ extractData : function (obj, startDateTime,endDateTime){
 
 		     {
 		          console.log("ERROR");
-		          console.log(xhr);
+		          console.log(xhr.responseText);
 
 		     },
 
@@ -143,9 +166,9 @@ extractData : function (obj, startDateTime,endDateTime){
 		 		for(var i=0;i<AdapterFrameworkDataNo;i++){
 		 			var AdapterFrameworkDataNode = AdapterFrameworkDataList.item(i);
 		 			var statusNode = AdapterFrameworkDataNode.getElementsByTagNameNS("*","status").item(0);
-		 			/*console.log("statusNode");
+		 			console.log("statusNode");
 		 			console.log(statusNode.textContent);
-			 		console.log(statusNode.nodeName);*/
+			 		console.log(statusNode.nodeName);
 		 			if(statusNode.textContent == "success"){
 		 				ctrSuccess = ctrSuccess + 1;
 		 			}
@@ -169,26 +192,26 @@ extractData : function (obj, startDateTime,endDateTime){
 		 				ctrToBeDelivered = ctrToBeDelivered + 1;
 		 			}
 		 		}
-		         /*console.log("ctrSuccess"); 
+		         console.log("ctrSuccess"); 
 		         console.log(ctrSuccess);
 		         console.log("systemError");
 		         console.log(ctrSystemError);
 		         console.log("canceled");
-		         console.log(ctrCancelled);*/
-		         obj.byId("lbSuccess").setText("No of Successfull Messages " + ctrSuccess);
-		         obj.byId("lbDelivering").setText("No of Delivering Messages " + ctrDelivering);
-		         obj.byId("lbCancelled").setText("No of Cancelled Messages " + ctrCancelled);
+		         console.log(ctrCancelled);
 		         
-		         obj.byId("lbSystemError").setText("No of System Error Messages " + ctrSystemError);
-		         obj.byId("lbHolding").setText("No of Holding Messages " + ctrHolding);
-		         obj.byId("lbWaiting").setText("No of Waiting Messages " + ctrWaiting);
-		         obj.byId("lbToBeDelivered").setText("No of To Be Delivered Messages " + ctrToBeDelivered);
+		         
+		         obj.byId("lbSuccessCtr").setText(ctrSuccess);
+		         obj.byId("lbDeliveringCtr").setText(ctrDelivering);
+		         obj.byId("lbCancelledCtr").setText(ctrCancelled);
+		         
+		         obj.byId("lbSystemErrorCtr").setText(ctrSystemError);
+		         obj.byId("lbHoldingCtr").setText(ctrHolding);
+		         obj.byId("lbWaitingCtr").setText(ctrWaiting);
+		         obj.byId("lbToBeDeliveredCtr").setText(ctrToBeDelivered);
 			 		//this.byId("layoutID").setVisible(true);
 			        //console.log("this.byId(lbSuccess)");
 			        //console.log(this.byId("lbSuccess"));
 		         obj.byId("layoutID").setBusy(false);
-		        		 
-		        		 
 		     }
 		});
 		
@@ -201,12 +224,13 @@ extractData : function (obj, startDateTime,endDateTime){
 * @memberOf sap_pi_monitoring_tool.dashboardReport
 */
 	onInit: function() {
-		startDateTime = this.calculateBackDate();
-		endDateTime = this.formattedCurrentDate();
+		var interval = this.returnInterval(this.byId("oCmbTimeInterval").getValue());
+		var startDateTime = this.calculateBackDate(interval);
+		var endDateTime = this.formattedCurrentDate();
 		console.log("endDateTime oninit"); 
 		console.log(endDateTime); 
-		this.extractData(this, startDateTime,endDateTime);
-		
+		this.extractData(this,startDateTime,endDateTime);
+		//this.byId('layoutID').setBusy(true);
 	},
 
 /**

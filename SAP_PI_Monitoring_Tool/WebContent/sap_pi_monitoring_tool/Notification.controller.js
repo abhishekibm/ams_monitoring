@@ -10,9 +10,17 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 * @memberOf sap_pi_monitoring_tool.notification
 */
 	onInit: function() {
-		oCon = this;
+		oCon = this;	
+		var repeat = setInterval(function(){
+			if($.active < 1){
+				clearInterval(repeat);
+				oCon.fetchAlerts(oCon);
+			}else{
+				console.log("Active ajax count: "+ $.active);
+			}
+			 
+		}, settings.ActiveAjaxCheckTimer);
 		
-		oCon.fetchAlerts(this);
 		               		 
 	},
 
@@ -44,6 +52,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 //	}
 	
 	fetchAlerts : function(obj){
+		var c = this;
+		
 		ajaxCounter1++;
 		obj.byId('conn_noti').setIcon('images/connecting.gif');
 		
@@ -67,7 +77,6 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             contentType : "text/xml; charset=\"utf-8\"",
 		             timeout: settings.AlertAjaxTimeout,
 		             headers : {
-		            	    'X-Requested-With': 'XMLHttpRequest',
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
 					    }
@@ -80,15 +89,24 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                    nodeList = xmlDoc.getElementsByTagNameNS("*","AlertConsumers");  
 	                		eventBus.publish("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", nodeList);
 		                    //oStorage.put("alertConsumers", JSON.stringify(nodeList));
-	                		setTimeout(function() { obj.fetchSingleAlert(nodeList, 0, settings.AlertAjaxTimeout); }, 1000);
+	                		setTimeout(function() { 
+	                			var repeat1 = setInterval(function(){
+	                				if($.active < 1){
+	                					clearInterval(repeat1);
+	                					obj.fetchSingleAlert(nodeList, 0, settings.AlertAjaxTimeout); 
+	                				}
+	                			}, settings.ActiveAjaxCheckTimer);	
+	                		}, 1000);
 		                    
 		             })  
 		             .fail(function (jqXHR, exception) {
-
-		                 // Our error logic here
+		            	 console.log('Inside fetchAlerts');
 		            	 console.log(jqXHR);
+		            	 console.log(exception);
+		                 // Our error logic here
+		            	 console.log(jqXHR.status === 500);
 		                 var msg = '';
-		                 if (jqXHR.status == 0) {
+		                 if (jqXHR.status === 0) {
 		                     msg = 'Not connect. Verify Network.';
 		                     var now = (new Date()).toUTCString();
 		                		var oMessage = new sap.ui.core.Message({
@@ -100,10 +118,10 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                	 //snd.play();
 			            	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
 		                 } 
-		                 if (jqXHR.status == 404) {
+		                 if (jqXHR.status === 404) {
 		                     msg = 'Requested page not found. [404]';
 		                 } 
-		                 if (jqXHR.status == 500 || jqXHR.status == 401 || jqXHR.status == 403) {
+		                 if (jqXHR.status === 500 || jqXHR.status === 401 || jqXHR.status === 403) {
 		                	 var o = localStore('sessionObject');
 		                	 o.msg = jqXHR.responseText;
 		                	 oStorage.put('sessionObject', o);
@@ -121,7 +139,15 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                     console.log("Max retrying count 5");
 		                     if(ajaxCounter1 < 5){
 		                    	 console.log("Timeout : Retrying count: "+ ajaxCounter1++);
-		                    	 setTimeout(function(){obj.fetchAlerts(obj);}, 100);
+		                    	 var repeat2 = setInterval(function(){
+		                				if($.active < 2){
+		                					clearInterval(repeat2);
+		                					obj.fetchAlerts(obj); 
+		                				}else{
+		                					console.log("Active ajax count : "+$.active);
+		                				}
+		                			}, settings.ActiveAjaxCheckTimer);	
+		                		
 		                     }
 		                    	 
 		                 } 
@@ -138,13 +164,17 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		            	 console.log("complete");
 		            	 ajaxCounter1--;
 		             });
+		    
 	},
 	
 	
     fetchSingleAlert: function(nodeList, i, timeout){
-    	ajaxCounter2++;
-    	console.log("Ajax call for "+ nodeList[i].textContent + " " + i +"/"+nodeList.length);
+    	var interval;
     	var oCon = this;
+
+    	ajaxCounter2++;
+    	console.log("Ajax call for "+ nodeList[i].textContent + " " + i +"/"+nodeList.length+' [Timeout: '+timeout+']');
+    	
 		oCon.byId('conn_noti').setIcon('images/connecting.gif');
 
     	var req =
@@ -153,7 +183,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
     		   <soapenv:Body> \
     		      <aler:RetrieveSingleAlertsRequest>\
     		         <ConsumerID>'+nodeList[i].textContent+'</ConsumerID>\
-    		         <MaxAlerts>1000</MaxAlerts>\
+    		         <MaxAlerts>100</MaxAlerts>\
     		      </aler:RetrieveSingleAlertsRequest>\
     		   </soapenv:Body>\
     		</soapenv:Envelope>';
@@ -161,7 +191,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		    var response = "";
               var returnVal = "";
              
-		             $.ajax({  
+		            var xhr =  $.ajax({  
 		             url : serviceAPIs.alertAPI_single_alert(),  
 		             type : "POST",  
 		             data : req,  
@@ -216,7 +246,18 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 			            		 //console.log(nodeList);
 			            		 //console.log(nodeList[i+1]);
 			            		 
-			            		 setTimeout(function() { ajaxCounter2 = 0; oCon.fetchSingleAlert(nodeList, i+1, 2*timeout); }, settings.WaitBetweenAjaxCall);
+			            		 setTimeout(function() { 
+			            			 ajaxCounter2 = 0; 
+			            			 var repeat3 = setInterval(function(){
+			                				if($.active < 1){
+			                					clearInterval(repeat3);
+			                					oCon.fetchSingleAlert(nodeList, i+1, timeout);  
+			                				}else{
+			                					console.log("Active ajax count : "+$.active);
+			                				}
+			                			}, settings.ActiveAjaxCheckTimer);
+			            			 
+			            		}, settings.WaitBetweenAjaxCall);
 			            		 
 			            		 
 
@@ -235,13 +276,13 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		            	 oCon.byId('conn_noti').setIcon('images/Circle_Red.png');
 
 		            	// Our error logic here
-		            	 console.log(jqXHR);
+		            	 //console.log(jqXHR);
 		                 var msg = '';
 		                 if (jqXHR.status == 0) {
 		                     msg = 'Not connect. Verify Network.';
 		                     var now = (new Date()).toUTCString();
 		                		var oMessage = new sap.ui.core.Message({
-		                			text :  jqXHR.responseText,
+		                			text :  jqXHR.responseText+' Exception: '+exception,
 		                			level : sap.ui.core.MessageType.Error,
 		                			timestamp : now
 		                		});
@@ -268,7 +309,18 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                     if(ajaxCounter2 < settings.MaxRetryCount){
 		                    	 console.log('Timeout : Retrying count : ' + ajaxCounter2++);
 		                    	 
-		                    	 setTimeout(function(){oCon.fetchSingleAlert(nodeList, i);}, 100);
+		                    	 setTimeout(function(){
+		                    		 var repeat4 = setInterval(function(){
+			                				if($.active < 1){
+			                					clearInterval(repeat4);
+			                					oCon.fetchSingleAlert(nodeList, i, timeout+10000);
+			                				}else{
+			                					console.log("Active ajax count : "+$.active);
+			                				}
+			                			}, settings.ActiveAjaxCheckTimer);
+		                    		 
+		                    	 
+		                    	 }, 100);
 		                     }
 		                 } 
 		                 if (exception === 'abort') {
@@ -290,5 +342,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		            	 
 		            		 
 		             });
+    		 
+    	
+    	//});
     }
 });

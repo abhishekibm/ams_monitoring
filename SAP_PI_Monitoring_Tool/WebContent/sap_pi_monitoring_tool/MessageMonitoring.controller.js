@@ -1,5 +1,5 @@
 obj = "";
-sap.ui.controller("sap_pi_monitoring_tool.messageMonitoring", {
+sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 
 /**
 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -26,24 +26,75 @@ sap.ui.controller("sap_pi_monitoring_tool.messageMonitoring", {
 		return formattedDate;
 	},
 	
-	extractData : function (statusType,startDate,startTime,endDate,endTime){
-		var startDateTime = "";
-		var endDateTime = "";
+	calculateBackDate : function(interval){
+		var intervalHours = interval;
+		var dateOffset = (intervalHours*60*60*1000); 
+		var myDate = new Date().getTime() - dateOffset;
+		console.log("myDate " + myDate);
+		var backdate = new Date(myDate);
+		var dd    = backdate.getDate();
+	    var mm    = backdate.getMonth() + 1;
+	    var yyyy  = backdate.getFullYear();
+	    var hour  = backdate.getHours();
+	    var mins  = backdate.getMinutes();
+	    var secs  = backdate.getSeconds();
+	    
+	    var formattedDate = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + mins + ":" + secs;
+	    console.log("formattedStartDt");
+	    console.log(dd);
+	    console.log(mm);
+	    console.log(yyyy);
+	    console.log(formattedDate);
+		//var backdate = new Date(myDate).toIOCtring();
+		return formattedDate;
+		
+	},
+	
+	returnInterval : function( interval) {
+		var strInterval = "";
+		if(interval == "Last One Hour"){
+			strInterval = "1";
+		}
+		else if(interval == "Last Two Hours"){
+			strInterval = "2";
+		}
+		else if(interval == "Last Six Hours"){
+			strInterval = "6";
+		}
+		else if(interval == "Last Twelve Hours"){
+			strInterval		}
+		else if(interval == "Last 24 Hours"){
+			strInterval = "24";
+		}
+		return strInterval;
+		
+	},
+	
+	extractData : function (statusType,startDateTime,endDateTime){
 		obj = this;
+		/*var startDateTime = "";
+		var endDateTime = "";
 		
-		if(startDate == "")
-			startDate = obj.byId("datePickerStart").getValue();
-		if(startTime == "")
-			startTime = obj.byId("timePickerStart").getValue();
-		if(endDate == "")
-			endDate = obj.byId("datePickerEnd").getValue();
-		if(endTime == "")
-			endTime = obj.byId("timePickerEnd").getValue();
+		if(statusType == "Custom"){
+			if(startDate == "")
+				startDate = obj.byId("datePickerStart").getValue();
+			if(startTime == "")
+				startTime = obj.byId("timePickerStart").getValue();
+			if(endDate == "")
+				endDate = obj.byId("datePickerEnd").getValue();
+			if(endTime == "")
+				endTime = obj.byId("timePickerEnd").getValue();
 		
-		console.log("startDate in extractData");
-		console.log(startDate);
-		startDateTime = startDate + "T" + startTime;
-		endDateTime = endDate + "T" + endTime;
+			console.log("startDate in extractData");
+			console.log(startDate);
+			startDateTime = startDate + "T" + startTime;
+			endDateTime = endDate + "T" + endTime;
+		}
+		else{
+			startDateTime = startDate;
+			endDateTime = endDate;
+				
+		}*/
 		
 		var request = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:AdapterMessageMonitoringVi\" xmlns:urn1=\"urn:com.sap.aii.mdt.server.adapterframework.ws\" xmlns:urn2=\"urn:com.sap.aii.mdt.api.data\" xmlns:lang=\"urn:java/lang\">\n" +
         "    <soapenv:Header/>\n" +
@@ -147,16 +198,16 @@ sap.ui.controller("sap_pi_monitoring_tool.messageMonitoring", {
 		        //console.log(sap.ui.getCore().getModel());
 		        //obj.byId("oModel").setXML(s);
 		        console.log("after set model in controller");
-		        obj.byId("MessageListTable").bindRows({path: "/rpl:Response/rn5:list/rn5:AdapterFrameworkData"});
+		        //obj.byId("MessageListTable").bindRows({path: "/rpl:Response/rn5:list/rn5:AdapterFrameworkData"});
 		        		 			
-		        		 			     
+		        obj.byId("lbMessageCount").setText("Total Messages Found " + obj.byId("MessageListTable").getBinding().getLength());		 			     
 									
 				/*resultPannel.addContent(MessageListTable);    
 				layout.createRow(resultPannel);*/
 		        obj.byId("resultPannel").setVisible(true);
 									
 		        console.log("after bindrows");
-		        		 			
+		        obj.byId('layout').setBusy(false);		 			
 		        		 			
 		     }
 

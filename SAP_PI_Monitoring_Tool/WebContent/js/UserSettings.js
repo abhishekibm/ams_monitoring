@@ -1,30 +1,35 @@
 default_settings = {
 	mode : 'debug', //prod, dev, debug
 	mode_allowed : ["prod", "dev", "debug" ],
+	mode_desc : 'Use Debug mode to see the detailed log.',
 	proxy : true,
 	proxy_allowed : ["true", "false" ],
-	
+	proxy_desc : 'Using "proxy"=true when local proxy needs to forward cross-domain ajax calls.',
 	/// Scheduling 
-	AlertAjaxTimeout : 100000,
+	AlertAjaxTimeout : 0,
 	AlertAjaxTimeout_allowed : [5000, 10000, 20000, 50000, 100000 ],
+	AlertAjaxTimeout_desc : '',
 	ChannelFetchAjaxTimeout : 500000,
-	ChannelFetchAjaxTimeout_allowed :[5000, 10000, 20000, 50000, 100000 ],
+	ChannelFetchAjaxTimeout_allowed :[5000, 10000, 20000, 50000, 100000, 500000 ],
+	ChannelFetchAjaxTimeout_desc : '',
 	WaitBetweenAjaxCall : 5000,
 	WaitBetweenAjaxCall_allowed : [5000, 10000, 20000, 50000, 100000 ],
+	WaitBetweenAjaxCall_desc : '',
 	MaxRetryCount : 5,
-	MaxRetryCount_allowed : [0, 2, 5, 10, 20, 100]
-	
+	MaxRetryCount_allowed : [0, 2, 5, 10, 20, 100],
+	MaxRetryCount_desc : '',
+	ActiveAjaxCheckTimer : 10000,
+	ActiveAjaxCheckTimer_desc : '',
+	ActiveAjaxCheckTimer_allowed : [3000, 5000, 10000, 15000, 200000]
+} 
+
+settings = default_settings;
+
+function updateSettings(property, newValue){
+	console.log('Current settings');
+	console.log(settings);
+	settings[property] = newValue;
+	console.log("Settings changed : "+ property + " has been changed.");
+	console.log(settings);
 }
 
-jQuery.sap.require("jquery.sap.storage");
-var s = jQuery.sap.storage(jQuery.sap.storage.Type.local); 
-s.put('settings', default_settings);
-
-settings = 	s.get('settings');
-
-function update(property, value){
-	a = s.get('settings');
-	a.property = value;
-	s.put('settings', a);
-	settings = s.get('settings');
-}

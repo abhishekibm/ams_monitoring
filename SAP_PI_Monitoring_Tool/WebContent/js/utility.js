@@ -176,7 +176,7 @@ function openLoginDialog() {
 		loginDialog.changeView(loginview);
 	});
 	sap.ui.commons.Dialog.prototype.onsapescape = function(){ }; 
-	//loginDialog.open();
+	loginDialog.open();
 }
 
 function openViewDialog(view) {

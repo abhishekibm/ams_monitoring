@@ -1,4 +1,4 @@
-oTable = null;
+var messageLogTable = null;
 sap.ui.jsview("sap_pi_monitoring_tool.GetMessageDetails", {
 
 	getControllerName : function() {
@@ -18,11 +18,17 @@ sap.ui.jsview("sap_pi_monitoring_tool.GetMessageDetails", {
 			oController.doIt1();
 					
 		});*/
-		oTable = new sap.ui.table.Table(this.createId("MessageLog"), {
-			title: "Message Log"
+		var messagelogLayout = new sap.ui.commons.layout.MatrixLayout(this.createId('messagelogLayout'));
+		messageLogTable = new sap.ui.table.Table(this.createId("MessageLog"), {
+			title: "Message Log",
+			visibleRowCount: 7,
+ 			firstVisibleRow: 3,
+ 			selectionMode: sap.ui.table.SelectionMode.Single,
+ 			navigationMode: sap.ui.table.NavigationMode.Paginator,
+			
 		});
 		
-		oTable.addColumn(new sap.ui.table.Column({
+		messageLogTable.addColumn(new sap.ui.table.Column({
 			label : new sap.ui.commons.Label({
 				
 				text : "Time"
@@ -32,7 +38,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.GetMessageDetails", {
 			template : new sap.ui.commons.TextField().bindProperty("value", "rn2:timeStamp/text()")
 			
 		}));
-		oTable.addColumn(new sap.ui.table.Column({
+		messageLogTable.addColumn(new sap.ui.table.Column({
 			label : new sap.ui.commons.Label({
 				
 				text : "Status"
@@ -42,7 +48,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.GetMessageDetails", {
 			template : new sap.ui.commons.TextField().bindProperty("value", "rn2:textKey/text()")
 			
 		}));
-		oTable.addColumn(new sap.ui.table.Column({
+		messageLogTable.addColumn(new sap.ui.table.Column({
 			label : new sap.ui.commons.Label({
 				
 				text : "Description"
@@ -53,12 +59,20 @@ sap.ui.jsview("sap_pi_monitoring_tool.GetMessageDetails", {
 			
 		}));
 		
-		oTable.bindRows({
+		messageLogTable.bindRows({
 			path : "/SOAP-ENV:Body/rpl:getLogEntriesResponse/rpl:Response/rn2:AuditLogEntryData/"
 		});
 		var oModel = new sap.ui.model.xml.XMLModel();
-		oTable.setModel(oModel);
-		return oTable;
+		messageLogTable.setModel(oModel);
+		messagelogLayout.createRow(messageLogTable);
+		messagelogLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+		messagelogLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+		//messagelogLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+		//messagelogLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+		//messagelogLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+		//messagelogLayout.createRow(new sap.ui.commons.TextView({text : "  "}));
+		this.addContent(messagelogLayout);
+		//return messageLogTable;
 	}
 
 });

@@ -8,16 +8,17 @@
  var startTime = "";
  var endTime = "";
  var statusType = "systemError";
+ var timeIntervalinHours = "24";
  var startDateTime = "";
  var endDateTime = "";
- sap.ui.jsview("sap_pi_monitoring_tool.messageMonitoring", {
+ sap.ui.jsview("sap_pi_monitoring_tool.MessageMonitoring", {
 
 	/** Specifies the Controller belonging to this View. 
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
 	* @memberOf sap_pi_monitoring_tool.display
 	*/ 
 	getControllerName : function() {
-		return "sap_pi_monitoring_tool.messageMonitoring";
+		return "sap_pi_monitoring_tool.MessageMonitoring";
 	},
 	
 	
@@ -30,7 +31,7 @@
 	*/ 
 	createContent : function(oController) {
 		
-									var layout = new sap.ui.commons.layout.MatrixLayout('layout');    
+									var layout = new sap.ui.commons.layout.MatrixLayout(this.createId('layout'));    
 									//layout.setWidth('100%');    
 									// Search Box starts here   
 									var searchPannel = new sap.ui.commons.Panel('searchPannel');  
@@ -72,11 +73,11 @@
 
 										  items: [
 
-										      new sap.ui.core.ListItem({text: "One Hour"}),
-										      new sap.ui.core.ListItem({text: "Two Hours"}),
-										      new sap.ui.core.ListItem({text: "Six Hours"}),
-										      new sap.ui.core.ListItem({text: "Twelve Hours"}),
-										      new sap.ui.core.ListItem({text: "24 Hours"}),
+										      new sap.ui.core.ListItem({text: "Last One Hour"}),
+										      new sap.ui.core.ListItem({text: "Last Two Hours"}),
+										      new sap.ui.core.ListItem({text: "Last Six Hours"}),
+										      new sap.ui.core.ListItem({text: "Last Twelve Hours"}),
+										      new sap.ui.core.ListItem({text: "Last 24 Hours"}),
 										      new sap.ui.core.ListItem({text: "Custom"}),
 										      
 										  ]
@@ -89,9 +90,10 @@
 									
 									oCmbTimeInterval.setTooltip("Time Interval");
 									oCmbTimeInterval.setEditable(true);
+									oCmbTimeInterval.setValue("Last 24 Hours");
 									
 									oCmbTimeInterval.attachChange(function(oControlEvent) {
-										var interval = "";
+										var interval = oController.returnInterval(oCmbTimeInterval.getLiveValue());
 										var strInterval = oCmbTimeInterval.getValue();
 										
 										if(strInterval == "Custom"){
@@ -100,26 +102,17 @@
 										}
 										else{
 											customLayout.setVisible(false);
-											
+											//startDateTime = oController.calculateBackDate(oCmbTimeInterval.getValue());
+											//endDateTime = oController.formattedCurrentDate();
+											console.log("endDateTime oninit change event in message mnitoring"); 
+											console.log(endDateTime); 
+											//oController.extractData(this, startDateTime,endDateTime);
 										}
 										
+										timeIntervalinHours = interval;
+										
 									});
-									//oCmbType.setWidth("250px");    
-									//var list = new sap.ui.commons.ListBox({allowMultiSelect: false, visibleItems: 1});    
-									/*var oItem = new sap.ui.core.ListItem("item1");
-									oItem.setText("System Error");
-									oCmbType.addItem(oItem);
-									oItem = new sap.ui.core.ListItem("item2");
-									oItem.setText("Delivered");
-									oCmbType.addItem(oItem);
-									oItem = new sap.ui.core.ListItem("item3");
-									oItem.setText("Delivering");
-									oItem = new sap.ui.core.ListItem("item4");
-									oItem.setText("Successfull");
-									oCmbType.addItem(oItem);
-									oItem = new sap.ui.core.ListItem("item5");
-									oItem.setText("Cancelled");
-									oCmbType.addItem(oItem);*/
+									
 									
 									oCmbType.attachChange(function(oControlEvent) {
 										var Type = "";
@@ -146,8 +139,8 @@
 											Type = "toBeDelivered";
 										}
 										console.log("type");
-								        console.log(type);
-								        statusType = type;
+								        console.log(Type);
+								        statusType = Type;
 								    });
 									
 									//Startdate
@@ -260,11 +253,37 @@
 											//sap.ui.getCore().byId("display").getController().submitData(); 
 											//sap.ui.getCore().byId("display").submitData();
 											//oController.getView().extractData(statusType,startDateTime,endDateTime);
-											  oController.extractData(statusType,startDate,startTime,endDate,endTime);
-											  console.log(startDate);
+											  
+											if(oCmbTimeInterval.getValue() == "Custom"){
+													if(startDate == "")
+														startDate = oStartDatePicker.getValue();
+													if(startTime == "")
+														startTime = oStartTimePicker.getValue();
+													if(endDate == "")
+														endDate = oEndDatePicker.getValue();
+													if(endTime == "")
+														endTime = oEndTimePicker.getValue();
+												
+													console.log("startDate in showbutton click");
+													console.log(startDate);
+													startDateTime = startDate + "T" + startTime;
+													endDateTime = endDate + "T" + endTime;
+											}
+											else{
+													//startDateTime = startDate;
+													//endDateTime = endDate;
+													startDateTime = oController.calculateBackDate(timeIntervalinHours);
+													endDateTime = oController.formattedCurrentDate();
+														
+											}
+											  oController.extractData(statusType,startDateTime,endDateTime);
+											  console.log(startDateTime);
 											//resultPannel.setVisible(true);
 										    //uPanel.setVisible(true);
 										    //oShell.invalidate();
+											lbMessageCount.setVisible(true);
+											layout.setBusy(true);
+											  //lbMessageCount.setText("Total Messages Found " + MessageListTable.getBinding());
 										  }
 									});
 									
@@ -298,37 +317,56 @@
 			        		 			visibleRowCount: 7,
 			        		 			firstVisibleRow: 3,
 			        		 			selectionMode: sap.ui.table.SelectionMode.Single,
+			        		 			navigationMode: sap.ui.table.NavigationMode.Paginator,
+			        		 			/*footer : new sap.ui.commons.Label({
+
+		        		 			    	  text : ""
+
+		        		 			    })*/
 			        		 		});
 			        		 		
 			        		 		var btnExport = new sap.ui.commons.Button({
 										  text : "Export",
 										  press: function(e) {
+											  
+											  jQuery.sap.require("sap.ui.core.util.Export");
+											  jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
+											  MessageListTable.exportData().saveFile("MessageList"); 
 											 
 										  }
 									});
-			        		 		MessageListTable.setToolbar(new sap.ui.commons.Toolbar({items: [ btnExport ]}));  
+			        		 		btnExport.addStyleClass('align_control_right');
+			        		 		
+			        		 		var lbMessageCount = new sap.ui.commons.Label(this.createId('lbMessageCount'));
+			        		 		lbMessageCount.addStyleClass('align_text_left');
+			        		 		lbMessageCount.setVisible(false);
+			        		 		MessageListTable.setToolbar(new sap.ui.commons.Toolbar({items: [ lbMessageCount, btnExport ]}));  
 			        		 		
 			        		 		MessageListTable.addColumn(
 
 			        		 			     new sap.ui.table.Column({
 
-			        		 			          label: new sap.ui.commons.Label({text: "Direction"}),       
-
-			        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:direction/text()") 
+			        		 			          label: new sap.ui.commons.Label({text: "Status"}),       
+			        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:status/text()"),
+			        		 			          sortProperty: "rn5:status",
+			        		 			    	  filterProperty: "rn5:status"
 
 			        		 			     })
+			        		 			     
+			        		 			    
 
 			        		 			);
-
+			        		 		
 			        		 			MessageListTable.addColumn(
 
 			        		 			     new sap.ui.table.Column({
 
-			        		 			          label: new sap.ui.commons.Label({text: "MessageID"}),
+			        		 			          label: new sap.ui.commons.Label({text: "Direction"}),       
+			        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:direction/text()"),
+			        		 			          sortProperty: "rn5:direction",
+			        		 			    	  filterProperty: "rn5:direction"
 
-			        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:messageID/text()")
-
-			        		 			  })
+			        		 			     })
 
 			        		 			);
 			        		 			
@@ -336,9 +374,62 @@
 
 				        		 			     new sap.ui.table.Column({
 
-				        		 			          label: new sap.ui.commons.Label({text: "Message Key"}),
+				        		 			          label: new sap.ui.commons.Label({text: "Error Category"}),       
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:errorCategory/text()"),
+				        		 			          sortProperty: "rn5:errorCategory",
+				        		 			    	  filterProperty: "rn5:errorCategory"
 
-				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:messageKey/text()")
+				        		 			     })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Error Code"}),       
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:errorCode/text()"),
+				        		 			          sortProperty: "rn5:errorCode",
+				        		 			    	  filterProperty: "rn5:errorCode"
+
+				        		 			     })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Start Time"}),       
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:startTime/text()"),
+				        		 			          sortProperty: "rn5:startTime",
+				        		 			    	  filterProperty: "rn5:startTime"
+
+				        		 			     })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "End Time"}),       
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:endTime/text()"),
+				        		 			          sortProperty: "rn5:endTime",
+				        		 			    	  filterProperty: "rn5:endTime"
+
+				        		 			     })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Sender Party"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:senderParty/rn2:name/text()"),
+				        		 			          sortProperty: "rn5:senderParty/rn2:name",
+				        		 			    	  filterProperty: "rn5:senderParty/rn2:name"
 
 				        		 			  })
 
@@ -346,47 +437,159 @@
 			        		 			
 			        		 			MessageListTable.addColumn(
 
-			        		 				     new sap.ui.table.Column({
+				        		 			     new sap.ui.table.Column({
 
-			        		 				          label: new sap.ui.commons.Label({text: "Interface"}),
+				        		 			          label: new sap.ui.commons.Label({text: "Sender"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:senderName/text()"),
+				        		 			          sortProperty: "rn5:senderName",
+				        		 			    	  filterProperty: "rn5:senderName"
 
-			        		 				          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:interface/rn2:name/text()")
+				        		 			  })
 
-			        		 				  })
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Sender Namespace"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:senderInterface/rn2:namespace/text()"),
+				        		 			          sortProperty: "rn5:senderInterface/rn2:namespace",
+				        		 			    	  filterProperty: "rn5:senderInterface/rn2:namespace"
+
+				        		 			  })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Sender Interface"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:senderInterface/rn2:name/text()"),
+				        		 			          sortProperty: "rn5:senderInterface/rn2:name",
+				        		 			    	  filterProperty: "rn5:senderInterface/rn2:name"
+
+				        		 			  })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Receiver Party"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:receiverParty/rn2:name/text()"),
+				        		 			          sortProperty: "rn5:receiverParty/rn2:name",
+				        		 			    	  filterProperty: "rn5:receiverParty/rn2:name"
+
+				        		 			  })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Receiver"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:receiverName/text()"),
+				        		 			          sortProperty: "rn5:receiverName",
+				        		 			    	  filterProperty: "rn5:receiverName"
+
+				        		 			  })
+
+				        		 		);
+			        		 			
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Receiver Interface"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:receiverInterface/rn2:name/text()"),
+				        		 			          sortProperty: "rn5:receiverInterface/rn2:name",
+				        		 			    	  filterProperty: "rn5:receiverInterface/rn2:name"
+
+				        		 			  })
+
+				        		 		);
+
+			        		 			MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Receiver Namespace"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:receiverInterface/rn2:namespace/text()"),
+				        		 			          sortProperty: "rn5:receiverInterface/rn2:namespace",
+				        		 			    	  filterProperty: "rn5:receiverInterface/rn2:namespace"
+
+				        		 			  })
+
+				        		 		);
+			        		 			MessageListTable.addColumn(
+
+			        		 			     new sap.ui.table.Column({
+
+			        		 			          label: new sap.ui.commons.Label({text: "MessageID"}),
+			        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:messageID/text()"),
+			        		 			          sortProperty: "rn5:messageID",
+			        		 			    	  filterProperty: "rn5:messageID"
+
+			        		 			  })
 
 			        		 			);
+			        		 			
+			        		 			/*MessageListTable.addColumn(
+
+				        		 			     new sap.ui.table.Column({
+
+				        		 			          label: new sap.ui.commons.Label({text: "Message Key"}),
+				        		 			          template: new sap.ui.commons.TextField().bindProperty("value", "rn5:messageKey/text()")
+
+				        		 			  })
+
+				        		 		);*/
+			        		 			
+			        		 			MessageListTable.bindRows({path: "/rpl:Response/rn5:list/rn5:AdapterFrameworkData"});
+			        		 			
 			        		 			resultPannel = new sap.ui.commons.Panel(this.createId('resultPannel'));	
-			        		 			var getMessageDetailsView = sap.ui.view({
+			        		 			/*var getMessageDetailsView = sap.ui.view({
 		        		 					id : "idGetMessageDetails",
 		        		 					viewName : "sap_pi_monitoring_tool.GetMessageDetails",
 		        		 					type : sap.ui.core.mvc.ViewType.JS
-		        		 				});
+		        		 				});*/
 		        		 				
 			        		 			MessageListTable.attachRowSelectionChange(function(oEvent){
+			        		 			
 			        		 				//alert("Row is selected");
 			        		 				//alert(oTableMessagelist.getSelectedIndex());
 			        		 				console.log("Row is Selected");	
-			        		 				//console.log(MessageListTable.getRows());
+			        		 				
+			        		 				//console.log(MessageListTable.getSelectedIndex());
 			        		 				//console.log(MessageListTable.getRows()[MessageListTable.getSelectedIndex()]);
-			        		 				//console.log(MessageListTable.getRows()[MessageListTable.getSelectedIndex()].getCells()[2].getValue());
+			        		 				//console.log(MessageListTable.getRows()[MessageListTable.getSelectedIndex()].getCells()[15].getValue());
 			        		 				//oController.doIt1();
 			        		 				
 			        		 				var tableModel= MessageListTable.getModel();
 			        		 				//var contextPath="/SOAP-ENV:Body/rpl:getMessageListResponse/rpl:Response/rn5:list/rn5:AdapterFrameworkData/rn5:messageKey/";
-			        		 				//var contextPath="/rpl:Response/rn5:list/rn5:AdapterFrameworkData/rn5:messageKey/";
+			        		 				var contextPath="/rpl:Response/rn5:list/rn5:AdapterFrameworkData/rn5:messageKey/";
+			        		 				console.log("strMessageKey");
+			        		 				//console.log(oEvent.getParameter("rowIndex").getProperty(contextPath));
+			        		 				console.log(oEvent.getParameters().rowContext.getProperty("rn5:messageKey"));
 			        		 				//var currentRowContext = oEvent.getParameter("rowContext"); 
 			        		 				//var strMessageKey = tableModel.getProperty(contextPath, MessageListTable.getSelectedIndex());
 			        		 				console.log(MessageListTable.getSelectedIndex());
-			        		 				var strMessageKey = MessageListTable.getRows()[MessageListTable.getSelectedIndex()].getCells()[2].getValue();
-			        		 				console.log("strMessageKey");
-			        		 			    console.log(strMessageKey);
+			        		 				//var strMessageKey = MessageListTable.getRows()[MessageListTable.getSelectedIndex()%MessageListTable.getVisibleRowCount()].getCells()[15].getValue();
+			        		 				var strMessageKey = oEvent.getParameters().rowContext.getProperty("rn5:messageKey"); 
+			        		 			    //console.log(strMessageKey);
 			        		 				
 			        		 				var strArchiveFlag="false";
 			        		 				//var strDate = "2016-04-27T06:31:25.619-01:00";
 			        		 				//var strDate = sap.ui.getCore().byId("myview").getController().formattedCurrentDate();
 			        		 				var strDate = oController.formattedCurrentDate();
-			        		 				getMessageDetailsView.getController().doIt1(strMessageKey,strArchiveFlag,strDate);
+			        		 				getMessageDetailsView.getController().extractMessageLog(strMessageKey,strArchiveFlag,strDate);
 			        		 				resultPannel.addContent(getMessageDetailsView);
+			        		 				//getMessageDetailsView.byId('messagelogLayout').setBusy();
+			        		 				//resultPannel.setBusy();
 			        		 		  });
 			        		 			
 			        		 		//Create a model and bind the table rows to this model

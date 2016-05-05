@@ -51,3 +51,71 @@
 .wrap {
 	white-space: normal !important;
 }
+
+.desc {
+	white-space: normal !important;
+	padding : 15px !important;
+	background-color: #fff !important;
+	//border: 1px solid;
+    //border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+    border-radius: 3px;
+}
+
+.blockquote {
+  background: #f9f9f9;
+  border-left: 10px solid #ccc;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+  /*quotes: "\201C""\201D""\2018""\2019";*/
+}
+.blockquote:before {
+  color: #ccc;
+  /*content: open-quote;
+  font-size: 4em;*/
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+.blockquote p {
+  display: inline;
+}
+
+
+
+/* Chandima */
+
+.align_text_left {
+	text-align: left;
+	font-weight: bold;
+	padding: 5px 5px;
+}
+.align_control_right{
+	position:relative;
+    float:right;
+} 
+.messageCount {
+
+	height : 30px;
+	text-align: center !important;
+	font-size: 28px !important;
+    font-weight: bold;
+    line-height: 30px !important;
+    color: #ffffff;
+    vertical-align: middle;
+    border: 2px solid #ffffff;
+    padding: 3px 3px;
+    left : 5px
+
+}
+.messageLabel {
+
+	height : 30px;
+	text-align: center !important;
+	vertical-align: middle;
+	font-size: 10px !important;
+    font-weight: bold;
+    color: #ffffff;
+    padding: 3px 3px;
+    left : 5px
+
+} 

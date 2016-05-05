@@ -19,9 +19,12 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 		
 		
 		oTable.setToolbar(new sap.ui.commons.Toolbar({items: [   
-                                                      new sap.ui.commons.Label({text : "Find"}),   
-                                                      new sap.ui.commons.TextField({liveChange: oController.Change}),  
-                                                      new sap.ui.commons.Button({text: "Go", press: function(){}})  
+                                                      //new sap.ui.commons.Label({text : "Find"}),   
+                                                      //new sap.ui.commons.TextField({liveChange: oController.Change}),  
+                                                      //new sap.ui.commons.Button({text: "Go", press: function(){}}),
+                                                      new sap.ui.commons.Button({text: "Export", press: function(){
+                                                    	  exportToCSV();
+                                                      }})
                                              ]}));
 		/*oTable.columns = [  
 	                    new sap.ui.table.Column({label: "Component", template:new sap.ui.commons.Link().bindProperty("text", "Component").bindProperty("href", "Component"), filterProperty:"Component" })  
@@ -40,21 +43,31 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
     	oTable.addColumn(new sap.ui.table.Column({ 
     		              width : '100px',
                           label: new sap.ui.commons.Label({text: "Party"}),          
-                          template: new sap.ui.commons.TextField().bindProperty("value", "@party")    
+                          template: new sap.ui.commons.TextField().bindProperty("value", "@party"),
+                          filterProperty: "Party",
+                          sortProperty: "Party"
      		})   
           );
 	     oTable.addColumn(new sap.ui.table.Column({          
 	                          label: new sap.ui.commons.Label({text: "Component"}),          
-	                          template: new sap.ui.commons.TextField().bindProperty("value", "@service")    
+	                          template: new sap.ui.commons.TextField().bindProperty("value", "@service"),
+	                          filterProperty: "@service",
+	                          sortProperty: "@service"
 	     				})   
 	      );   
 	      oTable.addColumn(new sap.ui.table.Column({          
 	                      label: new sap.ui.commons.Label({text: "Channel"}),          
-	                      template: new sap.ui.commons.TextField().bindProperty("value", "@name")    
+	                      template: new sap.ui.commons.TextField().bindProperty("value", "@name"),
+	                      filterProperty: "@name",
+                          sortProperty: "@name"
 	      				})   
 	      );
 	      oTable.addColumn(new sap.ui.table.Column({          
-              label: new sap.ui.commons.Label({text: "Running Status"}),          
+              label: new sap.ui.commons.Label({text: "Running Status"}),
+              filterProperty: "status/@activationState",
+              sortProperty: "status/@activationState",
+              filterProperty: "status/@activationState",
+              sortProperty: "status/@activationState",
               template: new sap.ui.layout.HorizontalLayout({  
             	    content : [  
             	               new sap.ui.commons.TextView({  			                    	                   
@@ -183,7 +196,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	             data : request,  
 	             dataType : "text",  
 	             contentType : "text/xml; charset=\"utf-8\"",
-	             timeout: 1000000,
+	             timeout: settings.ChannelFetchAjaxTimeout,
 	             headers : {
 				    	'Access-Control-Allow-Origin': '*',
 				    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
@@ -232,12 +245,46 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	                    		                 xmlDoc=parser.parseFromString(data,"text/xml");  
 	                    		                 returnVal = xmlDoc.getElementsByTagNameNS("*","getChannelAutomationStatusResponse")[0];
 	                    		                 oModel.setXML(new XMLSerializer().serializeToString(returnVal));
-	                    		                 sap.ui.getCore().setModel(oModel);  
+	                    		                 sap.ui.getCore().setModel(oModel); 
+	                    		                 
+	                    		                 /*jQuery.sap.require("sap.ui.core.util.Export");
+	                    		            	 jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
+	                    		            	 oTable.exportData({
+	                    		            		    exportType: new sap.ui.core.util.ExportType({
+	                    		            		    	fileExtension : 'xls',
+	                    		            		    	//mimeType : 'application/vnd.ms-excel'
+	                    		            		    })
+	                    		            		})
+	                    		            		.saveFile("Channel1");
+	                    		            	 
+	                    		            	 oTable.exportData({
+	                    		            		    exportType: new sap.ui.core.util.ExportType({
+	                    		            		    	fileExtension : 'xls',
+	                    		            		    	//mimeType : 'application/x-dos_ms_excel'
+	                    		            		    })
+	                    		            		})
+	                    		            		.saveFile("cChannel2");
+	                    		            	 oTable.exportData({
+	                    		            		    exportType: new sap.ui.core.util.ExportType({
+	                    		            		    	fileExtension : 'xls',
+	                    		            		    	//mimeType : 'application/x-excel'
+	                    		            		    })
+	                    		            		})
+	                    		            		.saveFile("cChannel2");
+	                    		            	 oTable.exportData({
+	                    		            		    exportType: new sap.ui.core.util.ExportType({
+	                    		            		    	fileExtension : 'xls',
+	                    		            		    	//mimeType : 'application/xls'
+	                    		            		    })
+	                    		            		})
+	                    		            		.saveFile("cChannel3");*/
 	                    		             })
 	                    		             .fail(function(){
 	                    		            	 
 	                    		             })
 	                    		             .always(function(){
+	                    		            	 
+	                    		            	 
 	                    		            	 oTable.setBusy(false);
 	                    		             });
 	                    
@@ -272,6 +319,8 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	             .always(function () {
 	            	 console.log("complete");
 	            	 oTable.setBusy(false);
+	            	 
+	            	 
 	             });
 	               
 			    // }, 2000);
@@ -300,3 +349,8 @@ var colorRows = function(oTable, oModel) {
     }  
 }  
  
+function exportToCSV(){
+	jQuery.sap.require("sap.ui.core.util.Export");
+	jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
+	oTable.exportData().saveFile("cChannel3");
+}

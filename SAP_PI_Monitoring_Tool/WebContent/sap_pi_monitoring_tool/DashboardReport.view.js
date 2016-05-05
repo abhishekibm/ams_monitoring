@@ -129,117 +129,265 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		    // Transaction will abort!
 		    console.log(err);
 
-		});;
-		
-		
-		
-		
-		
-		
-		
+		});
 		/// Message Monitoring ///
-			var layout = new sap.ui.commons.layout.MatrixLayout(this.createId("layoutID"));    
-			//layout.setWidth('100%');    
-			// Search Box starts here   
-			var displayPannel = new sap.ui.commons.Panel('displayPannel');  
-			var dashboardTitle = new sap.ui.commons.Title('dashboardTitle');  
-			dashboardTitle.setText('Message Monitoring');  
-			displayPannel.setTitle(dashboardTitle);  
-			var displayLayout = new sap.ui.commons.layout.MatrixLayout('displayLayout');  
-			//sLayout.setWidth('80%'); 
+		/// Message Monitoring ///
+		var layout = new sap.ui.commons.layout.MatrixLayout({
+			id : this.createId("layoutID"),
+			layoutFixed : false
+		});    
+		//layout.setWidth('100%');    
+		// Search Box starts here   
+		var displayPannel = new sap.ui.commons.Panel('displayPannel');  
+		var dashboardTitle = new sap.ui.commons.Title('dashboardTitle');  
+		dashboardTitle.setText('Message Monitoring');  
+		displayPannel.setTitle(dashboardTitle);  
+		var displayLayout = new sap.ui.commons.layout.MatrixLayout({
 			
-			//var successLayout = new sap.ui.commons.layout.MatrixLayout('successLayout');  
-			//successLayout.setWidth('80%'); 
+			id: 'displayLayout',
+			layoutFixed : false
 			
-			//var cancellLayout = new sap.ui.commons.layout.MatrixLayout('cancellLayout');  
-			//cancellLayout.setWidth('80%');
-			
-			//var systemErrorLayout = new sap.ui.commons.layout.MatrixLayout('systemErrorLayout');  
-			//systemErrorLayout.setWidth('80%');
-			        
-			//var waitingLayout = new sap.ui.commons.layout.MatrixLayout('waitingLayout');  
-			//waitingLayout.setWidth('80%');
-			
-			//var holdingLayout = new sap.ui.commons.layout.MatrixLayout('holdingLayout');  
-			//holdingLayout.setWidth('80%');
-			
-			//var deliveringLayout = new sap.ui.commons.layout.MatrixLayout('deliveringLayout');  
-			//deliveringLayout.setWidth('80%');
-			
-			//var toBeDeliveredLayout = new sap.ui.commons.layout.MatrixLayout('toBeDeliveredLayout');  
-			//toBeDeliveredLayout.setWidth('80%');
-			
-			//var channelErrorLayout = new sap.ui.commons.layout.MatrixLayout('channelErrorLayout');  
-			//channelErrorLayout.setWidth('80%');
-			
-			lbtimeinterval = new sap.ui.commons.Label(this.createId("lbtimeinterval")); 
-			lbtimeinterval.setText("Time Interval : ");
-			
-			lbSuccess = new sap.ui.commons.Label(this.createId("lbSuccess")); 
-			lbSuccess.setText("No of Successfull Messages 0"); 
-			
-			lbDelivering = new sap.ui.commons.Label(this.createId("lbDelivering")); 
-			lbDelivering.setText("No of Successfull Messages 0");
-			
-			lbCancelled = new sap.ui.commons.Label(this.createId("lbCancelled")); 
-			lbCancelled.setText("No of Cancelled Messages 0"); 
-			
-			lbSystemError = new sap.ui.commons.Label(this.createId("lbSystemError")); 
-			lbSystemError.setText("No of System Error Messages 0");
-			
-			lbWaiting = new sap.ui.commons.Label(this.createId("lbWaiting")); 
-			lbWaiting.setText("No of Waiting Messages 0");
-			
-			lbHolding = new sap.ui.commons.Label(this.createId("lbHolding")); 
-			lbHolding.setText("No of Holding Messages 0");
-			
-			lbToBeDelivered = new sap.ui.commons.Label(this.createId("lbToBeDelivered")); 
-			lbToBeDelivered.setText("No of To Be Delivered Messages 0");
-			
-			lbChannelError = new sap.ui.commons.Label(this.createId("lbChannelError")); 
-			lbChannelError.setText("No of Channel Errors 0");
-			
-			var oCmbTimeInterval = new sap.ui.commons.DropdownBox({
+		});  
+		//sLayout.setWidth('80%'); 
+		
+		//var timeIntervalLayout = new sap.ui.commons.layout.MatrixLayout('timeIntervalLayout');  
+		//successLayout.setWidth('80%'); 
+		
+		//var timeIntervalExtendedLayout = new sap.ui.commons.layout.MatrixLayout('timeIntervalExtendedLayout');  
+		//timeIntervalExtendedLayout.setVisible(false);
+		//cancellLayout.setWidth('80%');
+		
+		//var systemErrorLayout = new sap.ui.commons.layout.MatrixLayout('systemErrorLayout');  
+		//systemErrorLayout.setWidth('80%');
+		        
+		//var waitingLayout = new sap.ui.commons.layout.MatrixLayout('waitingLayout');  
+		//waitingLayout.setWidth('80%');
+		
+		//var holdingLayout = new sap.ui.commons.layout.MatrixLayout('holdingLayout');  
+		//holdingLayout.setWidth('80%');
+		
+		//var deliveringLayout = new sap.ui.commons.layout.MatrixLayout('deliveringLayout');  
+		//deliveringLayout.setWidth('80%');
+		
+		//var toBeDeliveredLayout = new sap.ui.commons.layout.MatrixLayout('toBeDeliveredLayout');  
+		//toBeDeliveredLayout.setWidth('80%');
+		
+		//var channelErrorLayout = new sap.ui.commons.layout.MatrixLayout('channelErrorLayout');  
+		//channelErrorLayout.setWidth('80%');
+		
+		var oCmbTimeInterval = new sap.ui.commons.DropdownBox(this.createId("oCmbTimeInterval"),{
 
-				  items: [
+			  items: [
 
-				      new sap.ui.core.ListItem({text: "One Hour"}),
-				      new sap.ui.core.ListItem({text: "Two Hours"}),
-				      new sap.ui.core.ListItem({text: "Six Hours"}),
-				      new sap.ui.core.ListItem({text: "Twelve Hours"}),
-				      new sap.ui.core.ListItem({text: "24 Hours"}),
-				      new sap.ui.core.ListItem({text: "Custom"}),
-				      
-				  ]
+			      new sap.ui.core.ListItem("i1",{text: "Last One Hour"}),
+			      new sap.ui.core.ListItem("i2",{text: "Last Two Hours"}),
+			      new sap.ui.core.ListItem("i3",{text: "Last Six Hours"}),
+			      new sap.ui.core.ListItem("i4",{text: "Last Twelve Hours"}),
+			      new sap.ui.core.ListItem("i5",{text: "Last 24 Hours"}),
+			      new sap.ui.core.ListItem("i6",{text: "Custom"}),
+			      
+			  ]
 
-			});
-			
-			//displayLayout.createRow(lbtimeinterval);
-			displayLayout.createRow(new sap.ui.layout.HorizontalLayout({content : [lbtimeinterval, oCmbTimeInterval]}));
-			displayLayout.createRow(lbSuccess);
-			displayLayout.createRow(lbDelivering);
-			displayLayout.createRow(lbCancelled);
-			displayLayout.createRow(lbSystemError);
-			displayLayout.createRow(lbWaiting);
-			displayLayout.createRow(lbHolding);
-			displayLayout.createRow(lbToBeDelivered);
-			displayLayout.createRow(lbChannelError);
-			  
-			displayPannel.addContent(displayLayout);
-			/*displayPannel.addContent(deliveringLayout);
-			displayPannel.addContent(cancellLayout);
-			displayPannel.addContent(systemErrorLayout);
-			displayPannel.addContent(waitingLayout);
-			displayPannel.addContent(holdingLayout);
-			displayPannel.addContent(toBeDeliveredLayout);
-			displayPannel.addContent(channelErrorLayout);*/
-			  
-			layout.createRow(displayPannel); 
-			
-			this.addContent(layout);
-			layout.setBusy(true);
+		});
+		oCmbTimeInterval.setValue("Last 24 Hours");
+		
+		oCmbTimeInterval.attachChange(function(oControlEvent) {
+			//lbMessageStatusInterval.setText(oCmbTimeInterval.getValue());
 			
 			
+			var interval = "";
+			var strInterval = oCmbTimeInterval.getValue();
+			
+			/*if(strInterval == "Last One Hour"){
+				interval = "1";
+			}
+			else if(strInterval == "Last Two Hours"){
+				interval = "2";
+			}
+			else if(strInterval == "Last Six Hours"){
+				interval = "6";
+			}
+			else if(strInterval == "Last Twelve Hours"){
+				interval = "12";
+			}
+			else if(strInterval == "Last 24 Hours"){
+				interval = "24";
+			}*/
+			
+			if(strInterval == "Custom"){
+				//interval = "systemError";
+				//timeIntervalExtendedLayout.setVisible(true);
+			}
+			else{
+				
+				//timeIntervalExtendedLayout.setVisible(false);
+				var interval = oController.returnInterval(oCmbTimeInterval.getLiveValue());
+				startDateTime = oController.calculateBackDate(interval);
+				endDateTime = oController.formattedCurrentDate();
+				console.log("endDateTime timeinterval change event in Dashboard"); 
+				console.log(endDateTime); 
+				oController.extractData(oController, startDateTime,endDateTime);
+				layout.setBusy(true);
+			}
+			
+		});
+		
+		var lbStartDate = new sap.ui.commons.Label('lbStartDate1');  
+		lbStartDate.setText("Start Date");
+		/*var oStartDatePicker = new sap.m.DatePicker(this.createId("datePickerStart1"), {
+	        
+			displayFormat: 'dd/MM/yyyy',
+	        valueFormat: 'yyyy-MM-dd' ,
+	        dateValue : new Date(),
+	        change: function(oEvent) {
+				startDate = oStartDatePicker.getValue();
+		        console.log("startDate");
+		        console.log(startDate);
+		        //startDateTime = startDate;
+			}
+			
+	    });
+		
+		var lbStartTime = new sap.ui.commons.Label('lbStartTime1');  
+		lbStartTime.setText("Start Time"); 
+		var oStartTimePicker = new sap.m.TimePicker(this.createId("timePickerStart1"), {
+			
+				valueFormat : "HH:mm:ss",
+				displayFormat : "HH:mm:ss",
+	            dateValue : new Date(),
+	            change: function(oEvent) {
+					startTime = oStartTimePicker.getValue();
+			        console.log("startTime");
+			        console.log(startTime);
+			        //startDateTime = startDateTime + "T" + startTime;
+			        //console.log("startDateTime");
+			        //console.log(startDateTime);
+				}
+	    });*/
+		
+		//startDateTime = satrtDate + "T" + startTime;
+		//console.log("startDateTime");
+        //console.log(startDateTime);
+		
+		/*var lbEndDate = new sap.ui.commons.Label('lbEndDate1');  
+		lbEndDate.setText("End Date");
+		var oEndDatePicker = new sap.m.DatePicker(this.createId("datePickerEnd1"), {
+	        
+			displayFormat: 'dd/MM/yyyy',
+	        valueFormat: 'yyyy-MM-dd' ,
+	        dateValue : new Date(),
+	        change: function(oEvent) {
+				endDate = oEndDatePicker.getValue();
+		        console.log("endDate");
+		        console.log(endDate);
+		        //endDateTime = endDate;
+			}
+			
+	    });
+		
+		var lbEndTime = new sap.ui.commons.Label('lbEndTime1');  
+		lbEndTime.setText("End Time");
+		var oEndTimePicker = new sap.m.TimePicker(this.createId("timePickerEnd1"), {
+	        
+			valueFormat : "HH:mm:ss",
+			displayFormat : "HH:mm:ss",
+	        dateValue : new Date(),
+	        change: function(oEvent) {
+				endTime = oEndTimePicker.getValue();
+		        console.log("endTime");
+		        console.log(endTime);
+		        //endDateTime = endDateTime + "T" + endTime;
+		        //console.log("endDateTime");
+		        //console.log(endDateTime);
+			}
+	    });*/
+		
+		
+		var lbtimeinterval = new sap.ui.commons.Label(this.createId("lbtimeinterval")); 
+		lbtimeinterval.setText("Time Interval : ");
+		
+		var lbMessageStatus = new sap.ui.commons.Label(this.createId("lbMessageStatus")); 
+		lbMessageStatus.setText("Messages Ststus in ");
+		var lbMessageStatusInterval = new sap.ui.commons.Label(this.createId("lbMessageStatusInterval"));
+		//lbMessageStatusInterval.setText(oCmbTimeInterval.getItems(oCmbTimeInterval.getSelectedItemId()));
+		lbMessageStatusInterval.setText(oCmbTimeInterval.getLiveValue());
+		
+		var lbSuccess = new sap.ui.commons.Label(this.createId("lbSuccess")); 
+		lbSuccess.setText("No of Successfull Messages    ");
+		//lbSuccess.addStyleClass('messageCount');
+		var lbSuccessCtr = new sap.ui.commons.Label(this.createId("lbSuccessCtr"));
+		lbSuccessCtr.addStyleClass('messageCount');
+		lbSuccessCtr.addStyleClass('green');
+		
+		var lbDelivering = new sap.ui.commons.Label(this.createId("lbDelivering")); 
+		lbDelivering.setText("No of Delivering Messages    ");
+		var lbDeliveringCtr = new sap.ui.commons.Label(this.createId("lbDeliveringCtr"));
+		lbDeliveringCtr.addStyleClass('messageCount');
+		lbDeliveringCtr.addStyleClass('red');
+		
+		var lbCancelled = new sap.ui.commons.Label(this.createId("lbCancelled")); 
+		lbCancelled.setText("No of Cancelled Messages    "); 
+		var lbCancelledCtr = new sap.ui.commons.Label(this.createId("lbCancelledCtr"));
+		lbCancelledCtr.addStyleClass('messageCount');
+		lbCancelledCtr.addStyleClass('red');
+		
+		var lbSystemError = new sap.ui.commons.Label(this.createId("lbSystemError")); 
+		lbSystemError.setText("No of System Error Messages    ");
+		var lbSystemErrorCtr = new sap.ui.commons.Label(this.createId("lbSystemErrorCtr"));
+		lbSystemErrorCtr.addStyleClass('messageCount');
+		lbSystemErrorCtr.addStyleClass('red');
+		
+		var lbWaiting = new sap.ui.commons.Label(this.createId("lbWaiting")); 
+		lbWaiting.setText("No of Waiting Messages    ");
+		var lbWaitingCtr = new sap.ui.commons.Label(this.createId("lbWaitingCtr"));
+		lbWaitingCtr.addStyleClass('messageCount');
+		lbWaitingCtr.addStyleClass('red');
+		
+		var lbHolding = new sap.ui.commons.Label(this.createId("lbHolding")); 
+		lbHolding.setText("No of Holding Messages    ");
+		var lbHoldingCtr = new sap.ui.commons.Label(this.createId("lbHoldingCtr"));
+		lbHoldingCtr.addStyleClass('messageCount');
+		lbHoldingCtr.addStyleClass('red');
+		
+		var lbToBeDelivered = new sap.ui.commons.Label(this.createId("lbToBeDelivered")); 
+		lbToBeDelivered.setText("No of To Be Delivered Messages    ");
+		var lbToBeDeliveredCtr = new sap.ui.commons.Label(this.createId("lbToBeDeliveredCtr"));
+		lbToBeDeliveredCtr.addStyleClass('messageCount');
+		lbToBeDeliveredCtr.addStyleClass('red');
+		
+		
+		
+		//displayLayout.createRow(lbtimeinterval);
+		//displayLayout.createRow(new sap.ui.layout.HorizontalLayout({content : [lbtimeinterval, oCmbTimeInterval]}));
+		//timeIntervalLayout.createRow(lbtimeinterval, oCmbTimeInterval);
+		//timeIntervalExtendedLayout.createRow(lbStartDate, oStartDatePicker, lbStartTime, oStartTimePicker, lbEndDate, oEndDatePicker, lbEndTime, oEndTimePicker);
+		displayLayout.createRow(lbtimeinterval, oCmbTimeInterval);
+		displayLayout.createRow(lbMessageStatus,lbMessageStatusInterval);
+		displayLayout.createRow(lbSuccess,lbSuccessCtr);
+		displayLayout.createRow(lbDelivering,lbDeliveringCtr);
+		displayLayout.createRow(lbCancelled,lbCancelledCtr);
+		displayLayout.createRow(lbSystemError,lbSystemErrorCtr);
+		displayLayout.createRow(lbWaiting,lbWaitingCtr);
+		displayLayout.createRow(lbHolding,lbHoldingCtr);
+		displayLayout.createRow(lbToBeDelivered,lbToBeDeliveredCtr);
+		
+		//displayPannel.addContent(timeIntervalLayout); 
+		//displayPannel.addContent(timeIntervalExtendedLayout);
+		displayPannel.addContent(displayLayout);
+		/*displayPannel.addContent(deliveringLayout);
+		displayPannel.addContent(cancellLayout);
+		displayPannel.addContent(systemErrorLayout);
+		displayPannel.addContent(waitingLayout);
+		displayPannel.addContent(holdingLayout);
+		displayPannel.addContent(toBeDeliveredLayout);
+		displayPannel.addContent(channelErrorLayout);*/
+		  
+		layout.createRow(displayPannel); 
+		
+		this.addContent(layout);
+		//layout.setBusy(true);
+			
+		/// Grid view ///
 			var oGrid = new sap.ui.layout.Grid({
 				hSpacing: 1,
 				vSpacing: 1,
@@ -272,7 +420,7 @@ console.log(alert.Severity == 'VERYHIGH');
 		else if(alert.Severity === 'ELSE')
 			h[4].tickets += 1;
 		oLocalStorage.put('alertCounts', h);
-		oModel_chart.setData(oLocalStorage.get('alertCounts'));
+		oModel_chart.setData(h);
 		
 		this.byId('alertCount').setText(parseInt(this.byId('alertCount').getText()) + 1);
 		if(alert.Channel != "")

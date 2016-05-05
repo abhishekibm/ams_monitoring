@@ -172,7 +172,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Home", {
 		             {
 		            	 pattern : ["message", "message"],
 		            	 name : "message",
-		            	 view : "sap_pi_monitoring_tool.messageMonitoring",
+		            	 view : "sap_pi_monitoring_tool.MessageMonitoring",
 		            	 viewType : sap.ui.core.mvc.ViewType.JS,
 		            	 targetControl : "myShell",
 		            	 targetAggregation : "content",
