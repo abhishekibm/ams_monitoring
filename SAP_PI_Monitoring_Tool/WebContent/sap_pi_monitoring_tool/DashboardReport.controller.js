@@ -1,11 +1,11 @@
-strResponse = "";
+/*strResponse = "";
 var ctrSuccess = 0;
 var ctrCancelled = 0;
 var ctrSystemError = 0;
 var ctrHolding = 0;
 var ctrDelivering = 0;
 var ctrWaiting = 0;
-var ctrToBeDelivered = 0;
+var ctrToBeDelivered = 0;*/
 //var obj = "";
 sap.ui.controller("sap_pi_monitoring_tool.DashboardReport", {
 
@@ -110,6 +110,13 @@ extractData : function (obj, startDateTime,endDateTime){
 	   console.log(request);
 		var response = "";	
 		var s = "";
+		var ctrSuccess = 0;
+		var ctrCancelled = 0;
+		var ctrSystemError = 0;
+		var ctrHolding = 0;
+		var ctrDelivering = 0;
+		var ctrWaiting = 0;
+		var ctrToBeDelivered = 0;
 		obj = this;
 		console.log("Dashboard this : ");
 		console.log(this);

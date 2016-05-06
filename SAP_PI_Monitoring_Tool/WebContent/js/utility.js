@@ -297,4 +297,10 @@ Array.prototype.contains = function(obj) {
 }
 
 
-
+function exportToCSV(table, filename){
+	jQuery.sap.require("sap.ui.core.util.Export");
+	jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
+	//table.setBusy(true);
+	table.exportData().saveFile(filename+(new Date()));
+	
+}

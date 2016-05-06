@@ -20,7 +20,10 @@ default_settings = {
 	MaxRetryCount_desc : '',
 	ActiveAjaxCheckTimer : 10000,
 	ActiveAjaxCheckTimer_desc : '',
-	ActiveAjaxCheckTimer_allowed : [3000, 5000, 10000, 15000, 200000]
+	ActiveAjaxCheckTimer_allowed : [3000, 5000, 10000, 15000, 200000],
+	MaxMessageFetchLimit : 100,
+	MaxMessageFetchLimit_desc : '',
+	MaxMessageFetchLimit_allowed : [100, 1000, 2000, 5000]
 } 
 
 settings = default_settings;

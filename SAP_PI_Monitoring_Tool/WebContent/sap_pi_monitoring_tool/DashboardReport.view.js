@@ -134,7 +134,10 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		/// Message Monitoring ///
 		var layout = new sap.ui.commons.layout.MatrixLayout({
 			id : this.createId("layoutID"),
-			layoutFixed : false
+			layoutFixed : false,
+			layoutData : new sap.ui.layout.GridData({
+				span : "L8"
+		    })
 		});    
 		//layout.setWidth('100%');    
 		// Search Box starts here   

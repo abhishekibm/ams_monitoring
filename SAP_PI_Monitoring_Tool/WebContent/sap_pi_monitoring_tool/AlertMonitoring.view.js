@@ -43,9 +43,11 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 		 			//enableCellFilter: true
 		 		});
 		 		oTable.setToolbar(new sap.ui.commons.Toolbar({items: [   
-		 		                                                      new sap.ui.commons.Label({text : "Find"}),   
-		 		                                                      new sap.ui.commons.TextField("SearchText",{liveChange: this.Change}),  
-		 		                                                      new sap.ui.commons.Button({text: "Go", press: function(){}})  
+		 		                                                      //new sap.ui.commons.Label({text : "Find"}),   
+		 		                                                      //new sap.ui.commons.TextField("SearchText",{liveChange: this.Change}),  
+		 		                                                      new sap.ui.commons.Button({text: "Export", press: function(){
+		 		                                                    	 exportToCSV(oTable, 'Alert Report');
+		 		                                                      }})  
 		 		                                             ]}));
  				oTable.columns = [  
  			                    new sap.ui.table.Column({label: "Severity", template:new sap.ui.commons.Link().bindProperty("text", "severity"), filterProperty:"Severity" }),  
@@ -58,20 +60,26 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
  				oTable.addColumn(new sap.ui.table.Column({ 
 		            width : '100px',
                     label: new sap.ui.commons.Label({text: "Severity"}),          
-                    template: new sap.ui.commons.TextField().bindProperty("value", "severity")    
+                    template: new sap.ui.commons.TextField().bindProperty("value", "severity"),
+                    filterProperty: "severity",
+                    sortProperty: "severity"
  					})   
  				);
  				
  				oTable.addColumn(new sap.ui.table.Column({ 
 		            //width : '100px',
                     label: new sap.ui.commons.Label({text: "Payload"}),          
-                    template: new sap.ui.commons.TextView().addStyleClass('wrap').bindProperty("text", "payload")    
+                    template: new sap.ui.commons.TextView().addStyleClass('wrap').bindProperty("text", "payload"),
+                    filterProperty: "payload",
+                    sortProperty: "payload"
  					})   
  				);
  				oTable.addColumn(new sap.ui.table.Column({ 
 		            width : '100px',
                     label: new sap.ui.commons.Label({text: "Timestamp"}),          
-                    template: new sap.ui.commons.TextField().bindProperty("value", "timestamp")    
+                    template: new sap.ui.commons.TextField().bindProperty("value", "timestamp"),
+                    filterProperty: "timestamp",
+                    sortProperty: "timestamp"
  					})   
  				);
  		    	oTable.setTitle("Alerts");

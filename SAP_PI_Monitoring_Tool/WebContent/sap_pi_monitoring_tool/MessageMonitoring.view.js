@@ -552,11 +552,11 @@
 			        		 			MessageListTable.bindRows({path: "/rpl:Response/rn5:list/rn5:AdapterFrameworkData"});
 			        		 			
 			        		 			resultPannel = new sap.ui.commons.Panel(this.createId('resultPannel'));	
-			        		 			/*var getMessageDetailsView = sap.ui.view({
-		        		 					id : "idGetMessageDetails",
+			        		 			var getMessageDetailsView = sap.ui.view({
+		        		 					//id : "idGetMessageDetails",
 		        		 					viewName : "sap_pi_monitoring_tool.GetMessageDetails",
 		        		 					type : sap.ui.core.mvc.ViewType.JS
-		        		 				});*/
+		        		 				});
 		        		 				
 			        		 			MessageListTable.attachRowSelectionChange(function(oEvent){
 			        		 			

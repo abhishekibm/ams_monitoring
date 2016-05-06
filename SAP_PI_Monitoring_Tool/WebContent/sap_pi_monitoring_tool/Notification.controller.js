@@ -10,7 +10,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 * @memberOf sap_pi_monitoring_tool.notification
 */
 	onInit: function() {
-		oCon = this;	
+		var oCon = this;	
 		var repeat = setInterval(function(){
 			if($.active < 1){
 				clearInterval(repeat);

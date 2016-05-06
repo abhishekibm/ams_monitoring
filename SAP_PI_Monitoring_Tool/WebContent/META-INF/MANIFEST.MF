@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
 Class-Path: 
-
+x-sap-ui5-BuildTimestamp: 201605061724

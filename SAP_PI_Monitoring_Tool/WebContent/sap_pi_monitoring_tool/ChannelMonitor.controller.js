@@ -23,7 +23,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
                                                       //new sap.ui.commons.TextField({liveChange: oController.Change}),  
                                                       //new sap.ui.commons.Button({text: "Go", press: function(){}}),
                                                       new sap.ui.commons.Button({text: "Export", press: function(){
-                                                    	  exportToCSV();
+                                                    	  exportToCSV(oTable, 'Channel List Report');
                                                       }})
                                              ]}));
 		/*oTable.columns = [  
@@ -349,8 +349,3 @@ var colorRows = function(oTable, oModel) {
     }  
 }  
  
-function exportToCSV(){
-	jQuery.sap.require("sap.ui.core.util.Export");
-	jQuery.sap.require("sap.ui.core.util.ExportTypeCSV");
-	oTable.exportData().saveFile("cChannel3");
-}
