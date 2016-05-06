@@ -52,45 +52,13 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    		tooltip: "Connecting..."
 			    	});
 			    	oNotifier.attachMessageSelected(clickListener);
-
-			    	/*
-			    	 * Creating a second notifier
-			    	 */
-			    	var oNotifier2 = new sap.ui.ux3.Notifier({
-			    		title : "The second Notifier",
-			    		icon : "images/index.png"
-			    	});
-			    	for (var i = 0; i < 5; i++) {
-			    		var now = (new Date()).toUTCString();
-			    		var oMessage = new sap.ui.core.Message({
-			    			text : i + ". " + sText,
-			    			timestamp : now
-			    		});
-
-			    		if (i % 2 == 0) {
-			    			oMessage.setIcon("images/Thumbnail_32.png");
-			    		}
-
-			    		oNotifier2.addMessage(oMessage);
-			    	}
-			    	oNotifier2.attachMessageSelected(clickListener);
-
-			    	/*
-			    	 * Creating the message notifier with some messages
-			    	 */
-			    	jQuery.sap.require("sap.ui.core.IconPool");  
-			    	var aNames = sap.ui.core.IconPool.getIconNames();  
-			    	var oIcon = new sap.ui.core.Icon({  
-			    	          src : sap.ui.core.IconPool.getIconURI(aNames[0]),  
-			    	          size : "32px",  
-			    	          color : "#333333",  
-			    	          activeColor : "white",  
-			    	          activeBackgroundColor : "#333333",  
-			    	          hoverColor : "#eeeeee",  
-			    	          hoverBackgroundColor : "#666666",  
-			    	          width : "60px",  
-			    	          press: function() { alert('pressed'); }  
-			    	});
+			    	var now = (new Date());//.toUTCString();
+		    		var oMessage = new sap.ui.core.Message({
+		    			text : 'Connection initiated...',
+		    			timestamp : now
+		    		});
+		    		oNotifier.addMessage(oMessage);
+			    	
 			    	var oAlertNotifier = new sap.ui.ux3.Notifier(this.createId("alert_noti"),
 			    			{
 			    			title: "Alerts",
@@ -115,7 +83,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Notification", {
 			    	});
 			    	oNotiBar3.addStyleClass("sapUiNotificationBarDemokit");
 			    	oNotiBar3.addNotifier(oNotifier);
-			    	oNotiBar3.addNotifier(oNotifier2);
+			    	//oNotiBar3.addNotifier(oNotifier2);
 			    	oNotiBar3.addNotifier(oAlertNotifier);
 			    	oNotiBar3.addNotifier(oChannelNotifier);
 			    	

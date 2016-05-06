@@ -80,8 +80,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 
  		    	//oModel.setXML(new XMLSerializer().serializeToString(returnVal));  
  		         oTable.attachRowSelectionChange(function(Event){
- 		        	// console.log(oEvent.getParameters().rowContext.getProperty("Payload"));
- 		        	openObjectDialog(JSON.parse(Event.getParameters().rowContext.getProperty("Payload")));
+ 		        	 
+ 		        	//console.log(Event.getParameters().rowContext.getProperty("payload"));
+ 		        	openObjectDialog(JSON.parse(Event.getParameters().rowContext.getProperty("payload")));
  		        	//console.log(JSON.parse(oTable.getRows()[oTable.getSelectedIndex()%oTable.getVisibleRowCount()].getCells()[1].getText()));
  		        	
  		        	

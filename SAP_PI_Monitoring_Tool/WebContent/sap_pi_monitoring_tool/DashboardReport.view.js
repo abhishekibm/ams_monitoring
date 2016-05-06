@@ -417,7 +417,7 @@ console.log(alert.Severity == 'VERYHIGH');
 			h[2].tickets += 1;
 		else if(alert.Severity === 'LOW')
 			h[3].tickets += 1;
-		else if(alert.Severity === 'ELSE')
+		else if(alert.Severity === '' || alert.Severity == undefined)
 			h[4].tickets += 1;
 		oLocalStorage.put('alertCounts', h);
 		oModel_chart.setData(h);

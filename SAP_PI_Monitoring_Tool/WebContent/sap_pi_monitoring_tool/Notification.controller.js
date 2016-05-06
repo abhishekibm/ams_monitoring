@@ -14,6 +14,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		var repeat = setInterval(function(){
 			if($.active < 1){
 				clearInterval(repeat);
+				console.log("this : "+ oCon);
 				oCon.fetchAlerts(oCon);
 			}else{
 				console.log("Active ajax count: "+ $.active);
