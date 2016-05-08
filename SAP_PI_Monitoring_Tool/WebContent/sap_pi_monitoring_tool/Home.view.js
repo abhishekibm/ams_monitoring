@@ -68,21 +68,23 @@ sap.ui.jsview("sap_pi_monitoring_tool.Home", {
 			               new sap.ui.ux3.NavigationItem("alert",{key:"alert",text:"Alert Monitoring"}),
 			               new sap.ui.ux3.NavigationItem("message",{key:"message",text:"Message Monitoring"}),
 			               new sap.ui.ux3.NavigationItem("channel",{key:"channel",text:"Channel Monitoring"})],
-			paneBarItems: [ new sap.ui.core.Item("PI_Date",{key:"pi_date",text:"date"}),
-			                new sap.ui.core.Item("PI_Browser",{key:"pi_browser",text:"browser"})],
+			paneBarItems: [ 
+			                //new sap.ui.core.Item("PI_Date",{key:"pi_date",text:"date"}),
+			                //new sap.ui.core.Item("PI_Browser",{key:"pi_browser",text:"browser"})
+			                ],
 			content: "",
 			
 			headerItems: [new sap.ui.commons.TextView({text:(isLoggedin()? localStore('sessionObject').username : "User Name"),tooltip:"Username"}),
 			              new sap.ui.commons.TextView({text:(isLoggedin()? localStore('sessionObject').host +':'+localStore('sessionObject').port : "Not defined"),tooltip:"Host:Port"}),
-			              new sap.ui.commons.Button({text:"Personalize",tooltip:"Personalize",press:function(oEvent){openViewDialog(settingsView)}}),
-										new sap.ui.commons.MenuButton({
+			              new sap.ui.commons.Button({text:"Settings",tooltip:"Settings",press:function(oEvent){openViewDialog(settingsView)}})
+						 /*new sap.ui.commons.MenuButton({
 											text: "Settings",
 											tooltip: "Settings",
 											menu: new sap.ui.commons.Menu("menu1",{items:[
 												new sap.ui.commons.MenuItem("menuitem1",{text:"Help"}),
 												new sap.ui.commons.MenuItem("menuitem2",{text:"Report Incident"}),
 												new sap.ui.commons.MenuItem("menuitem3",{text:"About"})]})
-										})],
+										})*/],
 			worksetItemSelected: function(oEvent){
 				/*var sId = oEvent.getParameter("id");
 				var oShell = oEvent.oSource;

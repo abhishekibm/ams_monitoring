@@ -11,18 +11,56 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 */
 	onInit: function() {
 		var oCon = this;	
-		var repeat = setInterval(function(){
-			if($.active < 1){
-				clearInterval(repeat);
-				console.log("this : "+ oCon);
-				oCon.fetchAlerts(oCon);
-			}else{
-				console.log("Active ajax count: "+ $.active);
-			}
-			 
-		}, settings.ActiveAjaxCheckTimer);
 		
-		               		 
+		
+		if(settings.mode == 'demo'){
+		setInterval(function(){
+			var n = Math.floor((Math.random() * 4));
+			var kj = ["VERYHIGH", "HIGH", "MEDIUM", "LOW", ""];
+			var aloob = {"AdapterNamespace": "http://sap.com/xi/XI/System", "AdapterType":
+				 "File", "Channel": "FileSendChannel_WorkingEarlier", "ChannelParty":
+				 "GBS_Saurav", "ChannelService": "BC_Saurav", "Component":
+				 "af.po7.inmbzr0096", "ErrCat": "", "ErrCode": "", "ErrLabel": "9999",
+				 "ErrText": "No suitable sender agreement found", "FromParty":
+				 "GBS_Saurav", "FromService": "BC_Saurav", "RuleId":
+				 "f262f39bc7ae35d3a326061723d96499", "Severity": kj[n],
+				 "Timestamp": "2016-04-22T19:14:44Z"};
+				 
+				 db.alerts
+		 		.add({
+		 			payload: JSON.stringify(aloob),
+		 			severity: aloob.Severity,
+		 			channel: (aloob.Channel == undefined || aloob.Channel == '')?'':aloob.Channel,
+		 			timestamp: aloob.Timestamp
+		 		});
+		    	
+				 var oMessage = new sap.ui.core.Message({
+		 			text :  aloob.ErrText,
+		 			level : sap.ui.core.MessageType.Error,
+		 			timestamp : aloob.Timestamp
+		 		});
+		 		oMessage.data("alert", aloob);
+		 		snd.play();
+		 		oCon.byId("alert_noti").addMessage(oMessage);
+		 		if(!(aloob.Channel == null || aloob.Channel == '')){
+		 			// Channel in error
+		 			oCon.byId("channel_noti").addMessage(oMessage);
+		 		}
+		 		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", aloob);
+		}, 10000);
+		}else {
+			// nOT dEMO
+			var repeat = setInterval(function(){
+				if($.active < 1){
+					clearInterval(repeat);
+					console.log("this : "+ oCon);
+					oCon.fetchAlerts(oCon);
+				}else{
+					console.log("Active ajax count: "+ $.active);
+				}
+				 
+			}, settings.ActiveAjaxCheckTimer);
+		}
 	},
 
 	
@@ -53,6 +91,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 //	}
 	
 	fetchAlerts : function(obj){
+		
 		var c = this;
 		
 		ajaxCounter1++;
@@ -170,6 +209,11 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 	
 	
     fetchSingleAlert: function(nodeList, i, timeout){
+    	///
+    	
+    	
+		 
+    	///
     	var interval;
     	var oCon = this;
 

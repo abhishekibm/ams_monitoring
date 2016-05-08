@@ -19,14 +19,19 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 	* @memberOf sap_pi_monitoring_tool.dashboardReport
 	*/ 
 	createContent : function(oController) {
-		
+		var oThis = this;
 		
 		/// Alert ///
-		var oPanel = new sap.ui.commons.Panel(this.createId("oPanel"));
+		var oPanel = new sap.ui.commons.Panel(this.createId("oPanel"),{
+			layoutData : new sap.ui.layout.GridData({
+				span : "L3"
+		    })
+		});
 		oPanel.setText('Alert Monitoring');
 
 		var oLayout = new sap.ui.commons.layout.MatrixLayout({
-			layoutFixed : false
+			layoutFixed : false,
+			
 		});
 		
 		var control = new sap.ui.commons.Label();
@@ -47,7 +52,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		oLayout.createRow( control, channelErrorCount );
 		
 		var oChart = new sap.makit.Chart({
-
+			height : '260px',
 			type : sap.makit.ChartType.Column,
 			showTotalValue : true,
 			showRangeSelector : false,
@@ -136,12 +141,15 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 			id : this.createId("layoutID"),
 			layoutFixed : false,
 			layoutData : new sap.ui.layout.GridData({
-				span : "L8"
-		    })
+				span : "L6"
+		    }),
+		    width: '100%'
 		});    
 		//layout.setWidth('100%');    
 		// Search Box starts here   
-		var displayPannel = new sap.ui.commons.Panel('displayPannel');  
+		var displayPannel = new sap.ui.commons.Panel('displayPannel',{
+			
+		});  
 		var dashboardTitle = new sap.ui.commons.Title('dashboardTitle');  
 		dashboardTitle.setText('Message Monitoring');  
 		displayPannel.setTitle(dashboardTitle);  
@@ -310,7 +318,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		lbtimeinterval.setText("Time Interval : ");
 		
 		var lbMessageStatus = new sap.ui.commons.Label(this.createId("lbMessageStatus")); 
-		lbMessageStatus.setText("Messages Ststus in ");
+		lbMessageStatus.setText("Messages Status in ");
 		var lbMessageStatusInterval = new sap.ui.commons.Label(this.createId("lbMessageStatusInterval"));
 		//lbMessageStatusInterval.setText(oCmbTimeInterval.getItems(oCmbTimeInterval.getSelectedItemId()));
 		lbMessageStatusInterval.setText(oCmbTimeInterval.getLiveValue());
@@ -389,13 +397,261 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		
 		this.addContent(layout);
 		//layout.setBusy(true);
+		
+		//// Automation Extract
+		var automationPanel = new sap.ui.commons.Panel(this.createId("automation"));
+		automationPanel.setText('Automate Data Extraction');
+		
+		var automationLayout = new  sap.ui.layout.VerticalLayout({
+			layoutFixed : false,
+			layoutData : new sap.ui.layout.GridData({
+				span : "L4"
+		    })
+		});
+		
+		var timing;
+		var run;
+		var startButton  = new sap.ui.commons.Button({text: "Start", press: function(){
 			
+			if(startButton.getText() == 'Start') {
+				startButton.setText('Stop');
+				oRBG2.setEditable(false);
+				hourCb.setEditable(false);
+				minuteCb.setEditable(false);
+				amOrpmCb.setEditable(false);
+				
+				var now = new Date();
+				
+					if(oRBG2.getSelectedItem().getKey() != 'daily'){
+						
+						var textConsole = new  sap.ui.layout.VerticalLayout();
+						textConsole.addContent(new sap.ui.commons.TextView({
+							text: "Export will be called at "+ new Date( new Date().getTime() + parseInt(oRBG2.getSelectedItem().getKey()))
+						}));
+						textConsole.addContent(new sap.ui.commons.TextView({
+							text: now
+						}).addStyleClass('irrText'));
+						//textConsole.addStyleClass('blockquote');
+						automationConsole.insertContent(textConsole,0);
+						run = setInterval(function(){
+						//console.log($('.consoleBox').html());
+						var now = new Date();
+						var m = exportAlerts(now.toString(), true);
+						var textConsole = new  sap.ui.layout.VerticalLayout();
+						textConsole.addContent(new sap.ui.commons.TextView({
+							text: "Export funtion called. \n"
+						}));
+						textConsole.addContent(new sap.ui.commons.TextView({
+							text: now
+						}).addStyleClass('irrText'));
+						textConsole.addStyleClass('blockquote');
+						automationConsole.insertContent(textConsole,0);
+						
+						
+						//$('.consoleBox').scrollTop = $('.consoleBox').scrollHeight;
+					}, oRBG2.getSelectedItem().getKey());
+					
+					}
+					else{
+						// Daily selected . Now get the time from time drop down box
+						//hourCb.getValue()
+						//minuteCb.getValue()
+						//amOrpmCb.getValue()
+						var t = new Date();
+						console.log(amOrpmCb.getValue()=='AM'?hourCb.getValue() : (parseInt(hourCb.getValue())+12));
+						t.setHours(amOrpmCb.getValue()=='AM'?hourCb.getValue() : (parseInt(hourCb.getValue())+12));
+						t.setMinutes(minuteCb.getValue());
+						t.setSeconds(0);
+						console.log(t);
+						if(t.getTime() < new Date().getTime()){
+							t.setDate(new Date().getDate()+1); // one day later
+						}
+						console.log(t);
+						var textConsole = new  sap.ui.layout.VerticalLayout();
+						textConsole.addContent(new sap.ui.commons.TextView({
+							text: "Data will be exported at "+ new Date(t)
+						}));
+						textConsole.addContent(new sap.ui.commons.TextView({
+							text: now
+						}).addStyleClass('irrText'));
+						//textConsole.addStyleClass('blockquote');
+						automationConsole.insertContent(textConsole,0);
+						run = setInterval(function(){
+							var now = new Date();
+							
+							if(  
+								amOrpmCb.getValue() == 'AM' && hourCb.getValue() == now.getHours() && minuteCb.getValue() == now.getMinutes()
+									||
+								amOrpmCb.getValue() == 'PM' && hourCb.getValue()+12 == now.getHours() && minuteCb.getValue() == now.getMinutes()
+							){
+							//console.log($('.consoleBox').html());
+								
+							//var m = exportAlerts(now.toString(), true);
+							var textConsole = new  sap.ui.layout.VerticalLayout();
+							textConsole.addContent(new sap.ui.commons.TextView({
+								text: "Export funtion called. \n"
+							}));
+							textConsole.addContent(new sap.ui.commons.TextView({
+								text: now
+							}).addStyleClass('irrText'));
+							textConsole.addStyleClass('blockquote');
+							automationConsole.insertContent(textConsole,0);
+							}
+							
+					
+						}, 60*1000); // Checks on eevery minutes
+
+						
+					}
+			
+			}else{
+				startButton.setText('Start');
+				oRBG2.setEditable(true);
+				hourCb.setEditable(true);
+				minuteCb.setEditable(true);
+				amOrpmCb.setEditable(true);
+				var now = new Date();
+				clearInterval(run);
+				var textConsole = new  sap.ui.layout.VerticalLayout();
+				textConsole.addContent(new sap.ui.commons.TextView({
+					text: "Automate data extraction stopped."
+				}));
+				textConsole.addContent(new sap.ui.commons.TextView({
+					text: now
+				}).addStyleClass('irrText'));
+				//textConsole.addStyleClass('blockquote');
+				automationConsole.insertContent(textConsole,0);
+			}
+			//automationConsole.scrollTop = automationConsole.scrollHeight;
+         }
+		});
+		var stopButton  = new sap.ui.commons.Button({text: "Stop", press: function(){		
+			startButton.setVisible(true);
+			stopButton.setVisible(false);
+         }
+		});
+		var oRBG2 = new sap.ui.commons.RadioButtonGroup({
+			tooltip : "This is the tooltip for the second example",
+			columns : 3,
+			selectedIndex : 2,
+			select : function() {
+				if(oRBG2.getSelectedItem().getKey() === 'daily'){
+					timeLayout.setVisible(true);
+					//hour.setEditable(true);
+					//minute.setEditable(true);
+					//amOrpm.setEditable(true);
+					timing = oRBG2.getSelectedItem().getKey();
+				}else{
+					timeLayout.setVisible(false);
+					//hour.setEditable(false);
+					//minute.setEditable(false);
+					//amOrpm.setEditable(false);
+				}
+				}
+			});
+		var oItem = new sap.ui.core.Item({
+			text : "(Demo)",
+			tooltip : "5 Seconds",
+			key : 5000});
+		oRBG2.addItem(oItem);
+		oItem = new sap.ui.core.Item({
+			text : "15 Mins",
+			tooltip : "15 Minutes",
+			key : 15*60*1000});
+		oRBG2.addItem(oItem);
+		oItem = new sap.ui.core.Item({
+			text : "30 mins",
+			tooltip : "Tooltip 3",
+			key : 30*60*1000});
+		oRBG2.addItem(oItem);
+		oItem = new sap.ui.core.Item({
+			text : "1 Hour",
+			tooltip : "1 Hour",
+			key : 60*60*1000});
+		oRBG2.addItem(oItem);
+		oItem = new sap.ui.core.Item({
+			text : "12 Hours",
+			tooltip : "12 Hours",
+			key : 12*3600*1000});
+		oRBG2.addItem(oItem);
+		oItem = new sap.ui.core.Item({
+			text : "Daily",
+			tooltip : "Daily",
+			key : "daily"});
+		oRBG2.addItem(oItem);
+		automationLayout.addContent(oRBG2);
+		
+		
+		var hourCb = new sap.ui.commons.DropdownBox("hour",{
+			text: "Hour",
+			tooltip: "Hour",
+			width: '45px',
+			//editable : false,
+			items: [new sap.ui.core.ListItem({text: "01", key: "1"}),
+			        new sap.ui.core.ListItem({text: "02", key: "2"}),
+			        new sap.ui.core.ListItem({text: "03", key: "3"}),
+			        new sap.ui.core.ListItem({text: "04", key: "4"}),
+			        new sap.ui.core.ListItem({text: "05", key: "5"}),
+			        new sap.ui.core.ListItem({text: "06", key: "6"}),
+			        new sap.ui.core.ListItem({text: "07", key: "7"}),
+			        new sap.ui.core.ListItem({text: "08", key: "8"}),
+			        new sap.ui.core.ListItem({text: "09", key: "9"}),
+			        new sap.ui.core.ListItem({text: "10", key: "10"}),
+			        new sap.ui.core.ListItem({text: "11", key: "11"}),
+			        new sap.ui.core.ListItem({text: "12", key: "12"})
+			],
+			change: function(oEvent){
+				//sap.ui.getCore().byId("TextFieldKey").setValue(oEvent.oSource.getSelectedKey());
+				//sap.ui.getCore().byId("TextFieldId").setValue(oEvent.oSource.getSelectedItemId());
+				}
+		});
+		var minuteCb = new sap.ui.commons.DropdownBox("minute",{
+			tooltip: "Minutes",
+			width: '45px',
+			//editable : false,
+			
+			change: function(oEvent){
+				//sap.ui.getCore().byId("TextFieldKey").setValue(oEvent.oSource.getSelectedKey());
+				//sap.ui.getCore().byId("TextFieldId").setValue(oEvent.oSource.getSelectedItemId());
+				}
+		});
+		for(var k=0; k<60 ;k++){
+			minuteCb.addItem(new sap.ui.core.ListItem({text: (k<10)?'0'+k:k, key: k}));
+		}
+		var amOrpmCb = new sap.ui.commons.DropdownBox("amOrpm",{
+			tooltip: "Minutes",
+			width: '50px',
+			//editable : false,
+			items: [new sap.ui.core.ListItem({text: "AM", key: "AM"}),
+			        new sap.ui.core.ListItem({text: "PM", key: "PM"})
+			        
+			],
+			change: function(oEvent){
+				//sap.ui.getCore().byId("TextFieldKey").setValue(oEvent.oSource.getSelectedKey());
+				//sap.ui.getCore().byId("TextFieldId").setValue(oEvent.oSource.getSelectedItemId());
+				}
+		});
+		var timeLb = new sap.ui.commons.Label({ text: "Time:", labelFor: hourCb});
+		var minuteLb = new sap.ui.commons.Label({ text: ":", labelFor: minuteCb});
+		var timeLayout = new sap.ui.commons.layout.MatrixLayout({
+			layoutFixed : false,
+			
+		});
+		
+		timeLayout.setVisible(false);
+		timeLayout.createRow(timeLb, hourCb,minuteLb, minuteCb, amOrpmCb);
+		automationLayout.addContent(timeLayout);
+		automationLayout.addContent(startButton);
+		var automationConsole = new  sap.ui.layout.VerticalLayout(oThis.createId('automationConsole'));
+		automationConsole.addStyleClass('consoleBox');
+		automationLayout.addContent(automationConsole);
+		automationPanel.addContent(automationLayout)
 		/// Grid view ///
 			var oGrid = new sap.ui.layout.Grid({
 				hSpacing: 1,
 				vSpacing: 1,
 				content: [
-				         oPanel,layout
+				         oPanel,layout, automationPanel
 					
 				]
 			});
@@ -408,10 +664,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 	},
 	onAlertCountReceived : function(channel, event, alert){
 		var h = oLocalStorage.get('alertCounts');
-console.log(alert.Severity);
-console.log(alert.Severity === 'VERYHIGH');
-console.log(alert.Severity === "VERYHIGH");
-console.log(alert.Severity == 'VERYHIGH');
+
 		if(alert.Severity === 'VERYHIGH')
 			h[0].tickets += 1;
 		else if(alert.Severity === 'HIGH')

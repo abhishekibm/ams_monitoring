@@ -93,6 +93,22 @@
 			
 			oShell.placeAt("content");
 		}else{
+			// Databse object
+			//
+			// Define your database
+			//
+			db = new Dexie("DB - "+ localStore('sessionObject').host);
+
+			db.version(1).stores({
+			    alerts: '++id, payload,severity,channel,timestamp'
+			    // ...add more stores (tables) here...
+			});
+			//
+			// Open it
+			//
+			db.open().catch(function (e) {
+			    //alert ("Open failed: " + e);
+			});
 			homeview = sap.ui.view({
 				viewName : "sap_pi_monitoring_tool.Home",
 				type : sap.ui.core.mvc.ViewType.JS

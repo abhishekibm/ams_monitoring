@@ -2,28 +2,8 @@
 jQuery.sap.require("jquery.sap.storage");
 oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
 oLocalStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local); 
-/*oLocalStorage.put('alertCounts', [
-                   {type: 'VERYHIGH', tickets : 0},
-                   {type: 'HIGH', tickets : 0},
-                   {type: 'MEDIUM', tickets : 0},
-                   {type: 'LOW', tickets : 0},
-                   {type: 'ELSE', tickets : 0}
-                 ]);*/
-//
-// Define your database
-//
-db = new Dexie("monitoring_tool");
 
-db.version(1).stores({
-    alerts: '++id, payload,severity,channel,timestamp'
-    // ...add more stores (tables) here...
-});
-//
-// Open it
-//
-db.open().catch(function (e) {
-    alert ("Open failed: " + e);
-});
+
 
 
 
@@ -48,7 +28,7 @@ function getCookie(cname) {
     }
     return "";
 }
-if(settings.mode.toLowerCase() != 'debug'){
+if(settings.mode.toLowerCase() != 'debug' && settings.mode.toLowerCase() != 'demo'){
 	console.log = function() {}
 }
 
@@ -129,6 +109,9 @@ function login(sessionObject, rememberMe){
 	oStorage.put('sessionObject', sessionObject);
 	if(rememberMe)
 	setCookie('sessionObject', JSON.stringify(sessionObject), 365);
+
+	
+	
 	location.reload();
 }
 
@@ -142,7 +125,7 @@ function logoff(){
 	oStorage.clear();
 	oLocalStorage.put("AllAlerts", null);
 	setCookie("sessionObject", "", -1);
-	db.delete();
+	//db.delete();
 	location.reload();
 }
 
@@ -304,3 +287,109 @@ function exportToCSV(table, filename){
 	table.exportData().saveFile(filename+(new Date()));
 	
 }
+
+
+
+function exportAlerts(ReportTitle, ShowLabel){
+	var alertsAll = [];
+	console.log(alertsAll);
+	db.alerts
+	.each(function(alert){
+		alertsAll.push(alert);
+	}).then(function(alerts){
+		console.log(alertsAll);
+		if(alertsAll.length > 0)
+			return JSONToCSVConvertor(JSON.parse(JSON.stringify(alertsAll)), ReportTitle, ShowLabel);
+		else{
+			console.log("Not alert found.")
+			return "Not alert found.";
+		}
+	}).catch (function (err) {
+
+	    // Transaction will abort!
+	    console.log(err);
+	    return err;
+	});
+}
+function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+    //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+    
+    var CSV = '';    
+    //Set Report title in first row or line
+    
+    CSV += ReportTitle + '\r\n\n';
+
+    //This condition will generate the Label/Header
+    if (ShowLabel) {
+        var row = "";
+        
+        //This loop will extract the label from 1st index of on array
+        for (var index in arrData[0]) {
+            
+            //Now convert each value to string and comma-seprated
+            row += index + ',';
+        }
+
+        row = row.slice(0, -1);
+        
+        //append Label row with line break
+        CSV += row + '\r\n';
+    }
+    
+    //1st loop is to extract each row
+    for (var i = 0; i < arrData.length; i++) {
+        var row = "";
+        
+        //2nd loop will extract each column and convert it in string comma-seprated
+        for (var index in arrData[i]) {
+            row += '"' + arrData[i][index] + '",';
+        }
+
+        row.slice(0, row.length - 1);
+        
+        //add a line break after each row
+        CSV += row + '\r\n';
+    }
+
+    if (CSV == '') {        
+        //alert("Invalid data");
+        return "JSON data is invalid. File couldn't be extracted";
+    }   
+    
+    //Generate a file name
+    var fileName = "Monitoring Report_";
+    //this will remove the blank-spaces from the title and replace it with an underscore
+    fileName += ReportTitle.replace(/ /g,"_");   
+    
+    //Initialize file format you want csv or xls
+    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+    
+    // Now the little tricky part.
+    // you can use either>> window.open(uri);
+    // but this will not work in some browsers
+    // or you will not get the correct file extension    
+    
+    //this trick will generate a temp <a /> tag
+    var link = document.createElement("a");    
+    link.href = uri;
+    
+    //set the visibility hidden so it will not effect on your web-layout
+    link.style = "visibility:hidden";
+    link.download = fileName + ".csv";
+    
+    //this part will append the anchor tag and remove it after automatic click
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    return 'File has been successfully extracted';
+}
+
+aboutTool = 
+	'\n\nPI Monitoring Tool. \
+	\n\nAMS PI Monitoring tool is a web based standalone tool. It provides option to search successful and failed messages (system error, delivering, holding, waiting, to be delivered) from the specified PI server. It displays alert notifications whenever any message failure occurs in the PI system in a single screen. It also provides the option of excel download of successful and failed messages, alert notifications, channel errors.\
+	\n\n Features:\n\
+	1. It shows the live alert count\n\
+	2. Automatically Fetches raised alerts\n\
+	3. Message monitoring to search messages\n\
+	4. Auto extract data for reporting purpose';

@@ -33,7 +33,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 			content :[
 			          	new sap.ui.commons.Image({src: 'images/ibm-logos/64px-IBM_logo.svg.png'}),
 						new sap.ui.commons.TextView({
-							text : '\n\nPI Monitoring Tool. \nBrief description About this tool. Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy Dummy \nFeatures: 1. 2. 3. \n\n\nCredits. @IBM'
+							text : aboutTool
 						})
 			],
 			layoutData : new sap.ui.layout.GridData({

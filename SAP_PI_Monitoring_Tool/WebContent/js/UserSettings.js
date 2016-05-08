@@ -1,5 +1,5 @@
 default_settings = {
-	mode : 'debug', //prod, dev, debug
+	mode : 'debug', //prod, dev, debug, demo
 	mode_allowed : ["prod", "dev", "debug" ],
 	mode_desc : 'Use Debug mode to see the detailed log.',
 	proxy : true,

@@ -64,7 +64,7 @@
 .blockquote {
   background: #f9f9f9;
   border-left: 10px solid #ccc;
-  margin: 1.5em 10px;
+  margin: 1.5em 3px;
   padding: 0.5em 10px;
   /*quotes: "\201C""\201D""\2018""\2019";*/
 }
@@ -80,8 +80,20 @@
   display: inline;
 }
 
+.consoleBox{
+	white-space: normal !important;
+	border: 1px dashed #eee;
+	max-height: 500px;
+	width: 100%;
+	overflow-y: auto !important;
+	padding: 3px !important;
+}
 
-
+.irrText {
+	color: #9197a3;
+    text-shadow: 0 1px #fff;
+    font-size: smaller !important;
+}
 /* Chandima */
 
 .align_text_left {
@@ -119,3 +131,6 @@
     left : 5px
 
 } 
+*, td, tr{
+	outline : 0
+}
