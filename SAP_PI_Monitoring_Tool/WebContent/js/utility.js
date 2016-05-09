@@ -68,6 +68,16 @@ serviceAPIs  = {
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/ChannelAdminService/ChannelAdmin');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/ChannelAdminService/ChannelAdmin');
+		},
+		
+		channelStatusAPI2 : function(){
+			if(settings.proxy)
+				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + 
+						'/AdapterFramework/ChannelAdminServlet?party=&service=*&channel=*&action=status');
+			else
+				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + 
+						'/AdapterFramework/ChannelAdminServlet?party=&service=*&channel=*&action=status');
+		
 		}
 }
 

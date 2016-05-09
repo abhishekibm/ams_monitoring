@@ -1,18 +1,19 @@
-/*strResponse = "";
+//strResponse = "";
 var ctrSuccess = 0;
 var ctrCancelled = 0;
 var ctrSystemError = 0;
 var ctrHolding = 0;
 var ctrDelivering = 0;
 var ctrWaiting = 0;
-var ctrToBeDelivered = 0;*/
+var ctrToBeDelivered = 0;
 //var obj = "";
+
 sap.ui.controller("sap_pi_monitoring_tool.DashboardReport", {
 
 	
 calculateBackDate : function(interval){
 		var intervalHours = interval;
-		var dateOffset = (intervalHours*60*60*1000); 
+		var dateOffset = (parseInt(intervalHours)*60*60*1000); 
 		var myDate = new Date().getTime() - dateOffset;
 		console.log("myDate " + myDate);
 		var backdate = new Date(myDate);
@@ -76,7 +77,7 @@ calculateBackDate : function(interval){
 	
 	
 	
-extractData : function (obj, startDateTime,endDateTime){
+extractData : function (obj,startDateTime,endDateTime,status){
 		obj.byId('layoutID').setBusy(true);
 		var request = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:AdapterMessageMonitoringVi\" xmlns:urn1=\"urn:com.sap.aii.mdt.server.adapterframework.ws\" xmlns:urn2=\"urn:com.sap.aii.mdt.api.data\" xmlns:lang=\"urn:java/lang\">\n" +
         "    <soapenv:Header/>\n" +
@@ -93,7 +94,7 @@ extractData : function (obj, startDateTime,endDateTime){
         " 				<urn1:retries></urn1:retries>\n" +
         "				<urn1:retryInterval></urn1:retryInterval>\n" +
         "				<!--Optional:-->\n" +
-        //"				<urn1:status></urn1:status>\n" +
+        "			  <urn1:status>" + status + "</urn1:status>\n" +
         
         "				<urn1:timesFailed></urn1:timesFailed>\n" +
         "				<!--Optional:-->\n" +
@@ -110,13 +111,7 @@ extractData : function (obj, startDateTime,endDateTime){
 	   console.log(request);
 		var response = "";	
 		var s = "";
-		var ctrSuccess = 0;
-		var ctrCancelled = 0;
-		var ctrSystemError = 0;
-		var ctrHolding = 0;
-		var ctrDelivering = 0;
-		var ctrWaiting = 0;
-		var ctrToBeDelivered = 0;
+		
 		obj = this;
 		console.log("Dashboard this : ");
 		console.log(this);
@@ -192,7 +187,7 @@ extractData : function (obj, startDateTime,endDateTime){
 		 			else if(statusNode.textContent == "holding"){
 		 				ctrHolding = ctrHolding + 1;
 		 			}
-		 			else if(statusNode.textContent == "Waiting"){
+		 			else if(statusNode.textContent == "waiting"){
 		 				ctrWaiting = ctrWaiting + 1;
 		 			}
 		 			else if(statusNode.textContent == "toBeDelivered"){
@@ -231,12 +226,12 @@ extractData : function (obj, startDateTime,endDateTime){
 * @memberOf sap_pi_monitoring_tool.dashboardReport
 */
 	onInit: function() {
-		var interval = this.returnInterval(this.byId("oCmbTimeInterval").getValue());
+		/*var interval = this.returnInterval(this.byId("oCmbTimeInterval").getValue());
 		var startDateTime = this.calculateBackDate(interval);
 		var endDateTime = this.formattedCurrentDate();
 		console.log("endDateTime oninit"); 
 		console.log(endDateTime); 
-		this.extractData(this,startDateTime,endDateTime);
+		this.extractData(this,startDateTime,endDateTime);*/
 		//this.byId('layoutID').setBusy(true);
 	},
 
@@ -254,9 +249,50 @@ extractData : function (obj, startDateTime,endDateTime){
 * This hook is the same one that SAPUI5 controls get after being rendered.
 * @memberOf sap_pi_monitoring_tool.dashboardReport
 */
-//	onAfterRendering: function() {
-//
-//	},
+	onAfterRendering: function() {
+		//var statuses = ["success", "delivering", "canceled", "holding", "waiting"]; 
+		var objThis = this;
+		var interval = this.returnInterval(this.byId("oCmbTimeInterval").getValue());
+		var startDateTime = this.calculateBackDate(interval);
+		var endDateTime = this.formattedCurrentDate();
+		console.log("endDateTime oninit"); 
+		console.log(endDateTime); 
+		setTimeout(function(){
+			objThis.extractData(objThis,startDateTime,endDateTime,"success");
+			setTimeout(function(){
+				objThis.extractData(objThis,startDateTime,endDateTime,"delivering");
+				setTimeout(function(){
+					objThis.extractData(objThis,startDateTime,endDateTime,"canceled");
+					setTimeout(function(){
+						objThis.extractData(objThis,startDateTime,endDateTime,"holding");
+						setTimeout(function(){
+							objThis.extractData(objThis,startDateTime,endDateTime,"waiting");
+							setTimeout(function(){
+								objThis.extractData(objThis,startDateTime,endDateTime,"systemError");
+								setTimeout(function(){
+									objThis.extractData(objThis,startDateTime,endDateTime,"toBeDelivered");
+								}, 10000);
+							}, 10000);
+						}, 10000);
+					}, 10000);
+				}, 10000);
+			}, 10000);
+		}, 100);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	},
 
 /**
 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.

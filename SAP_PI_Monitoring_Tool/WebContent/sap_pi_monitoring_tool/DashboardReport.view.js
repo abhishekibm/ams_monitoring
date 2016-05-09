@@ -195,7 +195,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 			      new sap.ui.core.ListItem("i3",{text: "Last Six Hours"}),
 			      new sap.ui.core.ListItem("i4",{text: "Last Twelve Hours"}),
 			      new sap.ui.core.ListItem("i5",{text: "Last 24 Hours"}),
-			      new sap.ui.core.ListItem("i6",{text: "Custom"}),
+			      //new sap.ui.core.ListItem("i6",{text: "Custom"}),
 			      
 			  ]
 
@@ -238,6 +238,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 				console.log("endDateTime timeinterval change event in Dashboard"); 
 				console.log(endDateTime); 
 				oController.extractData(oController, startDateTime,endDateTime);
+				lbMessageStatusInterval.setText(oCmbTimeInterval.getLiveValue());
 				layout.setBusy(true);
 			}
 			

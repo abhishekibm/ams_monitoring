@@ -43,37 +43,35 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
     	oTable.addColumn(new sap.ui.table.Column({ 
     		              width : '100px',
                           label: new sap.ui.commons.Label({text: "Party"}),          
-                          template: new sap.ui.commons.TextField().bindProperty("value", "@party"),
+                          template: new sap.ui.commons.TextField().bindProperty("value", "Party"),
                           filterProperty: "Party",
                           sortProperty: "Party"
      		})   
           );
 	     oTable.addColumn(new sap.ui.table.Column({          
-	                          label: new sap.ui.commons.Label({text: "Component"}),          
-	                          template: new sap.ui.commons.TextField().bindProperty("value", "@service"),
-	                          filterProperty: "@service",
-	                          sortProperty: "@service"
+	                          label: new sap.ui.commons.Label({text: "Service"}),          
+	                          template: new sap.ui.commons.TextField().bindProperty("value", "Service"),
+	                          filterProperty: "Service",
+	                          sortProperty: "Service"
 	     				})   
 	      );   
 	      oTable.addColumn(new sap.ui.table.Column({          
 	                      label: new sap.ui.commons.Label({text: "Channel"}),          
-	                      template: new sap.ui.commons.TextField().bindProperty("value", "@name"),
-	                      filterProperty: "@name",
-                          sortProperty: "@name"
+	                      template: new sap.ui.commons.TextField().bindProperty("value", "ChannelName"),
+	                      filterProperty: "ChannelName",
+                          sortProperty: "ChannelName"
 	      				})   
 	      );
 	      oTable.addColumn(new sap.ui.table.Column({          
-              label: new sap.ui.commons.Label({text: "Running Status"}),
-              filterProperty: "status/@activationState",
-              sortProperty: "status/@activationState",
-              filterProperty: "status/@activationState",
-              sortProperty: "status/@activationState",
+              label: new sap.ui.commons.Label({text: "State"}),
+              filterProperty: "ActivationState",
+              sortProperty: "ActivationState",
               template: new sap.ui.layout.HorizontalLayout({  
             	    content : [  
             	               new sap.ui.commons.TextView({  			                    	                   
             	                 textAlign: sap.ui.core.TextAlign.Left,  
             	                 visible : true  
-            	               }).bindProperty("text", "status/@activationState", function(cellValue){
+            	               }).bindProperty("text", "ActivationState", function(cellValue){
             	            	  // remove styles else it will overwrite   
             	                  this.removeStyleClass('green');  
             	                  this.removeStyleClass('yellow');  
@@ -93,6 +91,36 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
             	           })     
 				})   
 	      );
+	      oTable.addColumn(new sap.ui.table.Column({          
+              label: new sap.ui.commons.Label({text: "Channel State"}),
+              filterProperty: "ChannelState",
+              sortProperty: "ChannelState",
+              template: new sap.ui.layout.HorizontalLayout({  
+            	    content : [  
+            	               new sap.ui.commons.TextView({  			                    	                   
+            	                 textAlign: sap.ui.core.TextAlign.Left,  
+            	                 visible : true  
+            	               }).bindProperty("text", "ChannelState", function(cellValue){
+            	            	  // remove styles else it will overwrite   
+            	                  this.removeStyleClass('green');  
+            	                  this.removeStyleClass('yellow');  
+            	                  this.removeStyleClass('red');  
+            	                  // Set style Conditionally  
+            	                  if(cellValue == null){
+            	                	  
+            	                  }else if (cellValue.toLowerCase() == 'ok') {  
+            	                      this.addStyleClass('green');  
+            	                  } else{  
+            	                	  this.addStyleClass('red');               
+            	                  }  
+            	                  
+            	                  return cellValue; 
+            	               })  
+            	                
+            	             ]  
+            	           })     
+				})   
+	      );
 	     oTable.addColumn(new sap.ui.table.Column({          
               label: new sap.ui.commons.Label({text: "Running Status"}),          
               template: new sap.ui.layout.HorizontalLayout({  
@@ -103,7 +131,7 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
             	                	 
             	                 },  
             	                 visible : true  
-            	               }).bindProperty("text", "status/@activationState", function(cellValue){
+            	               }).bindProperty("text", "ActivationState", function(cellValue){
             	            	  if(cellValue == null){
             	            		  
             	            	  }else if (cellValue.toLowerCase() == 'started') {  
@@ -118,13 +146,14 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 	      );
 	      oTable.setVisibleRowCount(5);
 	      oTable.setModel(oModel);     
-	      oTable.bindRows({path: "/channelStatus"});  
+	      oTable.bindRows({path: "/Channel"});  
 	      //colorRows(oTable, oModel);
 	      this.byId('oChannelListPanel').destroyContent();
 	      this.byId('oChannelListPanel').addContent(oTable);
 	      
 	      oTable.setBusy(true);
-		  this.getChannels(this);
+		  
+	     
 		
 	},
 
@@ -143,7 +172,10 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
 * @memberOf sap_pi_monitoring_tool.ChannelMonitor
 */
 	onAfterRendering: function() {
-		
+		var oController = this;
+		setTimeout(function(){
+			  oController.getChannelStatus(oController);
+		  }, 1000);
 		//this.getChannels(this);
 	},
 
@@ -175,6 +207,34 @@ sap.ui.controller("sap_pi_monitoring_tool.ChannelMonitor", {
           
           
     }  ,
+    getChannelStatus : function(obj){
+    	$.ajax({  
+            url : serviceAPIs.channelStatusAPI2(), //"NewFile.xml",// 
+            type : "GET",  
+            data : {
+            		party: '',
+            		service:'*',
+            		channel:'*',
+            		action:'status'
+            },  
+            dataType : "text",  
+            contentType : "text/xml; charset=\"utf-8\"",
+            timeout: settings.ChannelFetchAjaxTimeout,
+            headers : {
+			    	'Access-Control-Allow-Origin': '*',
+			    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
+			    }
+            })
+            .done(function(data) { 
+            	console.log(data);
+            	parser=new DOMParser();  
+                xmlDoc=parser.parseFromString(data,"text/xml");  
+                returnVal = xmlDoc.getElementsByTagNameNS("*","Channels")[0];
+                oModel.setXML(new XMLSerializer().serializeToString(returnVal));
+                oTable.setBusy(false);
+            })
+            
+    },
 	getChannels: function(obj){
 		
 		var request =

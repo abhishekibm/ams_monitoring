@@ -47,7 +47,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		 			oCon.byId("channel_noti").addMessage(oMessage);
 		 		}
 		 		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", aloob);
-		}, 10000);
+		}, 15000);
 		}else {
 			// nOT dEMO
 			var repeat = setInterval(function(){

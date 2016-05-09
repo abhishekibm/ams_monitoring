@@ -1,4 +1,4 @@
-obj = "";
+var obj = "";
 sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 
 /**
@@ -28,7 +28,7 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 	
 	calculateBackDate : function(interval){
 		var intervalHours = interval;
-		var dateOffset = (intervalHours*60*60*1000); 
+		var dateOffset = (parseInt(intervalHours)*60*60*1000); 
 		var myDate = new Date().getTime() - dateOffset;
 		console.log("myDate " + myDate);
 		var backdate = new Date(myDate);
@@ -70,8 +70,11 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 		
 	},
 	
-	extractData : function (statusType,startDateTime,endDateTime){
+	extractData : function (statusType,startDateTime,endDateTime, maxCount){
 		obj = this;
+		var maxMessageSearched = 0;
+		var maxMessageFound = 0;
+		maxMessageSearched = parseInt(maxCount) + 1;
 		/*var startDateTime = "";
 		var endDateTime = "";
 		
@@ -120,12 +123,12 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
         "				<urn1:wasEdited>false</urn1:wasEdited>\n" +
         "		</urn:filter>\n" +
      	"       <!--Optional:-->\n" +
-     	"       <urn:maxMessages>100</urn:maxMessages>\n" +
+     	"       <urn:maxMessages>" + maxMessageSearched + "</urn:maxMessages>\n" +
   		"		</urn:getMessageList>\n"  +
 			"     </soapenv:Body>\n" +
 		"</soapenv:Envelope>";
 	   console.log("request");
-	   console.log(request);
+	   console.log(maxMessageSearched);
 	   var response = "";	
 	   
 	   console.log("obj");
@@ -199,8 +202,12 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 		        //obj.byId("oModel").setXML(s);
 		        console.log("after set model in controller");
 		        //obj.byId("MessageListTable").bindRows({path: "/rpl:Response/rn5:list/rn5:AdapterFrameworkData"});
-		        		 			
-		        obj.byId("lbMessageCount").setText("Total Messages Found " + obj.byId("MessageListTable").getBinding().getLength());		 			     
+		        maxMessageFound = obj.byId("MessageListTable").getBinding().getLength();
+		        if(maxMessageFound > maxCount)
+		        	obj.byId("lbMessageCount").setText("More Than " +  maxCount + " Messages Found");
+		        	
+		        else
+		        	obj.byId("lbMessageCount").setText("Total Messages Found " + obj.byId("MessageListTable").getBinding().getLength());
 									
 				/*resultPannel.addContent(MessageListTable);    
 				layout.createRow(resultPannel);*/

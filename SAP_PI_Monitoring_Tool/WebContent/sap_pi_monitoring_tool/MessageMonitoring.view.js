@@ -41,7 +41,7 @@
 									var sLayout = new sap.ui.commons.layout.MatrixLayout('sLayout'); 
 									
 									var customLayout = new sap.ui.commons.layout.MatrixLayout('customLayout', {
-										colSpan : 4
+										colSpan : 2
 									});
 									//customLayout.setWidth('80%');   
 									var lbSearch = new sap.ui.commons.Label('lbSearch');  
@@ -84,6 +84,24 @@
 
 									});
 									
+									var lbMaxCount = new sap.ui.commons.Label('lbMaxCount');  
+									lbMaxCount.setText("Max Count");
+									
+									var oCmbMaxCount = new sap.ui.commons.DropdownBox({
+										  Id: this.createId('oCmbMaxCount'),
+										  items: [
+
+										      new sap.ui.core.ListItem({text: "100"}),
+										      new sap.ui.core.ListItem({text: "1000"}),
+										      new sap.ui.core.ListItem({text: "2000"}),
+										      new sap.ui.core.ListItem({text: "5000"}),
+										      
+										      
+										  ]
+
+									});
+									
+									oCmbMaxCount.setValue("100");
 									
 									var lbTimeInterval = new sap.ui.commons.Label('lbTimeInterval');  
 									lbTimeInterval.setText("Time Interval");
@@ -276,7 +294,7 @@
 													endDateTime = oController.formattedCurrentDate();
 														
 											}
-											  oController.extractData(statusType,startDateTime,endDateTime);
+											  oController.extractData(statusType,startDateTime,endDateTime,oCmbMaxCount.getLiveValue());
 											  console.log(startDateTime);
 											//resultPannel.setVisible(true);
 										    //uPanel.setVisible(true);
@@ -301,7 +319,7 @@
 									
 									customLayout.setVisible(false);
 									//btnSearch.attachPress(oController.searchAction);   
-									sLayout.createRow(lbSearch, oCmbType, lbTimeInterval, oCmbTimeInterval);  
+									sLayout.createRow(lbSearch, oCmbType, lbTimeInterval, oCmbTimeInterval, lbMaxCount, oCmbMaxCount);  
 									
 									sLayout.addRow(oRow);
 									sLayout.createRow(btnSearch);

@@ -91,7 +91,19 @@ sap.ui.controller("sap_pi_monitoring_tool.AlertMonitoring", {
 			oModel_Alerts.setData(alertsAll);
 		});
 		
-		
+		var h = oLocalStorage.get('alertCounts');
+
+		if(alertObj.Severity === 'VERYHIGH')
+			h[0].tickets += 1;
+		else if(alertObj.Severity === 'HIGH')
+			h[1].tickets += 1;
+		else if(alertObj.Severity === 'MEDIUM')
+			h[2].tickets += 1;
+		else if(alertObj.Severity === 'LOW')
+			h[3].tickets += 1;
+		else if(alertObj.Severity === '' || alertObj.Severity == undefined)
+			h[4].tickets += 1;
+		oLocalStorage.put('alertCounts', h);
 	},
 	/**
 	 * Called when the Controller is destroyed. Use this one to free resources
