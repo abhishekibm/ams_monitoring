@@ -2,7 +2,7 @@ default_settings = {
 	mode : 'debug', //prod, dev, debug, demo
 //	mode_allowed : ["prod", "dev", "debug" ],
 	mode_desc : 'Use Debug mode to see the detailed log. "prod", "dev", "debug"',
-	proxy : true,
+	proxy : false,
 //	proxy_allowed : ["true", "false" ],
 	proxy_desc : 'Using "proxy"=true when local proxy needs to forward cross-domain ajax calls. "true", "false"',
 	/// Scheduling 

@@ -3,9 +3,14 @@ jQuery.sap.require("jquery.sap.storage");
 oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
 oLocalStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local); 
 
+console.log("getCookie");
+console.log(getCookie("settings"));
 
-if(getCookie("settings")!= "")
+if(getCookie("settings") == "")
 setCookie("settings", JSON.stringify(default_settings), 365);
+
+console.log("getCookie");
+console.log(getCookie("settings"));
 
 function getSettings(){
 	return JSON.parse(getCookie("settings"));

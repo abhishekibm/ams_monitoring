@@ -80,9 +80,32 @@ sap.ui.jsview("sap_pi_monitoring_tool.Settings", {
 				}
 			}
 		});
-		oLayout.createRow(btn);
-		oLayout.createRow(d_btn);
 		
+		
+		//// Timezone combobox ////
+		
+		var timezoneModel = new sap.ui.model.json.JSONModel();
+		timezoneModel.loadData("data/timezones.json");
+		//timezoneModel.setData(data);
+        this.setModel(timezoneModel);
+        var list = new sap.ui.commons.ComboBox("tz",{
+        	displaySecondaryValues:true
+        });
+		
+     // bind the List items to the data collection
+        list.bindItems({
+            path : "/", 
+            //sorter : new sap.ui.model.Sorter("prodName"),
+            //template : listTmpl
+            template : new sap.ui.core.ListItem({
+            	 text:"{text}", additionalText:"{offset}"
+            })
+        }); 
+        oLayout.createRow(list);
+		//////////////////////////
+		
+        oLayout.createRow(btn);
+		oLayout.createRow(d_btn);
 		return oLayout;
 	}
 
