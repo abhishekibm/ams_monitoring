@@ -4,9 +4,12 @@ oStorage = jQuery.sap.storage(jQuery.sap.storage.Type.session);
 oLocalStorage = jQuery.sap.storage(jQuery.sap.storage.Type.local); 
 
 
+if(getCookie("settings")!= "")
+setCookie("settings", JSON.stringify(default_settings), 365);
 
-
-
+function getSettings(){
+	return JSON.parse(getCookie("settings"));
+}
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -28,28 +31,28 @@ function getCookie(cname) {
     }
     return "";
 }
-if(settings.mode.toLowerCase() != 'debug' && settings.mode.toLowerCase() != 'demo'){
+if(getSettings().mode.toLowerCase() != 'debug' && getSettings().mode.toLowerCase() != 'demo'){
 	console.log = function() {}
 }
 
 //Here all service APIs will be mentioned
 serviceAPIs  = {
 		alertAPI_all_alert_consumers: function(){
-			if(settings.proxy)
+			if(getSettings().proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRuleInService/AlertRuleInImplBean');
 		},
 		
 		alertAPI_single_alert: function(){
-			if(settings.proxy)
+			if(getSettings().proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AlertRetrieveAPI_Service/AlertRetrieveAPIImplBean');
 		},
 		
 		messageAPI: function(){
-			if(settings.proxy)
+			if(getSettings().proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AdapterMessageMonitoring/basic?style=document');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/AdapterMessageMonitoring/basic?style=document');
@@ -57,21 +60,21 @@ serviceAPIs  = {
 		},
 		
 		channelListAPI: function(){
-			if(settings.proxy)
+			if(getSettings().proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/CommunicationChannelInService/CommunicationChannelInImplBean');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/CommunicationChannelInService/CommunicationChannelInImplBean');
 		},
 		
 		channelStatusAPI: function(){
-			if(settings.proxy)
+			if(getSettings().proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/ChannelAdminService/ChannelAdmin');
 			else
 				return (localStore('sessionObject').protocol+'://'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + '/ChannelAdminService/ChannelAdmin');
 		},
 		
 		channelStatusAPI2 : function(){
-			if(settings.proxy)
+			if(getSettings().proxy)
 				return ('proxy/'+localStore('sessionObject').protocol+'/'+localStore('sessionObject').host +':'+ localStore('sessionObject').port + 
 						'/AdapterFramework/ChannelAdminServlet?party=&service=*&channel=*&action=status');
 			else
@@ -135,7 +138,7 @@ function logoff(){
 	oStorage.clear();
 	oLocalStorage.put("AllAlerts", null);
 	setCookie("sessionObject", "", -1);
-	//db.delete();
+	db.delete();
 	location.reload();
 }
 
@@ -173,7 +176,7 @@ function openLoginDialog() {
 }
 
 function openViewDialog(view) {
-	$('.sapUiDlg').hide();
+	//$('.sapUiDlg').hide();
 	var objDialog = new sap.ui.commons.Dialog({
 		modal : false,
 		keepInWindow : true,
@@ -252,21 +255,29 @@ function localStore(name){
 // Broswer Notification code
 
 //request permission on page load
+if(getSettings().browser_notification){
 document.addEventListener('DOMContentLoaded', function () {
-  if (Notification.permission !== "granted")
-    Notification.requestPermission();
-});
+	if(!("Notification" in window)) {
+	    console.error("This browser does not support desktop notification");
+	    return;
+	}
 
+	if (Notification.permission !== "granted")
+	    Notification.requestPermission();
+});
+}
 function notifyMe(title, msg) {
-  if (!Notification) {
-    console.log('Desktop notifications not available in your browser. Try Chromium.'); 
-    return;
-  }
+	if(!getSettings().browser_notification)
+	return ;
+	if(!("Notification" in window)) {
+	    console.error("This browser does not support desktop notification");
+	    return;
+	}
 
   if (Notification.permission !== "granted")
     Notification.requestPermission();
   else {
-    var notification = new Notification('IBM Monitoring: '+ title, {
+    var notification = new Notification('AMS PI Monitoring: '+ title, {
       icon: 'images/favicon1.png',
       body: msg,
     });
@@ -403,3 +414,30 @@ aboutTool =
 	2. Automatically Fetches raised alerts\n\
 	3. Message monitoring to search messages\n\
 	4. Auto extract data for reporting purpose';
+
+noMoreAjaxCall = false;
+/*
+$.xhrPool = [];
+$.xhrPool.abortAll = function() {
+    $(this).each(function(i, jqXHR) {   //  cycle through list of recorded connection
+        jqXHR.abort();  //  aborts connection
+        $.xhrPool.splice(i, 1); //  removes from list by index
+        console.log("Removing active ajax calls");
+    });
+}
+$.ajaxSetup({
+    beforeSend: function(jqXHR) { $.xhrPool.push(jqXHR); }, //  annd connection to list
+    error : function(jqXHR, statusText){
+    	if (jqXHR.status == 500) {
+    		noMoreAjaxCall = true;
+    	 $.xhrPool.abortAll();
+       	 openLoginDialog();
+    	}
+    },
+    complete: function(jqXHR) {
+        var i = $.xhrPool.indexOf(jqXHR);   //  get index for current connection completed
+        if (i > -1) $.xhrPool.splice(i, 1); //  removes from list by index
+    }
+});
+*/
+

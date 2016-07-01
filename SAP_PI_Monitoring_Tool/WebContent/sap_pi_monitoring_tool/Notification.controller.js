@@ -13,7 +13,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		var oCon = this;	
 		
 		
-		if(settings.mode == 'demo'){
+		if(getSettings().mode == 'demo'){
 		setInterval(function(){
 			var n = Math.floor((Math.random() * 4));
 			var kj = ["VERYHIGH", "HIGH", "MEDIUM", "LOW", ""];
@@ -59,7 +59,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 					console.log("Active ajax count: "+ $.active);
 				}
 				 
-			}, settings.ActiveAjaxCheckTimer);
+			}, getSettings().ActiveAjaxCheckTimer);
 		}
 	},
 
@@ -91,7 +91,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 //	}
 	
 	fetchAlerts : function(obj){
-		
+		if(noMoreAjaxCall)
+			return;
 		var c = this;
 		
 		ajaxCounter1++;
@@ -115,7 +116,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             data : request,  
 		             dataType : "text",  
 		             contentType : "text/xml; charset=\"utf-8\"",
-		             timeout: settings.AlertAjaxTimeout,
+		             timeout: getSettings().AlertAjaxTimeout,
+		             async: true,
 		             headers : {
 					    	'Access-Control-Allow-Origin': '*',
 					    	'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
@@ -123,20 +125,20 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		             }).done(function(data) {
 		            	   obj.byId('conn_noti').setIcon('images/Circle_Green.png');
 		                   response = data; 
-		                   //console.log(data);
+		                   console.log(data);
 		                   parser=new DOMParser();  
 		                    xmlDoc=parser.parseFromString(response,"text/xml");  
 		                    nodeList = xmlDoc.getElementsByTagNameNS("*","AlertConsumers");  
 	                		eventBus.publish("FetchAlertConsumersFromNotificationBar", "onNavigateEvent", nodeList);
 		                    //oStorage.put("alertConsumers", JSON.stringify(nodeList));
-	                		setTimeout(function() { 
+	                		//setTimeout(function() { 
 	                			var repeat1 = setInterval(function(){
 	                				if($.active < 1){
 	                					clearInterval(repeat1);
-	                					obj.fetchSingleAlert(nodeList, 0, settings.AlertAjaxTimeout); 
+	                					obj.fetchSingleAlert(nodeList, 0, getSettings().AlertAjaxTimeout); 
 	                				}
-	                			}, settings.ActiveAjaxCheckTimer);	
-	                		}, 1000);
+	                			}, getSettings().ActiveAjaxCheckTimer);	
+	                		//}, 1000);
 		                    
 		             })  
 		             .fail(function (jqXHR, exception) {
@@ -144,7 +146,6 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		            	 console.log(jqXHR);
 		            	 console.log(exception);
 		                 // Our error logic here
-		            	 console.log(jqXHR.status === 500);
 		                 var msg = '';
 		                 if (jqXHR.status === 0) {
 		                     msg = 'Not connect. Verify Network.';
@@ -166,7 +167,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                	 o.msg = jqXHR.responseText;
 		                	 oStorage.put('sessionObject', o);
 		                	 obj.byId('conn_noti').setIcon('images/Circle_Red.png');
-		                	 
+		                	 //$.xhrPool.abortAll();
 		                	 openLoginDialog();
 		                 } 
 		                 if (exception === 'parsererror') {
@@ -177,7 +178,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                     
 		                     
 		                     console.log("Max retrying count 5");
-		                     if(ajaxCounter1 < 5){
+		                     if(ajaxCounter1 < getSettings().MaxRetryCount){
 		                    	 console.log("Timeout : Retrying count: "+ ajaxCounter1++);
 		                    	 var repeat2 = setInterval(function(){
 		                				if($.active < 2){
@@ -186,8 +187,10 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                				}else{
 		                					console.log("Active ajax count : "+$.active);
 		                				}
-		                			}, settings.ActiveAjaxCheckTimer);	
+		                			}, getSettings().ActiveAjaxCheckTimer);	
 		                		
+		                     }else{
+		                    	 console.err("Maximum retry count reached.")
 		                     }
 		                    	 
 		                 } 
@@ -210,7 +213,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 	
     fetchSingleAlert: function(nodeList, i, timeout){
     	///
-    	
+    	if(noMoreAjaxCall)
+			return;
     	
 		 
     	///
@@ -256,7 +260,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                   //console.log(alerts);
 		                   
 		                   /// Storing alerts in IndexedDB
-		                	                   
+		                console.log(alerts.length + " alert found for this alert consumer");	                   
 		                   for(j=0; j< alerts.length; j++)  {
 		                    console.log(JSON.parse(alerts[j].childNodes[0].textContent));
 		                    var obj1 = JSON.parse(alerts[j].childNodes[0].textContent);
@@ -291,28 +295,34 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 			            		 //console.log(nodeList);
 			            		 //console.log(nodeList[i+1]);
 			            		 
-			            		 setTimeout(function() { 
+			            		
 			            			 ajaxCounter2 = 0; 
 			            			 var repeat3 = setInterval(function(){
-			                				if($.active < 1){
+			                				if($.active < 2){
 			                					clearInterval(repeat3);
 			                					oCon.fetchSingleAlert(nodeList, i+1, timeout);  
 			                				}else{
 			                					console.log("Active ajax count : "+$.active);
 			                				}
-			                			}, settings.ActiveAjaxCheckTimer);
+			                			}, getSettings().ActiveAjaxCheckTimer);
 			            			 
-			            		}, settings.WaitBetweenAjaxCall);
+			            		
 			            		 
 			            		 
 
 			            	 }else{// When all consumers alerts fetched(or tried)
 			            		 	var currentdate = new Date();
-			            		 	if(currentdate.getHours()%20 == 0){ // Refrsh Alert Consumer List one time per day.
-			            		 		setTimeout(function(){ajaxCounter1 = 0; ajaxCounter2 = 0 ; oCon.fetchAlerts(oCon);}, settings.WaitBetweenAjaxCall);
-			            		 	}else{
-			            		 		setTimeout(function(){ ajaxCounter2 = 0 ; oCon.fetchSingleAlert(nodeList, 0, timeout);}, settings.WaitBetweenAjaxCall);
-			            		 	}
+			            		 	var oMessage = new sap.ui.core.Message({
+			                			text :  'Tool will start fetching alerts at '+ new Date( new Date().getTime() + getSettings().AlertInterval),
+			                			
+			                			timestamp : currentdate
+			                		});
+			            		 	 oCon.byId('conn_noti').addMessage(oMessage);
+			            		 	//if(currentdate.getHours()%20 == 0){ // Refrsh Alert Consumer List one time per day.
+			            		 		setTimeout(function(){ajaxCounter1 = 0; ajaxCounter2 = 0 ; oCon.fetchAlerts(oCon);}, getSettings().AlertInterval);
+			            		 	//}else{
+			            		 	//	setTimeout(function(){ ajaxCounter2 = 0 ; oCon.fetchSingleAlert(nodeList, 0, timeout);}, getSettings().WaitBetweenAjaxCall);
+			            		 	//}
 			            			  
 			            		 
 			            	 }
@@ -342,7 +352,8 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                	 var obj2 = localStore('sessionObject');
 		                	 obj2.msg = jqXHR.responseText;
 		                	 oStorage.put('sessionObject', obj2);
-		                	 openLoginDialog();
+		                	 //$.xhrPool.abortAll();
+		                	 //openLoginDialog();
 		                 } 
 		                 if (exception === 'parsererror') {
 		                     msg = 'Requested XML parse failed.';
@@ -351,7 +362,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		                     msg = 'Time out error.';
 		                     
 		                     console.log("Max retrying count 5");
-		                     if(ajaxCounter2 < settings.MaxRetryCount){
+		                     if(ajaxCounter2 < getSettings().MaxRetryCount){
 		                    	 console.log('Timeout : Retrying count : ' + ajaxCounter2++);
 		                    	 
 		                    	 setTimeout(function(){
@@ -362,7 +373,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 			                				}else{
 			                					console.log("Active ajax count : "+$.active);
 			                				}
-			                			}, settings.ActiveAjaxCheckTimer);
+			                			}, getSettings().ActiveAjaxCheckTimer);
 		                    		 
 		                    	 
 		                    	 }, 100);

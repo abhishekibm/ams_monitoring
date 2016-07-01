@@ -134,3 +134,8 @@
 *, td, tr{
 	outline : 0
 }
+
+textarea {
+  outline: none;
+  overflow: auto;
+}

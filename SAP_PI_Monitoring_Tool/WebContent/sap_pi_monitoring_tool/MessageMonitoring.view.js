@@ -7,8 +7,10 @@
  var endDate = "";
  var startTime = "";
  var endTime = "";
- var statusType = "systemError";
- var timeIntervalinHours = "24";
+ //var statusType = "systemError";
+ var statusType = "";
+ //var timeIntervalinHours = "24";
+ var timeIntervalinHours = "";
  var startDateTime = "";
  var endDateTime = "";
  sap.ui.jsview("sap_pi_monitoring_tool.MessageMonitoring", {
@@ -111,7 +113,7 @@
 									oCmbTimeInterval.setValue("Last 24 Hours");
 									
 									oCmbTimeInterval.attachChange(function(oControlEvent) {
-										var interval = oController.returnInterval(oCmbTimeInterval.getLiveValue());
+										//var interval = oController.returnInterval(oCmbTimeInterval.getLiveValue());
 										var strInterval = oCmbTimeInterval.getValue();
 										
 										if(strInterval == "Custom"){
@@ -127,19 +129,20 @@
 											//oController.extractData(this, startDateTime,endDateTime);
 										}
 										
-										timeIntervalinHours = interval;
+										//timeIntervalinHours = interval;
 										
 									});
 									
 									
 									oCmbType.attachChange(function(oControlEvent) {
-										var Type = "";
+										statusType = oCmbType.getValue();
+										/*var Type = "";
 										var strType = oCmbType.getValue();
 										if(strType == "System Error"){
-											Type = "systemError";
+											Type = "System Error";
 										}
 										else if(strType == "Delivered"){
-											Type = "success";
+											Type = "Delivered";
 										}
 										else if(strType == "Delivering"){
 											Type = "delivering";
@@ -159,6 +162,7 @@
 										console.log("type");
 								        console.log(Type);
 								        statusType = Type;
+								        console.log(statusType);*/
 								    });
 									
 									//Startdate
@@ -271,7 +275,11 @@
 											//sap.ui.getCore().byId("display").getController().submitData(); 
 											//sap.ui.getCore().byId("display").submitData();
 											//oController.getView().extractData(statusType,startDateTime,endDateTime);
-											  
+											//if(statusType == "")
+												//var strStatusType = oCmbType.getValue();
+											statusType = oController.returnType(oCmbType.getLiveValue());
+											var interval = oController.returnInterval(oCmbTimeInterval.getLiveValue());
+											timeIntervalinHours = interval;
 											if(oCmbTimeInterval.getValue() == "Custom"){
 													if(startDate == "")
 														startDate = oStartDatePicker.getValue();
@@ -290,12 +298,15 @@
 											else{
 													//startDateTime = startDate;
 													//endDateTime = endDate;
+												    
 													startDateTime = oController.calculateBackDate(timeIntervalinHours);
 													endDateTime = oController.formattedCurrentDate();
 														
 											}
-											  oController.extractData(statusType,startDateTime,endDateTime,oCmbMaxCount.getLiveValue());
-											  console.log(startDateTime);
+											
+											
+											oController.extractData(statusType,startDateTime,endDateTime,oCmbMaxCount.getLiveValue());
+											console.log(startDateTime);
 											//resultPannel.setVisible(true);
 										    //uPanel.setVisible(true);
 										    //oShell.invalidate();

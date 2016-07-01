@@ -39,6 +39,16 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 	    var mins  = backdate.getMinutes();
 	    var secs  = backdate.getSeconds();
 	    
+	    if(dd <10)
+	    	dd = "0" + dd;
+	    if(mm <10)
+	    	mm = "0" + mm;
+	    if(hour < 10)
+	    	hour = "0" + hour;
+	    if(mins < 10)
+	    	mins = "0" + mins;
+	    if(secs < 10)
+	    	secs = "0" + secs;
 	    var formattedDate = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + mins + ":" + secs;
 	    console.log("formattedStartDt");
 	    console.log(dd);
@@ -50,7 +60,7 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 		
 	},
 	
-	returnInterval : function( interval) {
+	returnInterval : function(interval) {
 		var strInterval = "";
 		if(interval == "Last One Hour"){
 			strInterval = "1";
@@ -62,12 +72,39 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 			strInterval = "6";
 		}
 		else if(interval == "Last Twelve Hours"){
-			strInterval		}
+			strInterval = "12";
+		}
 		else if(interval == "Last 24 Hours"){
 			strInterval = "24";
 		}
 		return strInterval;
 		
+	},
+	
+	returnType : function(type){
+		var strTyp = "";
+		if(type == "System Error"){
+			strTyp = "systemError";
+		}
+		else if(type == "Delivered"){
+			strTyp = "success";
+		}
+		else if(type == "Delivering"){
+			strTyp = "delivering";
+		}
+		else if(type == "Holding"){
+			strTyp = "holding";
+		}
+		else if(type == "Waiting"){
+			strTyp = "waiting";
+		}
+		else if(type == "Cancelled"){
+			strTyp = "canceled";
+		}
+		else if(type == "To Be Delivered"){
+			strTyp = "toBeDelivered";
+		}
+		return strTyp;
 	},
 	
 	extractData : function (statusType,startDateTime,endDateTime, maxCount){
@@ -127,13 +164,14 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
   		"		</urn:getMessageList>\n"  +
 			"     </soapenv:Body>\n" +
 		"</soapenv:Envelope>";
-	   console.log("request");
+	   console.log("request in message monitoring controller");
 	   console.log(maxMessageSearched);
+	   console.log(request);
 	   var response = "";	
 	   
 	   console.log("obj");
 	   console.log(obj);
-		$.ajax({
+	   $.ajax({
 
 		     url : serviceAPIs.messageAPI(),
 			 //url : "http://dssapux6u0v.dsg.dk:8830/AdapterMessageMonitoring/basic?style=document",
@@ -152,9 +190,7 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 		          console.log(response);
 
 		     },
-		     error: function(xhr, status)
-
-		     {
+		     error: function(xhr, status) {
 		          console.log("ERROR");
 		          console.log(xhr);
 
@@ -203,18 +239,18 @@ sap.ui.controller("sap_pi_monitoring_tool.MessageMonitoring", {
 		        console.log("after set model in controller");
 		        //obj.byId("MessageListTable").bindRows({path: "/rpl:Response/rn5:list/rn5:AdapterFrameworkData"});
 		        maxMessageFound = obj.byId("MessageListTable").getBinding().getLength();
-		        if(maxMessageFound > maxCount)
+		        if(maxMessageFound > maxCount){
 		        	obj.byId("lbMessageCount").setText("More Than " +  maxCount + " Messages Found");
-		        	
-		        else
+		        }	
+		        else{
 		        	obj.byId("lbMessageCount").setText("Total Messages Found " + obj.byId("MessageListTable").getBinding().getLength());
-									
+		        }					
 				/*resultPannel.addContent(MessageListTable);    
 				layout.createRow(resultPannel);*/
 		        obj.byId("resultPannel").setVisible(true);
 									
 		        console.log("after bindrows");
-		        obj.byId('layout').setBusy(false);		 			
+		        obj.byId("layout").setBusy(false);		 			
 		        		 			
 		     }
 

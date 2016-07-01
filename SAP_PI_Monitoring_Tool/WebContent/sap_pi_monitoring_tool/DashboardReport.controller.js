@@ -66,7 +66,8 @@ calculateBackDate : function(interval){
 			strInterval = "6";
 		}
 		else if(interval == "Last Twelve Hours"){
-			strInterval		}
+			strInterval	= "12";	
+		}
 		else if(interval == "Last 24 Hours"){
 			strInterval = "24";
 		}
@@ -74,11 +75,39 @@ calculateBackDate : function(interval){
 		
 	},
 	
+	returnType : function(type){
+		var strTyp = "";
+		if(type == "System Error"){
+			strTyp = "systemError";
+		}
+		else if(type == "Delivered"){
+			strTyp = "success";
+		}
+		else if(type == "Delivering"){
+			strTyp = "delivering";
+		}
+		else if(type == "Holding"){
+			strTyp = "holding";
+		}
+		else if(type == "Waiting"){
+			strTyp = "waiting";
+		}
+		else if(type == "Cancelled"){
+			strTyp = "canceled";
+		}
+		else if(type == "To Be Delivered"){
+			strTyp = "toBeDelivered";
+		}
+		return strTyp;
+	},
 	
 	
-	
-extractData : function (obj,startDateTime,endDateTime,status){
-		obj.byId('layoutID').setBusy(true);
+extractData : function (obj,startDateTime,endDateTime,strStatus,maxCount,counter){
+	 if(counter==0)
+	    	return "";
+	 else{
+		//obj.byId('layoutID').setBusy(true);
+		//status = "success";
 		var request = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:urn=\"urn:AdapterMessageMonitoringVi\" xmlns:urn1=\"urn:com.sap.aii.mdt.server.adapterframework.ws\" xmlns:urn2=\"urn:com.sap.aii.mdt.api.data\" xmlns:lang=\"urn:java/lang\">\n" +
         "    <soapenv:Header/>\n" +
 			"      <soapenv:Body>\n" +
@@ -94,7 +123,7 @@ extractData : function (obj,startDateTime,endDateTime,status){
         " 				<urn1:retries></urn1:retries>\n" +
         "				<urn1:retryInterval></urn1:retryInterval>\n" +
         "				<!--Optional:-->\n" +
-        "			  <urn1:status>" + status + "</urn1:status>\n" +
+        "			  <urn1:status>" + strStatus + "</urn1:status>\n" +
         
         "				<urn1:timesFailed></urn1:timesFailed>\n" +
         "				<!--Optional:-->\n" +
@@ -103,7 +132,7 @@ extractData : function (obj,startDateTime,endDateTime,status){
         "				<urn1:wasEdited>false</urn1:wasEdited>\n" +
         "		</urn:filter>\n" +
      	"       <!--Optional:-->\n" +
-     	"       <urn:maxMessages>100</urn:maxMessages>\n" +
+     	"       <urn:maxMessages>" + maxCount + "</urn:maxMessages>\n" +
   		"		</urn:getMessageList>\n"  +
 			"     </soapenv:Body>\n" +
 		"</soapenv:Envelope>";
@@ -114,35 +143,57 @@ extractData : function (obj,startDateTime,endDateTime,status){
 		
 		obj = this;
 		console.log("Dashboard this : ");
-		console.log(this);
+		console.log(serviceAPIs.messageAPI());
+		var isError = true;
+		var errText = "";
 		$.ajax({
 
 		     url : serviceAPIs.messageAPI(),
 		     type : "POST",
 		     data : request,
 		     dataType : "text",
+		     timeout : 3*60*3600,
 		     contentType : "text/xml; charset=\"utf-8\"",
 		     headers: {
 		    	 	'Access-Control-Allow-Origin': '*',
 					'Authorization': 'Basic ' + btoa(localStore('sessionObject').username+':'+localStore('sessionObject').password)
              },
+             beforeSend:function(){
+                 // show image here
+                 //$("#busy").show();
+            	 obj.byId('layoutID').setBusy(true);
+             },
+             //obj.byId('layoutID').setBusy(true);
 		     success : function(data, textStatus, jqXHR) {
-		          response = data;
+		    	 isError = false; 
+		    	 response = data;
 		          console.log("SUCCESS");
-		          //console.log(response);
+		          console.log(response);
 
 		     },
 		     error: function(xhr, status)
 
 		     {
 		          console.log("ERROR");
+		          console.log("status");
+		          console.log(status);
 		          console.log(xhr.responseText);
-
+		          isError = true;
+		          errText = xhr.responseText;
 		     },
 
 		     complete: function(xhr,status) {
 
-		         console.log("COMPLETE"); 
+		         console.log("COMPLETE");
+		         if(isError){
+		        	 var o = localStore('sessionObject');
+                	 o.msg = errText;
+                	 oStorage.put('sessionObject', o);
+                	 
+                	 //$.xhrPool.abortAll();
+                	 openLoginDialog();
+		        	 return;
+		         }
 		         parser=new DOMParser();  
                  
 		         xmlDoc=parser.parseFromString(response,"text/xml");  
@@ -165,7 +216,7 @@ extractData : function (obj,startDateTime,endDateTime,status){
 		 		var AdapterFrameworkDataNo = AdapterFrameworkDataList.length;
 		 		console.log("AdapterFrameworkDataNo");
 		 		console.log(AdapterFrameworkDataNo);
-		 		for(var i=0;i<AdapterFrameworkDataNo;i++){
+		 		/*for(var i=0;i<AdapterFrameworkDataNo;i++){
 		 			var AdapterFrameworkDataNode = AdapterFrameworkDataList.item(i);
 		 			var statusNode = AdapterFrameworkDataNode.getElementsByTagNameNS("*","status").item(0);
 		 			console.log("statusNode");
@@ -193,29 +244,54 @@ extractData : function (obj,startDateTime,endDateTime,status){
 		 			else if(statusNode.textContent == "toBeDelivered"){
 		 				ctrToBeDelivered = ctrToBeDelivered + 1;
 		 			}
-		 		}
-		         console.log("ctrSuccess"); 
-		         console.log(ctrSuccess);
-		         console.log("systemError");
-		         console.log(ctrSystemError);
-		         console.log("canceled");
-		         console.log(ctrCancelled);
-		         
-		         
-		         obj.byId("lbSuccessCtr").setText(ctrSuccess);
-		         obj.byId("lbDeliveringCtr").setText(ctrDelivering);
-		         obj.byId("lbCancelledCtr").setText(ctrCancelled);
-		         
-		         obj.byId("lbSystemErrorCtr").setText(ctrSystemError);
-		         obj.byId("lbHoldingCtr").setText(ctrHolding);
-		         obj.byId("lbWaitingCtr").setText(ctrWaiting);
-		         obj.byId("lbToBeDeliveredCtr").setText(ctrToBeDelivered);
-			 		//this.byId("layoutID").setVisible(true);
-			        //console.log("this.byId(lbSuccess)");
-			        //console.log(this.byId("lbSuccess"));
+		 		}*/
+		 		
+		 		if(strStatus == "success"){
+	 				ctrSuccess = AdapterFrameworkDataNo;
+	 				obj.byId("lbSuccessCtr").setText(ctrSuccess);
+	 				console.log("ctrSuccess");
+	 				console.log(ctrSuccess);
+	 			}
+	 			else if(strStatus == "delivering"){
+	 				ctrDelivering = AdapterFrameworkDataNo;
+	 				obj.byId("lbDeliveringCtr").setText(ctrDelivering);
+	 			}
+	 			else if(strStatus == "canceled"){
+	 				ctrCancelled = AdapterFrameworkDataNo;
+	 				obj.byId("lbCancelledCtr").setText(ctrCancelled);
+	 				console.log("canceled");
+			        console.log(ctrCancelled);
+	 			}
+	 			else if(strStatus == "systemError"){
+	 				ctrSystemError = AdapterFrameworkDataNo;
+	 				obj.byId("lbSystemErrorCtr").setText(ctrSystemError);
+	 				 console.log("systemError");
+			         console.log(ctrSystemError);
+	 			}
+	 			else if(strStatus == "holding"){
+	 				ctrHolding = AdapterFrameworkDataNo;
+	 				obj.byId("lbHoldingCtr").setText(ctrHolding);
+	 			}
+	 			else if(strStatus == "waiting"){
+	 				ctrWaiting = AdapterFrameworkDataNo;
+	 				obj.byId("lbWaitingCtr").setText(ctrWaiting);
+	 			}
+	 			else if(strStatus == "toBeDelivered"){
+	 				ctrToBeDelivered = AdapterFrameworkDataNo;
+	 				obj.byId("lbToBeDeliveredCtr").setText(ctrToBeDelivered);
+	 			}
+		          
+		         //this.byId("layoutID").setVisible(true);
+			     //console.log("this.byId(lbSuccess)");
+			     //console.log(this.byId("lbSuccess"));
 		         obj.byId("layoutID").setBusy(false);
+		         counter = counter - 1;
+		         obj.extractData(obj,startDateTime,endDateTime,statuses[counter - 1],maxCount,counter);
+		         
 		     }
 		});
+		
+	 }
 		
 		//return s;
    },
@@ -250,14 +326,18 @@ extractData : function (obj,startDateTime,endDateTime,status){
 * @memberOf sap_pi_monitoring_tool.dashboardReport
 */
 	onAfterRendering: function() {
-		//var statuses = ["success", "delivering", "canceled", "holding", "waiting"]; 
+		var counter = 7;
+		statuses = ["success", "delivering", "canceled", "holding", "waiting","systemError","toBeDelivered"]; 
 		var objThis = this;
 		var interval = this.returnInterval(this.byId("oCmbTimeInterval").getValue());
 		var startDateTime = this.calculateBackDate(interval);
 		var endDateTime = this.formattedCurrentDate();
+		var maxCount = objThis.byId("oCmbMaxCount").getLiveValue();
 		console.log("endDateTime oninit"); 
 		console.log(endDateTime); 
-		setTimeout(function(){
+		console.log("maxCount");
+		console.log(maxCount);
+		/*setTimeout(function(){
 			objThis.extractData(objThis,startDateTime,endDateTime,"success");
 			setTimeout(function(){
 				objThis.extractData(objThis,startDateTime,endDateTime,"delivering");
@@ -270,6 +350,7 @@ extractData : function (obj,startDateTime,endDateTime,status){
 							setTimeout(function(){
 								objThis.extractData(objThis,startDateTime,endDateTime,"systemError");
 								setTimeout(function(){
+									
 									objThis.extractData(objThis,startDateTime,endDateTime,"toBeDelivered");
 								}, 10000);
 							}, 10000);
@@ -277,7 +358,9 @@ extractData : function (obj,startDateTime,endDateTime,status){
 					}, 10000);
 				}, 10000);
 			}, 10000);
-		}, 100);
+		}, 100);*/
+		
+		objThis.extractData(objThis,startDateTime,endDateTime,statuses[counter-1],maxCount,counter);
 		
 		
 		

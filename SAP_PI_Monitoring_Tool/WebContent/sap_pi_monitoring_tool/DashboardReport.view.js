@@ -87,8 +87,15 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 
 		oChart.bindRows("/");
 		//oChart.setBusy(true);
+		
+		var oChannelLayout = new sap.ui.commons.layout.MatrixLayout({
+			layoutFixed : false,
+			
+		});
+		
 		oPanel.addContent(oLayout);
 		oPanel.addContent(oChart);
+		oPanel.addContent(oChannelLayout);
 		
 		
 		console.log(oLocalStorage.get('alertCounts'));
@@ -135,6 +142,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		    console.log(err);
 
 		});
+		
+		
 		/// Message Monitoring ///
 		/// Message Monitoring ///
 		var layout = new sap.ui.commons.layout.MatrixLayout({
@@ -142,8 +151,8 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 			layoutFixed : false,
 			layoutData : new sap.ui.layout.GridData({
 				span : "L6"
-		    }),
-		    width: '100%'
+			}),
+		    width: "100%"
 		});    
 		//layout.setWidth('100%');    
 		// Search Box starts here   
@@ -155,41 +164,15 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		displayPannel.setTitle(dashboardTitle);  
 		var displayLayout = new sap.ui.commons.layout.MatrixLayout({
 			
-			id: 'displayLayout',
+			id: "displayLayout",
 			layoutFixed : false
 			
 		});  
-		//sLayout.setWidth('80%'); 
 		
-		//var timeIntervalLayout = new sap.ui.commons.layout.MatrixLayout('timeIntervalLayout');  
-		//successLayout.setWidth('80%'); 
-		
-		//var timeIntervalExtendedLayout = new sap.ui.commons.layout.MatrixLayout('timeIntervalExtendedLayout');  
-		//timeIntervalExtendedLayout.setVisible(false);
-		//cancellLayout.setWidth('80%');
-		
-		//var systemErrorLayout = new sap.ui.commons.layout.MatrixLayout('systemErrorLayout');  
-		//systemErrorLayout.setWidth('80%');
-		        
-		//var waitingLayout = new sap.ui.commons.layout.MatrixLayout('waitingLayout');  
-		//waitingLayout.setWidth('80%');
-		
-		//var holdingLayout = new sap.ui.commons.layout.MatrixLayout('holdingLayout');  
-		//holdingLayout.setWidth('80%');
-		
-		//var deliveringLayout = new sap.ui.commons.layout.MatrixLayout('deliveringLayout');  
-		//deliveringLayout.setWidth('80%');
-		
-		//var toBeDeliveredLayout = new sap.ui.commons.layout.MatrixLayout('toBeDeliveredLayout');  
-		//toBeDeliveredLayout.setWidth('80%');
-		
-		//var channelErrorLayout = new sap.ui.commons.layout.MatrixLayout('channelErrorLayout');  
-		//channelErrorLayout.setWidth('80%');
 		
 		var oCmbTimeInterval = new sap.ui.commons.DropdownBox(this.createId("oCmbTimeInterval"),{
 
 			  items: [
-
 			      new sap.ui.core.ListItem("i1",{text: "Last One Hour"}),
 			      new sap.ui.core.ListItem("i2",{text: "Last Two Hours"}),
 			      new sap.ui.core.ListItem("i3",{text: "Last Six Hours"}),
@@ -232,17 +215,80 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 			else{
 				
 				//timeIntervalExtendedLayout.setVisible(false);
+				var counter = 7;
 				var interval = oController.returnInterval(oCmbTimeInterval.getLiveValue());
 				startDateTime = oController.calculateBackDate(interval);
 				endDateTime = oController.formattedCurrentDate();
 				console.log("endDateTime timeinterval change event in Dashboard"); 
-				console.log(endDateTime); 
-				oController.extractData(oController, startDateTime,endDateTime);
+				console.log(endDateTime);
+				
+				oController.extractData(oController,startDateTime,endDateTime,statuses[counter-1],oCmbMaxCount.getLiveValue(),counter);
 				lbMessageStatusInterval.setText(oCmbTimeInterval.getLiveValue());
-				layout.setBusy(true);
+				//layout.setBusy(true);
 			}
 			
 		});
+		
+		var oCmbMaxCount = new sap.ui.commons.DropdownBox(this.createId('oCmbMaxCount'),{
+			  items: [
+
+			      new sap.ui.core.ListItem({text: "100"}),
+			      new sap.ui.core.ListItem({text: "1000"}),
+			      new sap.ui.core.ListItem({text: "2000"}),
+			      new sap.ui.core.ListItem({text: "5000"}),
+			      
+			      
+			  ]
+
+		});
+		
+		oCmbMaxCount.setValue("1000");
+		
+		
+		oCmbMaxCount.attachChange(function(oControlEvent) {
+			//lbMessageStatusInterval.setText(oCmbTimeInterval.getValue());
+			
+			
+			var interval = "";
+			var strInterval = oCmbTimeInterval.getValue();
+			
+			/*if(strInterval == "Last One Hour"){
+				interval = "1";
+			}
+			else if(strInterval == "Last Two Hours"){
+				interval = "2";
+			}
+			else if(strInterval == "Last Six Hours"){
+				interval = "6";
+			}
+			else if(strInterval == "Last Twelve Hours"){
+				interval = "12";
+			}
+			else if(strInterval == "Last 24 Hours"){
+				interval = "24";
+			}*/
+			
+			if(strInterval == "Custom"){
+				//interval = "systemError";
+				//timeIntervalExtendedLayout.setVisible(true);
+			}
+			else{
+				
+				//timeIntervalExtendedLayout.setVisible(false);
+				var counter = 7;
+				var interval = oController.returnInterval(oCmbTimeInterval.getLiveValue());
+				startDateTime = oController.calculateBackDate(interval);
+				endDateTime = oController.formattedCurrentDate();
+				console.log("endDateTime timeinterval change event in Dashboard"); 
+				console.log(endDateTime);
+				
+				oController.extractData(oController,startDateTime,endDateTime,statuses[counter-1],oCmbMaxCount.getLiveValue(),counter);
+				lbMessageStatusInterval.setText(oCmbTimeInterval.getLiveValue());
+				//layout.setBusy(true);
+			}
+			
+		});
+		
 		
 		var lbStartDate = new sap.ui.commons.Label('lbStartDate1');  
 		lbStartDate.setText("Start Date");
@@ -318,6 +364,9 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		var lbtimeinterval = new sap.ui.commons.Label(this.createId("lbtimeinterval")); 
 		lbtimeinterval.setText("Time Interval : ");
 		
+		var lbMaxCount= new sap.ui.commons.Label(this.createId("lbMaxCount")); 
+		lbMaxCount.setText("Maximum Count: ");
+		
 		var lbMessageStatus = new sap.ui.commons.Label(this.createId("lbMessageStatus")); 
 		lbMessageStatus.setText("Messages Status in ");
 		var lbMessageStatusInterval = new sap.ui.commons.Label(this.createId("lbMessageStatusInterval"));
@@ -374,6 +423,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.DashboardReport", {
 		//timeIntervalLayout.createRow(lbtimeinterval, oCmbTimeInterval);
 		//timeIntervalExtendedLayout.createRow(lbStartDate, oStartDatePicker, lbStartTime, oStartTimePicker, lbEndDate, oEndDatePicker, lbEndTime, oEndTimePicker);
 		displayLayout.createRow(lbtimeinterval, oCmbTimeInterval);
+		displayLayout.createRow(lbMaxCount,oCmbMaxCount);
 		displayLayout.createRow(lbMessageStatus,lbMessageStatusInterval);
 		displayLayout.createRow(lbSuccess,lbSuccessCtr);
 		displayLayout.createRow(lbDelivering,lbDeliveringCtr);

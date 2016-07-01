@@ -8,6 +8,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 	* In the case that it is not implemented, or that "null" is returned, this View does not have a Controller.
 	* @memberOf sap_pi_monitoring_tool.login
 	*/ 
+	
 	getControllerName : function() {
 		return "sap_pi_monitoring_tool.Login";
 	},
@@ -17,10 +18,10 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 	* @memberOf sap_pi_monitoring_tool.login
 	*/ 
 	createContent : function(oController) {
-		var msgContainer = new sap.ui.commons.TextView({wrapping: true,  text:(localStore('sessionObject') && localStore('sessionObject').msg)? localStore('sessionObject').msg:""});
+		msgContainer = new sap.ui.commons.TextView({wrapping: true,  text:(localStore('sessionObject') && localStore('sessionObject').msg)? localStore('sessionObject').msg:""});
 		msgContainer.addStyleClass('errorMessageContainer');
-		
-		var protocol = new sap.ui.commons.DropdownBox({
+		msgContainer.addStyleClass('hide');
+		protocol = new sap.ui.commons.DropdownBox({
 			editable : true,
 			width : "60px",
 		    items : [
@@ -30,79 +31,79 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 		});
 		
 		
-		var hostField = new sap.ui.commons.TextField({ width: "200px", placeholder: "Host",value:(localStore('sessionObject') && localStore('sessionObject').host)? localStore('sessionObject').host: "inmbzr0096.in.dst.ibm.com", required: true, 
+		hostField = new sap.ui.commons.TextField({ width: "200px", placeholder: "Host",value:(localStore('sessionObject') && localStore('sessionObject').host)? localStore('sessionObject').host: "inmbzr0096.in.dst.ibm.com", required: true, 
 			liveChange: function (oControlEvent){
+				validateLoginForm(usernameField.getValue().trim(), passwordField.getValue().trim(), oControlEvent.getParameters().liveValue.trim(), port.getValue(),protocol.getValue());
 				if(oControlEvent.getParameters().liveValue.trim() == ""){
-					msgContainer.setText("Host cannot be empty.");
+					//msgContainer.setText("Host cannot be empty.");
 					this.setValueState(sap.ui.core.ValueState.Error);
-					button.setEnabled(false);
+					//button.setEnabled(false);
 				}else{
-					msgContainer.setText("");
+					//msgContainer.setText("");
 					this.setValueState(sap.ui.core.ValueState.Success);
-					button.setEnabled(true);
+					//button.setEnabled(true);
 				}
 				
 			}
 		});
-		var port = new sap.ui.commons.TextField({ placeholder: "Port", width: "50px", value:(localStore('sessionObject') && localStore('sessionObject').port)?localStore('sessionObject').port :"50000", maxLength: 5, required: true,
+		port = new sap.ui.commons.TextField({ placeholder: "Port", width: "50px", value:(localStore('sessionObject') && localStore('sessionObject').port)?localStore('sessionObject').port :"50000", maxLength: 5, required: true,
 				liveChange: function (oControlEvent){
 					var n = oControlEvent.getParameters().liveValue.trim();
+					validateLoginForm(usernameField.getValue().trim(), passwordField.getValue().trim(), oControlEvent.getParameters().liveValue.trim(), oControlEvent.getParameters().liveValue.trim(),protocol.getValue());
 					if(n == ""){
-						msgContainer.setText("Port cannot be empty.");
+						
 						this.setValueState(sap.ui.core.ValueState.Error);
-						button.setEnabled(false);
-					}else if (isNaN(parseInt(n, 10)) || !isFinite(n)){
-						msgContainer.setText("Port should be a number.");
-						this.setValueState(sap.ui.core.ValueState.Error);
-						button.setEnabled(false);
+						//button.setEnabled(false);
 					}else{
-						msgContainer.setText("");
+						//msgContainer.setText("");
 						this.setValueState(sap.ui.core.ValueState.Success);
-						button.setEnabled(true);
+						//button.setEnabled(true);
 					}
 					
 				}
 		
 		});
 		
-		var usernameField = new sap.ui.commons.TextField({ value:(localStore('sessionObject') && localStore('sessionObject').username)?localStore('sessionObject').username:"", required: true, 
+		usernameField = new sap.ui.commons.TextField({ value:(localStore('sessionObject') && localStore('sessionObject').username)?localStore('sessionObject').username:"", required: true, 
 				liveChange: function (oControlEvent){
+					validateLoginForm(oControlEvent.getParameters().liveValue.trim(), passwordField.getValue().trim(), oControlEvent.getParameters().liveValue.trim(), port.getValue(),protocol.getValue());
 					if(oControlEvent.getParameters().liveValue.trim() == ""){
-						msgContainer.setText("Username cannot be empty.");
+						
 						this.setValueState(sap.ui.core.ValueState.Error);
-						button.setEnabled(false);
+						//button.setEnabled(false);
 					}else{
-						msgContainer.setText("");
+						
 						this.setValueState(sap.ui.core.ValueState.Success);
-						button.setEnabled(true);
+						//button.setEnabled(true);
 					}
 					
 				}
 		
 		});
 		
-		var passwordField = new sap.ui.commons.PasswordField({ value:"", required: true, 
+		passwordField = new sap.ui.commons.PasswordField({ value:"", required: true, 
 			liveChange: function (oControlEvent){
+				validateLoginForm(usernameField.getValue().trim(), oControlEvent.getParameters().liveValue, oControlEvent.getParameters().liveValue.trim(), port.getValue(),protocol.getValue());
 				if(oControlEvent.getParameters().liveValue == ""){
-					msgContainer.setText("Password cannot be empty.");
+					
 					this.setValueState(sap.ui.core.ValueState.Error);
-					button.setEnabled(false);
+					//button.setEnabled(false);
 				}else{
-					msgContainer.setText("");
+					
 					this.setValueState(sap.ui.core.ValueState.Success);
-					button.setEnabled(true);
+					//button.setEnabled(true);
 				}
 				
 			}
 		
 		});
 		
-		var rememberMe = new sap.ui.commons.CheckBox({
+	   rememberMe = new sap.ui.commons.CheckBox({
 			text : 'Remember me',
 			tooltip : 'Remember me',
 			checked : true
 			});
-		var button = new sap.ui.commons.Button({
+	   button = new sap.ui.commons.Button({
 			icon : "sap-icon://log",
 			text : "Enter",
 			tooltip : "Click here to Enter",
@@ -119,6 +120,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 				};
 				
 				console.log(oParameters);
+				
 				login(oParameters , rememberMe.getChecked());
 				
 			}
@@ -161,6 +163,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 					content:[
 							new sap.ui.core.Title({text:"Login : "}),
 							
+							
 							new sap.ui.layout.HorizontalLayout({
 								width: "100%",
 								allowWrapping : true,
@@ -189,7 +192,18 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 							new sap.ui.commons.Label({text:"Password"}),
 							passwordField,	
 							new sap.ui.commons.Label({text:""}),
-							rememberMe,
+							rememberMe, new sap.ui.commons.Link({
+								text: "Settings",
+								tooltip: "Click here to change global settings",
+								press: function() {
+									var settings_view = sap.ui.view({
+										viewName : "sap_pi_monitoring_tool.Settings",
+										type : sap.ui.core.mvc.ViewType.JS
+										
+									});
+									openViewDialog(settings_view);
+								}
+							}),
 							new sap.ui.commons.Label({text:""}),
 							msgContainer,
 							new sap.ui.commons.Label({text:""}),
@@ -205,12 +219,45 @@ sap.ui.jsview("sap_pi_monitoring_tool.Login", {
 
 });
 
-function validateLoginForm(){
-	 var u = sap.ui.getCore().getElementById('username').getValue();
-     var p = sap.ui.getCore().getElementById('password').getValue();
-     var h = sap.ui.getCore().getElementById('host').getValue();
-     var po = sap.ui.getCore().getElementById('port').getValue();
-     var pro = sap.ui.getCore().getElementById('protocol').getSelectedItem().getText();
+function validateLoginForm(u,p,h,po,pro){
+	
+	 /*
+	 usernameField.getValue().trim(), passwordField.getValue().trim(), hostField.getValue().trim(), port.getValue(),protocol.getValue()
+	 var u = usernameField.getValue().trim();
+     var p = passwordField.getValue().trim();
+     var h = hostField.getValue().trim();
+     var po = port.getValue();
+     var pro = protocol.getValue();*/
      
+     var msg = "";
+     if(u == ""){
+    	 msg += "User name cannot be empty. ";
+     }
+     if(p == ""){
+    	 msg += "Password name cannot be empty. ";
+     }
+     if(h == ""){
+    	 msg += "Host cannot be empty. ";
+     }
+     if(po == ""){
+    	 msg += "Port cannot be empty. ";
+     }else if(isNaN(parseInt(po, 10)) || !isFinite(po)){
+    	 msg += "Port should be a number. ";
+     }
+     if(pro == ""){
+    	 msg += "Protocol cannot be empty. ";
+     }
+     if(msg!= ""){
+    	 msgContainer.removeStyleClass('hide');
+    	 msgContainer.addStyleClass('show');
+    	 msgContainer.setText(msg);
+     	button.setEnabled(false);
+     	return false;
+     }else{
+    	 msgContainer.removeStyleClass('show');
+    	 msgContainer.addStyleClass('hide');
+    	 button.setEnabled(true);
+    	 return true;
+     }
      
 }

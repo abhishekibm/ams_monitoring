@@ -2,5 +2,5 @@ Manifest-Version: 1.0
 Created-By: Eclipse
 Archiver-Version: Eclipse  
 Built-By: Abhishek Saha
-Build-Jdk: 1.7.0-xxx 
+Build-Jdk: 1.6.0-xxx 
 x-sap-ui5-BuildTimestamp: 201606081157

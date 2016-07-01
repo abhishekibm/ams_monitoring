@@ -23,6 +23,14 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 		    })
 		});
 		
+		var settingsBox = sap.ui.view({
+			id : "idset",
+			viewName : "sap_pi_monitoring_tool.Settings",
+			type : sap.ui.core.mvc.ViewType.JS,
+			layoutData : new sap.ui.layout.GridData({
+				span : "L6"
+		    })
+		});
 		/*
 		 * layoutData : new sap.ui.layout.GridData({
 									span : "L6 M6 S12"
@@ -44,7 +52,16 @@ sap.ui.jsview("sap_pi_monitoring_tool.Initial", {
 			hSpacing: 2,
 			vSpacing: 1,
 			content: [
-				loginBox,
+				
+				new sap.ui.layout.VerticalLayout({
+					
+					content :[
+					          loginBox
+					],
+					layoutData : new sap.ui.layout.GridData({
+						span : "L6"
+				    })
+				}),
 				LeftGrid
 			]
 		});

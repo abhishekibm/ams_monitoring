@@ -17,40 +17,72 @@ sap.ui.jsview("sap_pi_monitoring_tool.Settings", {
 			layoutFixed : false
 		});
 		
-		console.log(settings);
-		for(prop in settings){
-			
-			if(!prop.endsWith("_allowed") && !prop.endsWith("_desc")){
-			var lbProp = new sap.ui.commons.Label({text : prop+' : '});
-			var ddBox = new sap.ui.commons.DropdownBox(this.createId(prop));
-			var lbCurrent = new sap.ui.commons.Label({text : ' Current value: '+settings[prop]});
-			var lbDefault = new sap.ui.commons.Label({text : ' Default value: '+default_settings[prop]});
-			for(var k=0; k<settings[prop+'_allowed'].length; k++ ){
-			oItem = new sap.ui.core.ListItem();
-			oItem.setText(settings[prop+'_allowed'][k]);
-			ddBox.addItem(oItem);
-			}
-			this.byId(prop).attachChange(function(){ 
-				console.log(prop + " property will be updated.");
-				updateSettings(prop, ddBox.getValue()); 
-			});
-			
-			var oRow = new sap.ui.commons.layout.MatrixLayoutRow();
-			
-			var oCell = new sap.ui.commons.layout.MatrixLayoutCell({
-				colSpan : 4 });
-			oCell.addContent(new sap.ui.commons.Label({text : settings[prop+'_desc']}));
-			oRow.addCell(oCell);
-			oCell.addStyleClass('blockquote desc');
-			
-			oLayout.createRow(lbProp, ddBox, lbCurrent, lbDefault);
-			oLayout.addRow(oRow);
-			
-			}
-		}
 		
+		var oInputTextArea = new sap.ui.commons.TextArea({
+			cols: 90,
+			rows: 20
+		});
+		oInputTextArea.setValue(JSON.stringify(getSettings(), null, 2));
+
+		oLayout.createRow(oInputTextArea);
+		var btn = new sap.m.Button({
+			text: "Save",
+			press: function(oControlEvent){
+				try{
+				//settings = JSON.parse(oInputTextArea.getValue());
+				setCookie("settings", JSON.stringify(JSON.parse(oInputTextArea.getValue())), 365);
+				sap.ui.commons.MessageBox.show(
+					      "Settings is succesfully saved",
+					      sap.ui.commons.MessageBox.Icon.INFORMATION,
+					      "Saved"
+					      //[sap.ui.commons.MessageBox.Action.YES, sap.ui.commons.MessageBox.Action.NO],
+					      //function() { / * do something * / }
+					  );
+				console.log(getSettings());
+				}catch(err){
+					jQuery.sap.require("sap.ui.commons.MessageBox");
+					sap.ui.commons.MessageBox.alert(
+						      err,
+						      sap.ui.commons.MessageBox.Icon.INFORMATION,
+						      "Error"
+						      //[sap.ui.commons.MessageBox.Action.YES, sap.ui.commons.MessageBox.Action.NO],
+						      //function() { / * do something * / }
+						  );
+					console.log(getSettings());
+				}
+			}
+		});
+		var d_btn = new sap.m.Button({
+			text: "Default Settings",
+			press: function(oControlEvent){
+				try{
+					oInputTextArea.setValue(JSON.stringify(default_settings, null, 2))
+					//settings = default_settings;
+					setCookie("settings", JSON.stringify(default_settings), 365);
+				sap.ui.commons.MessageBox.show(
+					      "Default Settings is succesfully saved",
+					      sap.ui.commons.MessageBox.Icon.INFORMATION,
+					      "Saved"
+					      //[sap.ui.commons.MessageBox.Action.YES, sap.ui.commons.MessageBox.Action.NO],
+					      //function() { / * do something * / }
+					  );
+				console.log(settings);
+				}catch(err){
+					jQuery.sap.require("sap.ui.commons.MessageBox");
+					sap.ui.commons.MessageBox.alert(
+						      err,
+						      sap.ui.commons.MessageBox.Icon.INFORMATION,
+						      "Error"
+						      //[sap.ui.commons.MessageBox.Action.YES, sap.ui.commons.MessageBox.Action.NO],
+						      //function() { / * do something * / }
+						  );
+					console.log(settings);
+				}
+			}
+		});
+		oLayout.createRow(btn);
+		oLayout.createRow(d_btn);
 		
-		//oLayout.createRow(oTextView);
 		return oLayout;
 	}
 

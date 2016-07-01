@@ -14,20 +14,20 @@
 
 <!--[if IE]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-<!-- 
+<script src="js/dexie.js"></script>
+ 
 <script src="https://sapui5.netweaver.ondemand.com/resources/sap-ui-core.js" id="sap-ui-bootstrap"
 	data-sap-ui-libs="sap.ui.commons, 
 	sap.ui.ux3, sap.m, 
 	sap.makit, 
-	sap.viz,
 	sap.ui.core, 
 	sap.ui.layout, 
-	sap.ui.table" 
+	sap.ui.table, sap.suite.ui.commons" 
 	data-sap-ui-theme="sap_goldreflection">
 	
 </script>
--->
-<script src="js/dexie.js"></script>
+
+<!-- 
 <script src="resources/sap-ui-core.js" id="sap-ui-bootstrap"
 	data-sap-ui-libs="sap.ui.commons, 
 	sap.ui.ux3, sap.m, 
@@ -37,11 +37,11 @@
 	sap.ui.table, sap.suite.ui.commons" 
 	data-sap-ui-theme="sap_goldreflection">
 </script>
-
+ -->
 <!-- <script src="js/jquery.ba-jqmq.min.js"></script> -->
 <script src="js/UserSettings.js"></script>
 <script src="js/utility.js"></script>
-
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.3/jquery.xdomainrequest.min.js"></script>
 
 
        
@@ -49,6 +49,7 @@
 	sap.ui.localResources("sap_pi_monitoring_tool");
 	
 
+	
 	
 	console.log("Views initiation");	
 	loadingview = sap.ui.view({
