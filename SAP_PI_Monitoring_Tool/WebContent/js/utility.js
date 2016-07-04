@@ -15,6 +15,7 @@ console.log(getCookie("settings"));
 function getSettings(){
 	return JSON.parse(getCookie("settings"));
 }
+
 function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -151,7 +152,7 @@ function logoff(){
 //Function to create the dialog
 
 function openLoginDialog() {
-	
+	return;
 	var loginview = sap.ui.view({
 		viewName : "sap_pi_monitoring_tool.Login",
 		type : sap.ui.core.mvc.ViewType.JS
@@ -446,3 +447,38 @@ $.ajaxSetup({
 });
 */
 
+function JSONtoHTMLTable(jsonData){
+	var stringTable = "<table>";
+	var jsonObj = JSON.parse(jsonData);
+	console.log("jsonObj");
+	console.log(jsonObj);
+	var counter =0;
+		for(var row in jsonObj){
+		
+		var dataCopy = jsonObj[row];
+		if(counter == 0){
+			stringTable += "<thead><tr>";
+			for(key in dataCopy){
+				stringTable += "<th style='color:red;'>"+key+"</th>";
+			}
+			stringTable += "</tr></thead>";
+		}
+			
+		if(counter == 0){
+			stringTable += "<tbody>";
+			console.log(stringTable);
+		}
+		stringTable += "<tr>";
+	    for(key in dataCopy){
+	    	console.log(dataCopy[key]);
+	    	stringTable += "<td>"+dataCopy[key]+"</td>";
+	    }
+	    stringTable += "</tr>";
+		    
+	    
+		
+		counter++;
+	}
+		stringTable += "</tbody></table>";
+		return stringTable;
+}

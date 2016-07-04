@@ -1,5 +1,5 @@
 default_settings = {
-	mode : 'debug', //prod, dev, debug, demo
+	mode : 'demo', //prod, dev, debug, demo
 //	mode_allowed : ["prod", "dev", "debug" ],
 	mode_desc : 'Use Debug mode to see the detailed log. "prod", "dev", "debug"',
 	proxy : false,
@@ -26,6 +26,8 @@ default_settings = {
 	MaxMessageFetchLimit : 100,
 	MaxMessageFetchLimit_desc : 'These many message will be fetched maximum',
 //	MaxMessageFetchLimit_allowed : [100, 1000, 2000, 5000],
-	browser_notification : true
+	browser_notification : true,
+	timezone_offset: 'Z',
+	timezoneId: ''
 } 
 

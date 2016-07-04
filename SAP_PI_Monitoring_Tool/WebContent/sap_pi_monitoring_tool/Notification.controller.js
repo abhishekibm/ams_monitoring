@@ -12,7 +12,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 	onInit: function() {
 		var oCon = this;	
 		
-		
+		console.log(getSettings().mode);
 		if(getSettings().mode == 'demo'){
 		setInterval(function(){
 			var n = Math.floor((Math.random() * 4));
@@ -47,7 +47,7 @@ sap.ui.controller("sap_pi_monitoring_tool.Notification", {
 		 			oCon.byId("channel_noti").addMessage(oMessage);
 		 		}
 		 		eventBus.publish("FetchAlertsFromNotificationBar", "onNavigateEvent", aloob);
-		}, 15000);
+		}, 150000);
 		}else {
 			// nOT dEMO
 			var repeat = setInterval(function(){

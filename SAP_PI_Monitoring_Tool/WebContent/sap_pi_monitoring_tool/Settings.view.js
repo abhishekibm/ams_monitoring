@@ -24,7 +24,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.Settings", {
 		});
 		oInputTextArea.setValue(JSON.stringify(getSettings(), null, 2));
 
-		oLayout.createRow(oInputTextArea);
+		
 		var btn = new sap.m.Button({
 			text: "Save",
 			press: function(oControlEvent){
@@ -88,22 +88,33 @@ sap.ui.jsview("sap_pi_monitoring_tool.Settings", {
 		timezoneModel.loadData("data/timezones.json");
 		//timezoneModel.setData(data);
         this.setModel(timezoneModel);
-        var list = new sap.ui.commons.ComboBox("tz",{
-        	displaySecondaryValues:true
+        var tzList = new sap.ui.commons.ComboBox({
+        	displaySecondaryValues:true,
+        	selectedKey: 'offset'
         });
-		
+        tzList.setValue(getSettings().timezoneId);
+        
+        tzList.attachChange(function(){
+        	console.log(tzList.getSelectedKey());
+        	var sett = getSettings();
+        	sett.timezone_offset = tzList.getSelectedKey() * 60;
+        	sett.timezoneId = tzList.getValue();
+        	setCookie("settings", JSON.stringify(sett), 365);
+        	oInputTextArea.setValue(JSON.stringify(sett, null, 2));
+        });
      // bind the List items to the data collection
-        list.bindItems({
+        tzList.bindItems({
             path : "/", 
             //sorter : new sap.ui.model.Sorter("prodName"),
             //template : listTmpl
             template : new sap.ui.core.ListItem({
-            	 text:"{text}", additionalText:"{offset}"
+            	 text:"{value}", key:"{offset}", additionalText:"{offset}"
             })
         }); 
-        oLayout.createRow(list);
+        oLayout.createRow(tzList);
 		//////////////////////////
 		
+        oLayout.createRow(oInputTextArea);
         oLayout.createRow(btn);
 		oLayout.createRow(d_btn);
 		return oLayout;

@@ -38,6 +38,7 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 		 			//firstVisibleRow: 3,
 		 			selectionMode: sap.ui.table.SelectionMode.Single,
 		 			navigationMode: sap.ui.table.NavigationMode.Paginator,
+		 			editable: false 
 		 			//fixedColumnCount: 2,
 		 			//enableCustomFilter: true,
 		 			//enableCellFilter: true
@@ -46,23 +47,29 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
 		 		                                                      //new sap.ui.commons.Label({text : "Find"}),   
 		 		                                                      //new sap.ui.commons.TextField("SearchText",{liveChange: this.Change}),  
 		 		                                                      new sap.ui.commons.Button({text: "Export", press: function(){
-		 		                                                    	 exportToCSV(oTable, 'Alert Report');
+		 		                                                    	 //exportToCSV(oTable, 'Alert Report');
+		 		                                                    	  //console.log(oTable.getModel().getJSON());
+		 		                                                    	 window.open('data:application/vnd.ms-excel,' + encodeURIComponent(JSONtoHTMLTable(oTable.getModel().getJSON()) ));
+		 		                                                    	  //console.log($('#__jsview2--alertTable-table')[0].outerHTML);
+		 		                                                    	 //console.log($('table')[0].innerHTML);
+		 		                                                    	//console.log($('table')[0].html());
 		 		                                                      }})  
 		 		                                             ]}));
- 				oTable.columns = [  
+ 				/*oTable.columns = [  
  			                    new sap.ui.table.Column({label: "Severity", template:new sap.ui.commons.Link().bindProperty("text", "severity"), filterProperty:"Severity" }),  
  			                    new sap.ui.table.Column({label: "Payload", template:new sap.ui.commons.TextView().bindProperty("text", "payload"), filterProperty:"payload" }),  
  			                    new sap.ui.table.Column({label: "Timestamp", template:new sap.ui.commons.TextField().bindProperty("value", "timestamp"), filterProperty:"ProductCategoryDescription" }),  
  			                    //new sap.ui.table.Column({label: "Created By", template:new sap.ui.commons.Link().bindProperty("text", "CreatedBy").bindProperty("href", "CreatedByhref"),filterProperty:"CreatedBy"  }),  
  			                    //new sap.ui.table.Column({label: "Date/Time", template:"DateTime", filterProperty:"DateTime" })  
- 			                    ] ;
+ 			                    ] ;*/
  				
  				oTable.addColumn(new sap.ui.table.Column({ 
 		            width : '100px',
                     label: new sap.ui.commons.Label({text: "Severity"}),          
-                    template: new sap.ui.commons.TextField().bindProperty("value", "severity"),
+                    template: new sap.ui.commons.TextView({editable:false}).bindProperty("text", "severity"),
                     filterProperty: "severity",
-                    sortProperty: "severity"
+                    sortProperty: "severity",
+                    editable: false 
  					})   
  				);
  				
@@ -71,15 +78,17 @@ sap.ui.jsview("sap_pi_monitoring_tool.AlertMonitoring",
                     label: new sap.ui.commons.Label({text: "Payload"}),          
                     template: new sap.ui.commons.TextView().addStyleClass('wrap').bindProperty("text", "payload"),
                     filterProperty: "payload",
-                    sortProperty: "payload"
+                    sortProperty: "payload",
+                    editable: false 
  					})   
  				);
  				oTable.addColumn(new sap.ui.table.Column({ 
 		            width : '100px',
                     label: new sap.ui.commons.Label({text: "Timestamp"}),          
-                    template: new sap.ui.commons.TextField().bindProperty("value", "timestamp"),
+                    template: new sap.ui.commons.TextView({editable:false}).bindProperty("text", "timestamp"),
                     filterProperty: "timestamp",
-                    sortProperty: "timestamp"
+                    sortProperty: "timestamp",
+                    editable: false 
  					})   
  				);
  		    	oTable.setTitle("Alerts");

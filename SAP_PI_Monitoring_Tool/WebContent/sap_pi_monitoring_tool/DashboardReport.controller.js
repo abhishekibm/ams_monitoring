@@ -24,7 +24,7 @@ calculateBackDate : function(interval){
 	    var mins  = backdate.getMinutes();
 	    var secs  = backdate.getSeconds();
 	    
-	    var formattedDate = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + mins + ":" + secs+getTimezoneOffset(backdate.getTimezoneOffset());
+	    var formattedDate = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + mins + ":" + secs+this.getTimezoneOffset(backdate.getTimezoneOffset()/*getSettings().timezone_offset*/);
 	    console.log("formattedStartDt");
 	    console.log(dd);
 	    console.log(mm);
@@ -53,7 +53,7 @@ calculateBackDate : function(interval){
 	    var mins  = toDay.getMinutes();
 	    var secs  = toDay.getSeconds();
 	    //console.log(toDay.getTimezoneOffset());
-	    var formattedDate = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + mins + ":" + secs+getTimezoneOffset(toDay.getTimezoneOffset());
+	    var formattedDate = yyyy + "-" + mm + "-" + dd + "T" + hour + ":" + mins + ":" + secs+this.getTimezoneOffset(toDay.getTimezoneOffset()/*getSettings().timezone_offset*/);
 	    console.log("formattedStartDt");
 	    console.log(dd);
 	    console.log(mm);
